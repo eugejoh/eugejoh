@@ -30,8 +30,8 @@ subtitle = ""
 [[feature]]
   icon = "file-alt"
   icon_pack = "fas"
-  name = "Reproducible Reports"
-  description = "Reproducible workflows and research using Git and R Markdown"
+  name = "Reproducible Workflows"
+  description = "Reproducible reporting and research using Git and R Markdown"
   
 [[feature]]
   icon = "database"
@@ -49,7 +49,7 @@ subtitle = ""
   icon = "poll"
   icon_pack = "fas"
   name = "Data Visualization"
-  description = "Static and interactive visualizations using R, R Shiny, Tableau, and Plotly"
+  description = "Static and interactive visualizations using R and R Shiny"
 
 
 +++
