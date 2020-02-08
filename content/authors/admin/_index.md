@@ -18,7 +18,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: ":bar_chart: + :coffee:"
+bio: ":coffee: + :bar_chart:"
 
 Interests:
 - Vaccine Preventable Diseases
