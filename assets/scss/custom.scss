@@ -1,0 +1,52 @@
+ 
+
+/* Customize body taken from themes/hugo-academic/assets/scss/academic/_root.scss
+*/
+body {
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: inherit;
+  color: inherit;
+  background-color: $sta-background;
+  margin-top: 70px; /* Offset body content by navbar height. */
+  padding-top: 0;
+  counter-reset: captions;
+}
+
+/* Customize headers taken from themes/hugo-academic/assets/scss/academic/_root.scss
+*/
+h1 {
+  font-size: 1.8rem;
+}
+h2 {
+  margin-top: 1rem;
+  font-size: 1.4rem;
+}
+h3 {
+  font-weight: 700;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+h4, h5, h6 {
+  font-weight: 700;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Customize 'About' widget taken from .../_widgets.scss */
+.avatar {
+  width: 250px; 
+  height: 250px;
+  margin: 0 auto;
+  object-fit: cover;
+}
+
+/*  */
+ul.ul-edu li .description p.course {
+  font-size: 0.8rem;
+}
+
+ul.ul-edu li .description p.institution {
+  font-size: 0.7rem;
+  color: rgba(0,0,0,0.6);
+}
