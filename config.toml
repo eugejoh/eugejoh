@@ -35,7 +35,7 @@ paginate = 10  # Number of items per page in paginated lists.
 enableEmoji = true
 footnotereturnlinkcontents = "<sup>^</sup>"
 ignoreFiles = ["\\.ipynb$", ".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
-
+ 
 [outputs]
   home = [ "HTML", "RSS", "JSON", "WebAppManifest" ]
   section = [ "HTML", "RSS" ]
@@ -61,7 +61,7 @@ ignoreFiles = ["\\.ipynb$", ".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "
 [imaging]
   resampleFilter = "lanczos"
   quality = 90
-  anchor = "smart"  # Anchor for cropping. Options include Smart and Center.
+  anchor = "smart"  # Anchor for cropping. O ptions include Smart and Center.
 
 # Taxonomies.
 [taxonomies]
