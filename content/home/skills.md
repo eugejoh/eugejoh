@@ -19,7 +19,7 @@ subtitle = ""
   icon = "users"
   icon_pack = "fas"
   name = "Population Health"
-  description = "Infectious disease epidemiology, outbreak surveillance, and public health research"
+  description = "Epidemiology, outbreak surveillance, and public health research"
 
 [[feature]]
   icon = "r-project"

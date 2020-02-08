@@ -24,8 +24,6 @@ date_format = "Jan 2006"
   location = "Toronto, Canada"
   date_start = "2019-10-28"
   date_end = ""
-  description = """
-  """
 
 [[experience]]
   title = "Data Manager"
@@ -34,8 +32,6 @@ date_format = "Jan 2006"
   location = "Toronto, Canada"
   date_start = "2018-05-01"
   date_end = "2019-10-04"
-  description = """
-  """
 
 [[experience]]
   title = "Research Assistant"
@@ -44,18 +40,14 @@ date_format = "Jan 2006"
   location = "Toronto, Canada"
   date_start = "2017-08-10"
   date_end = "2018-03-30"
-  description = """
-  """
   
 [[experience]]
   title = "Data Analyst"
-  company = "ProMED-mail"
+  company = "ProMED-Mail"
   company_url = ""
   location = "Boston, USA"
   date_start = "2017-03-01"
   date_end = "2018-08-01"
-  description = """
-  """
 
 [[experience]]
   title = "Research Assistant"
@@ -64,6 +56,5 @@ date_format = "Jan 2006"
   location = "Boston, USA"
   date_start = "2016-05-01"
   date_end = "2016-12-01"
-  description = """
-  """
+  
 +++

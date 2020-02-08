@@ -22,13 +22,13 @@ bio: ":coffee:"
 
 Interests:
 - Vaccine Preventable Diseases
-- Outbreak Surveillance and Response  
-- Emerging Infectious Diseases
 - Global Health
+- Record Linkage
+- Data Visualization
 
 education:
   courses:
-  - course: MS/MPH in Medical Sciences and Environmental Health
+  - course: MPH in Environmental Health
     institution: Boston University
     year: 2017
   - course: BMSc in Medical Biophysics
@@ -72,11 +72,7 @@ email: ""
 
 ---
 
-I am an epidemiologist with a strong interest in leveraging data to address public health problems. 
+I am an epidemiologist with a strong interest in leveraging various data sources to address public health problems. 
 
-My main area of work is centered around infectious disease epidemiology, but I have parallel interests in reproducible workflows, open source tools, and the intersection of data science with public health research.
-
-If you want to connect or chat over :coffee: feel free to contact me.
-
-
+My main area of work is centered around infectious disease epidemiology, but I have parallel interests in reproducible workflows, open source tools, and the intersection of data science with public health research.  
 
