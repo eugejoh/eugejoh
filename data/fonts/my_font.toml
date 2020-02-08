@@ -10,6 +10,3 @@ body_font = "Roboto"
 nav_font = "Roboto"
 mono_font = "Roboto Mono"
 
-# Font size
-font_size = "18"
-font_size_small = "16"

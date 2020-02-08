@@ -153,8 +153,6 @@ link_authors = true
 #   E.g. To load `/assets/js/custom.js`, set `plugins_js = ["custom"]`.
 plugins_js  = []
 
-custom_css = ["/assets/scss/custom.css"]
-
 # Avatars.
 # An avatar is an image that appears next to a user's name.
 # An avatar can be uploaded as an image named `avatar` to each user's profile or fetched from Gravatar.com.
@@ -205,7 +203,7 @@ custom_css = ["/assets/scss/custom.css"]
 
   # Which page types are commentable?
   commentable = {page = false, post = true, docs = true, project = false, publication = false, talk = true}
-
+ 
   # Configuration of Disqus.
   [comments.disqus]
     shortname = ""  # Paste the shortname from your Disqus dashboard.
