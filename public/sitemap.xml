@@ -3,187 +3,161 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/courses/example/example1/</loc>
+    <loc>https://eugejoh.netlify.com/courses/example/example1/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/courses/example/</loc>
+    <loc>https://eugejoh.netlify.com/courses/example/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/courses/example/example2/</loc>
+    <loc>https://eugejoh.netlify.com/courses/example/example2/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2020-02-09T17:26:04-05:00</lastmod>
+    <loc>https://eugejoh.netlify.com/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/talk/example/</loc>
+    <loc>https://eugejoh.netlify.com/talk/example/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/test/</loc>
-    <lastmod>2020-02-09T17:26:04-05:00</lastmod>
+    <loc>https://eugejoh.netlify.com/tags/databases/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/writing-technical-content/</loc>
+    <loc>https://eugejoh.netlify.com/project/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/tags/r/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/project/sendtg/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/tags/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/project/pgtools/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/authors/admin/</loc>
     <lastmod>2020-02-08T13:26:03-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/authors/admin/</loc>
+    <loc>https://eugejoh.netlify.com/publication_types/3/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/publication/preprint/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/authors/</loc>
     <lastmod>2020-02-08T13:26:03-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication_types/3/</loc>
+    <loc>https://eugejoh.netlify.com/publication_types/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication/preprint/</loc>
+    <loc>https://eugejoh.netlify.com/tags/source-themes/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/authors/</loc>
+    <loc>https://eugejoh.netlify.com/post/jupyter/</loc>
     <lastmod>2020-02-08T13:26:03-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication_types/</loc>
+    <loc>https://eugejoh.netlify.com/slides/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/source-themes/</loc>
+    <loc>https://eugejoh.netlify.com/slides/example/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2020-02-08T13:26:03-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/jupyter/</loc>
-    <lastmod>2020-02-08T13:26:03-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/slides/</loc>
+    <loc>https://eugejoh.netlify.com/tags/demo/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/slides/example/</loc>
+    <loc>https://eugejoh.netlify.com/project/external-project/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/privacy/</loc>
+    <loc>https://eugejoh.netlify.com/publication_types/2/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/terms/</loc>
+    <loc>https://eugejoh.netlify.com/publication/journal-article/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/deep-learning/</loc>
+    <loc>https://eugejoh.netlify.com/authors/robert-ford/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/demo/</loc>
+    <loc>https://eugejoh.netlify.com/publication_types/1/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/external-project/</loc>
+    <loc>https://eugejoh.netlify.com/publication/conference-paper/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/internal-project/</loc>
+    <loc>https://eugejoh.netlify.com/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://eugejoh.netlify.com/courses/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/</loc>
+    <loc>https://eugejoh.netlify.com/post/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/academic/</loc>
-    <lastmod>2020-02-08T13:26:03-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/getting-started/</loc>
-    <lastmod>2020-02-08T13:26:03-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-02-08T13:26:03-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/demo/</loc>
-    <lastmod>2020-02-08T13:26:03-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication_types/2/</loc>
+    <loc>https://eugejoh.netlify.com/publication/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication/journal-article/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/authors/robert-ford/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication_types/1/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication/conference-paper/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/courses/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/talk/</loc>
+    <loc>https://eugejoh.netlify.com/talk/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
   
