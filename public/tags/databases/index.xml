@@ -2,21 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Databases | Eugene J</title>
-    <link>https://eugejoh.netlify.com/tags/databases/</link>
-      <atom:link href="https://eugejoh.netlify.com/tags/databases/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/databases/</link>
+      <atom:link href="/tags/databases/index.xml" rel="self" type="application/rss+xml" />
     <description>Databases</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://eugejoh.netlify.com/img/avatar.jpg</url>
+      <url>/img/avatar.jpg</url>
       <title>Databases</title>
-      <link>https://eugejoh.netlify.com/tags/databases/</link>
+      <link>/tags/databases/</link>
     </image>
     
     <item>
-      <title>Writing tables from R to PostgreSQL</title>
-      <link>https://eugejoh.netlify.com/project/pgtools/</link>
+      <title>Send Telegram messages from R</title>
+      <link>/project/sendtg/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
-      <guid>https://eugejoh.netlify.com/project/pgtools/</guid>
+      <guid>/project/sendtg/</guid>
+      <description>&lt;h1 id=&#34;send-telegram-notifications-with-r&#34;&gt;Send Telegram Notifications with R&lt;/h1&gt;
+&lt;p&gt;The 
+&lt;a href=&#34;https://github.com/eugejoh/sendtg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;sendtg&lt;/code&gt;&lt;/a&gt;
+ package is provides a number of simple R functions to send Telegram messages. This is a wrapper around the 
+&lt;a href=&#34;https://github.com/ebeneditos/telegram.bot&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;telegram.bot&lt;/code&gt;&lt;/a&gt;
+ R package.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Writing tables from R to PostgreSQL</title>
+      <link>/project/pgtools/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      <guid>/project/pgtools/</guid>
       <description>&lt;h1 id=&#34;tables-from-r-to-postgresql&#34;&gt;Tables from R to PostgreSQL&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;pgtools&lt;/code&gt; Is an R package that contains functions to provide a consistent workflow for writing a &lt;code&gt;data.frame&lt;/code&gt; in R as a PostgreSQL database table. The tools are built around the &lt;code&gt;DBI&lt;/code&gt; and &lt;code&gt;RPostgres&lt;/code&gt; packages.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;What this package provides?&lt;/strong&gt;&lt;/p&gt;
