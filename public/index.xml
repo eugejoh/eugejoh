@@ -89,6 +89,9 @@
  package is provides a number of simple R functions to send Telegram messages. This is a wrapper around the 
 &lt;a href=&#34;https://github.com/ebeneditos/telegram.bot&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;telegram.bot&lt;/code&gt;&lt;/a&gt;
  R package.&lt;/p&gt;
+&lt;p&gt;The link to the GitHub repository is above or 
+&lt;a href=&#34;https://github.com/eugejoh/sendtg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;
+.&lt;/p&gt;
 </description>
     </item>
     

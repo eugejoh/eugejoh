@@ -10,14 +10,14 @@ date: "2020-02-09T00:00:00Z"
 external_link: ""
 
 image:
-  caption: Photo from Microsoft Azure
+  caption: ''
   focal_point: Smart
 
 links:
 - icon: github
   icon_pack: fab
   name: GitHub
-  url: https://github.com/eugejoh/pgtools
+  url: https://github.com/eugejoh/sendtg
 url_code: ""
 url_pdf: ""
 url_slides: ""
@@ -34,3 +34,4 @@ slides: ""
 # Send Telegram Notifications with R
 The [`sendtg`](https://github.com/eugejoh/sendtg) package is provides a number of simple R functions to send Telegram messages. This is a wrapper around the [`telegram.bot`](https://github.com/ebeneditos/telegram.bot) R package.
 
+The link to the GitHub repository is above or [here](https://github.com/eugejoh/sendtg).
