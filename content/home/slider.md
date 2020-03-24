@@ -16,8 +16,8 @@ height = ""
 # Slides.
 # Duplicate an `[[item]]` block to add more slides.
 [[item]]
-  title = "Hello my :deer:"
-  content = "I love Charis :smile: :sad:"
+  title = ":deer:"
+  content = "I love :smile: :sad:"
   align = "center"  # Choose `center`, `left`, or `right`.
 
   # Overlay a color or image (optional).
