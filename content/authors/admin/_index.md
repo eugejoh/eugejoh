@@ -72,7 +72,7 @@ email: ""
 
 ---
 
-I am an epidemiologist with a strong interest in leveraging various data sources to address public health problems. 
+I am an epidemiologist with an interdisciplinary background and a strong interest in leveraging disparate data sources to solve public health problems. 
 
 My main area of work is centered around infectious disease epidemiology, but I have parallel interests in reproducible workflows, open source tools, and the intersection of data science with public health research.  
 
