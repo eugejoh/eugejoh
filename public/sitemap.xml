@@ -18,13 +18,13 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2020-02-09T19:26:23-05:00</lastmod>
+    <loc>/talk/test/</loc>
+    <lastmod>2020-02-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/talk/example/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
@@ -88,16 +88,6 @@
   </url>
   
   <url>
-    <loc>/slides/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/slides/example/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/privacy/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
@@ -109,62 +99,52 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2017-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/public-health/</loc>
-    <lastmod>2017-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/r/</loc>
-    <lastmod>2017-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/post/ed-visits-regex-treemaps/</loc>
-    <lastmod>2017-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/post/who-tb-data-ggplot2/</loc>
-    <lastmod>2017-03-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/refugees/</loc>
-    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/post/unhcr-viz/</loc>
-    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/post/mlst-mrsa/</loc>
-    <lastmod>2017-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/infectious-diseases/</loc>
-    <lastmod>2017-01-04T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
     <loc>/post/sir-model/</loc>
-    <lastmod>2017-01-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/demo/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/external-project/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+    <lastmod>2020-03-24T23:37:57-04:00</lastmod>
   </url>
   
   <url>
