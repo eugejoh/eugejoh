@@ -50,3 +50,18 @@ ul.ul-edu li .description p.institution {
   font-size: 0.7rem;
   color: rgba(0,0,0,0.6);
 }
+
+a {
+color: #007FA2
+}
+
+a:hover {
+  color: #495559;
+  text-decoration: underline;
+}
+
+code {
+  font-family: $sta-font-mono, monospace;
+  color: #A23400;
+  background-color: #F2F3F9;
+}
