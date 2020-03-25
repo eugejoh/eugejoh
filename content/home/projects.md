@@ -25,13 +25,9 @@ subtitle = ""
     name = "All"
     tag = "*"
   
-  [[content.filter_button]]
-    name = "R"
-    tag = "R"
-  
-  [[content.filter_button]]
-    name = "Public Health"
-    tag = "Public Health"
+  # [[content.filter_button]]
+    # name = "R"
+    # tag = "R"
 
 [design]
   # Choose how many columns the section has. Valid values: 1 or 2.

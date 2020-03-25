@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Eugene Joh">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.
+What is Tuberculosis? Tuberculosis (TB) is a nasty disease caused by the bacterium Mycobacterium tuberculosis. It was first described by Hippocrates and has a history concurrent with human civilization. Individuals infected with TB usually do not develop active disease but if they develop active TB, they can on average infect 8-10 people.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/who-tb-data-ggplot2/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#B8CED6">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono%7CLato:400%7COpen+Sans&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130364870-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-130364870-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/post/who-tb-data-ggplot2/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@eugejoh">
+  <meta property="twitter:creator" content="@eugejoh">
+  
+  <meta property="og:site_name" content="Eugene J">
+  <meta property="og:url" content="/post/who-tb-data-ggplot2/">
+  <meta property="og:title" content="WHO Tuberculosis Data &amp; ggplot2 | Eugene J">
+  <meta property="og:description" content="For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.
+What is Tuberculosis? Tuberculosis (TB) is a nasty disease caused by the bacterium Mycobacterium tuberculosis. It was first described by Hippocrates and has a history concurrent with human civilization. Individuals infected with TB usually do not develop active disease but if they develop active TB, they can on average infect 8-10 people."><meta property="og:image" content="/post/who-tb-data-ggplot2/featured.jpg">
+  <meta property="twitter:image" content="/post/who-tb-data-ggplot2/featured.jpg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2017-03-03T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2017-03-03T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/who-tb-data-ggplot2/"
+  },
+  "headline": "WHO Tuberculosis Data \u0026 ggplot2",
+  
+  "image": [
+    "/post/who-tb-data-ggplot2/featured.jpg"
+  ],
+  
+  "datePublished": "2017-03-03T00:00:00Z",
+  "dateModified": "2017-03-03T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Eugene Joh"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eugene J",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.\nWhat is Tuberculosis? Tuberculosis (TB) is a nasty disease caused by the bacterium Mycobacterium tuberculosis. It was first described by Hippocrates and has a history concurrent with human civilization. Individuals infected with TB usually do not develop active disease but if they develop active TB, they can on average infect 8-10 people."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#B8CED6",
+          "text": "#fff"
+        },
+        "button": {
+          "background": "#fff",
+          "text": "#B8CED6"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "/privacy/"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>WHO Tuberculosis Data &amp; ggplot2 | Eugene J</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>About</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>WHO Tuberculosis Data &amp; ggplot2</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Mar 3, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    10 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/categories/r/">R</a>, <a href="/categories/public-health/">Public Health</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<p>For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.</p>
+<p align="center">
+<img src="/post/who-tb-data-ggplot2/mycobacterium20tuberculosis20030.jpg" alt="Electron micrograph of Mycobacterium tuberculosis" />
+</p>
+<div id="what-is-tuberculosis" class="section level2">
+<h2>What is Tuberculosis?</h2>
+<p>Tuberculosis (TB) is a nasty disease caused by the bacterium Mycobacterium tuberculosis. It was first described by Hippocrates and has a history concurrent with human civilization. Individuals infected with TB usually do not develop active disease but if they develop active TB, they can on average infect 8-10 people. Most of the time when we hear of TB, we think of the infection within the lungs, but I learned during my time volunteering in a medical clinic in Peru that TB can manifest in other sites of the body (extra-pulmonary TB). This bacterium has infected roughly a third of the world’s population and is a top 10 cause of death around the globe.</p>
+<p>There are two major modern concerns with TB…</p>
+<ol style="list-style-type: decimal">
+<li><strong>TB and HIV co-infection</strong>, where there is a disproportionate mortality rate by TB with HIV infected individuals. HIV infects CD4+ T-cells, which are essential for an appropriate immune response to combat TB. This relationship has been reported in patients.<br />
+</li>
+<li><strong>Multi-drug resistant TB (MDR-TB)</strong> is a growing public health concern that threatens the control of TB infection throughout the world. There have been reports of extensive-drug resistant TB (XDR-TB) which is resistant to the standard treatment of isoniazid and rifampin alongside any fluoroquinolone and at least one secondary-treatment drug. Fewer treatment options put patients under rigorous and strenuous regimens and present a risk of transmission to others.</li>
+</ol>
+</div>
+<div id="data-retrieval" class="section level2">
+<h2>Data Retrieval</h2>
+<p>The data I used for this post is taken from the World Health Organization from <a href="http://www.who.int/tb/country/data/download/en/">this link</a> to the TB data. Specifically I used the data dictionary and TB burden estimates. When you click these links, they generate a comma-delimited file (.csv) and date-stamp the file. I downloaded these files back in February 2016. Just remember where you save these in your local directory so you can read them into R for the near future.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
+<p>The code I use for my posts can be found on my <a href="https://github.com/eugejoh/">GitHub account</a>, open for free use and adaptation. I’m always open to comments and suggestions on how to improve my code or even a completely different method to reach the same goal. Optimization of R programming is something I am working towards bit by bit.</p>
+<p>After setting up your working directory, read your comma-delimited files using the <code>read.csv()</code> function. The WHO files are conveniently formatted so there is no need for elaborate arguments for headers, field separators or assigning missing values.</p>
+<pre class="r"><code>TB.burden &lt;- read.csv(&quot;TB_burden_countries_2016-02-18.csv&quot;) #TB burden dataset
+TB.dic &lt;- read.csv(&quot;TB_data_dictionary_2016-02-18.csv&quot;) #TB documentation dictionary</code></pre>
+</div>
+<div id="customized-search-function" class="section level2">
+<h2>Customized Search Function</h2>
+<p>While completing an R assignment for one of my classes, I ran into the <code>readline()</code> function which allows for some interactive functionality within R. The reason I created this interactive custom search function is because of the fact that the column variables in the TB burden .csv file are not completely straightforward and it’s annoying to manually search through the file itself in Microsoft Excel. So instead of memorizing all of them (only to forget after I write 10 lines of code), I decided to create this function whenever I start to write code for a new plot and need to remind myself the exact description of the variable I am working with…</p>
+<pre class="r"><code>TB.search &lt;- function (x){ #
+  look &lt;- names(x) #assign the names/column names of the subsetted data
+  message(&quot;Matching variable names found in the documentation files&quot;)
+  TB.d &lt;- as.character(TB.dic[,4]) # conversion to character to have &quot;clean&quot; output
+  out &lt;- look[look %in% TB.dic[,1]] #assignment of vector: which names of the selected subset are in the documentation file
+  print(out) #check which variable names from dictionary match the input
+  message(&quot;Above includes all names for variable names found in the documentation files&quot;) #message prompt for output
+  
+  z &lt;- readline(&quot;Search Variable Definition (CASE-SENSITIVE): &quot;) #interactive read-in of variable name
+  if (z %in% out){ # NEED TO MAKE THE CONDITION TO SEPARATE integer(0) from real integer values
+    print(TB.d[grep(paste0(&quot;^(&quot;,z,&quot;){1}?&quot;),TB.dic[,1])]) #print the definition found in TB.d
+  }else{
+    
+    repeat{ #repeat the line below for readline() if exact match of doesn&#39;t exist
+      y&lt;-readline(&quot;Please re-input (press &#39;ESC&#39; to exit search): &quot;) #second prompt
+      if (y %in% out) break # the condition that ends the repeat, that the input matches a name in the documentation
+    }
+    print(TB.d[grep(paste0(&quot;^&quot;,y,&quot;{1}?&quot;),TB.dic[,1])]) #print the definition found in documentation file TB.dic
+  }
+}</code></pre>
+<p>I’m only going to highlight a couple things in the code above. I converted the definitions found in the documentation file because the original data type was a <code>factor</code>. This was a problem with the print output because it would show all the unnecessary information on the number of factors and values of the factors I had no interest in. Secondly I ended up using a <code>repeat</code> in my <code>if</code> statement to prompt the user if they incorrectly typed in a variable name in the console. This <a href="https://www.programiz.com/r-programming/repeat-loop">link</a> provides some helpful information on the <code>repeat</code> loop. Other then that, I used <a href="http://www.endmemo.com/program/R/grep.php">regular expression</a> to specify the search to match what was actually in the documentation file.</p>
+</div>
+<div id="cleaning-data" class="section level2">
+<h2>Cleaning Data</h2>
+<p>As with all data, it doesn’t come in the form that you always want it in. Luckily the WHO TB data wasn’t in bad shape and I just converted all integer valued columns into numeric types using a simple loop.</p>
+<pre class="r"><code>#convert all the rows with type &#39;integer&#39; to &#39;numeric
+for (k in 1:length(names(TB.burden))){
+  if (is.integer(TB.burden[,k])){
+    TB.burden[,k] &lt;- as.numeric(TB.burden[,k])
+  }
+}</code></pre>
+<p>After that, I used the <code>mapvalues()</code> function from the <code>plyr</code> package to change the levels in the country variable. I used this because the basic functions in R require me to specify all the levels in the factor and using 219 country names seemed tedious. Quite simply, I just listed the old names I wanted to change and created a respective character vector of the the new country names.</p>
+<pre class="r"><code>library(plyr)
+TB.burden$country &lt;- (mapvalues((TB.burden$country), from = c(
+  &quot;Bolivia (Plurinational State of)&quot;,
+  &quot;Bonaire, Saint Eustatius and Saba&quot;,
+  &quot;China, Hong Kong SAR&quot;,
+  &quot;China, Macao SAR&quot;,
+  &quot;Democratic People&#39;s Republic of Korea&quot;,
+  &quot;Democratic Republic of the Congo&quot;,
+  &quot;Iran (Islamic Republic of)&quot;,
+  &quot;Lao People&#39;s Democratic Republic&quot;,
+  &quot;Micronesia (Federated States of)&quot;,
+  &quot;Republic of Korea&quot;,
+  &quot;Saint Vincent and the Grenadines&quot;,
+  &quot;Sint Maarten (Dutch part)&quot;,
+  &quot;The Former Yugoslav Republic of Macedonia&quot;,
+  &quot;United Kingdom of Great Britain and Northern Ireland&quot;,
+  &quot;United Republic of Tanzania&quot;,
+  &quot;Venezuela (Bolivarian Republic of)&quot;,
+  &quot;West Bank and Gaza Strip&quot;)
+  
+  , to = c(
+    &quot;Bolivia&quot;,
+    &quot;Caribbean Netherlands&quot;,
+    &quot;Hong Kong&quot;,
+    &quot;Macao&quot;,
+    &quot;North Korea&quot;,
+    &quot;DRC&quot;,
+    &quot;Iran&quot;,
+    &quot;Laos&quot;,
+    &quot;Micronesia&quot;,
+    &quot;South Korea&quot;,
+    &quot;St. Vincent &amp;amp;amp;amp;amp; Grenadines&quot;,
+    &quot;Sint Maarten&quot;,
+    &quot;Former Yugoslav (Macedonia)&quot;,
+    &quot;UK &amp;amp;amp;amp;amp; Northern Ireland&quot;,
+    &quot;Tanzania&quot;,
+    &quot;Venezuela&quot;,
+    &quot;West Bank and Gaza&quot;)
+))</code></pre>
+<p>I threw in some random subsetting into the code to pull out values for specific questions (ie. what was the estimated prevalence per 100,000 people of TB in Peru during 2014). You can see it in the actual code in the <a href="https://github.com/eugejoh/WHO-TB-Data/blob/master/TB-WHO-post.R">GitHub repository</a>.</p>
+</div>
+<div id="visualizing-the-data" class="section level2">
+<h2>Visualizing the Data</h2>
+<p>I was interested in what estimated rates of TB were by WHO region, so I ran a simple loop to assign new variable names to each region (this is not the best practice IMO but it does the trick).</p>
+<pre class="r"><code>for (i in levels(TB.burden$g_whoregion)){ #selection of the WHO regions (AFR, AMR, EMR, EUR, SEA, WPR)
+  nam &lt;- paste0(i,&quot;_whoregion&quot;) #creation of the name based on acronyms from levels
+  assign(nam, subset(TB.burden,TB.burden$g_whoregion %in% paste(i))) #assigning each level a subset based on the region
+}
+ls() #just to show what variables are stored...
+#look for AFR_whoregion, AMR_whoregion, EMR_whoregion, EUR_whoregion, SEA_whoregion, WPR_whoregion</code></pre>
+<p>Now we set up the themes we want to use for <code>ggplot2.</code> I set the year scale for the legends, customized the text on the axes and assigned <code>dark_t</code> to be a dark, black-grey background and <code>light_t</code> as a simple, white-grey background <code>theme</code>.</p>
+<pre class="r"><code>ctext &lt;- theme(axis.ticks = element_blank(),
+               plot.title=element_text(family=&quot;Verdana&quot;),
+               axis.text.x=element_text(size=9,family=&quot;Verdana&quot;), #http://www.cookbook-r.com/Graphs/Fonts/#table-of-fonts
+               axis.title.x=element_text(size=10),
+               axis.text.y=element_text(size=7.5,family=&quot;Verdana&quot;),
+               axis.title.y-element_text(size=10,family=&quot;Verdana&quot;),
+               legend.title=element_text(size=9,family=&quot;Verdana&quot;,vjust=0.5), #specify legend title color
+               legend.text=element_text(size=7,family=&quot;Verdana&quot;,face=&quot;italic&quot;)
+)
+
+dark_t &lt;- theme_minimal()+
+  theme(
+    plot.background = element_rect(fill=&quot;#191919&quot;), #plot background
+    panel.border = element_blank(), #removes border
+    panel.background = element_rect(fill = &quot;#000000&quot;,colour=&quot;#000000&quot;,size=2), #panel background and border
+    panel.grid = element_line(colour = &quot;#333131&quot;), #panel grid colours
+    panel.grid.major = element_line(colour = &quot;#333131&quot;), #panel major grid color
+    panel.grid.minor = element_blank(), #removes minor grid
+    
+    plot.title=element_text(size=16, face=&quot;bold&quot;,family=&quot;Verdana&quot;,hjust=0,vjust=1,color=&quot;#E0E0E0&quot;), #set the plot title
+    plot.subtitle=element_text(size=12,face=c(&quot;bold&quot;,&quot;italic&quot;),family=&quot;Verdana&quot;,hjust=0.01,color=&quot;#E0E0E0&quot;), #set subtitle
+    
+    axis.text.x = element_text(size=9,angle = 0, hjust = 0.5,vjust=1,margin=margin(r=10),colour=&quot;#E0E0E0&quot;), # axis ticks
+    axis.title.x = element_text(size=11,angle = 0,colour=&quot;#E0E0E0&quot;), #axis labels from labs() below
+    axis.text.y = element_text(size=9,margin = margin(r=5),colour=&quot;#E0E0E0&quot;), #y-axis labels
+    
+    legend.title=element_text(size=11,face=&quot;bold&quot;,vjust=0.5,colour=&quot;#E0E0E0&quot;), #specify legend title color
+    legend.background = element_rect(fill=&quot;#262626&quot;,colour=&quot;#383838&quot;, size=.5), #legend background and cborder
+    legend.text=element_text(colour=&quot;#E0E0E0&quot;)) + #legend text colour
+  # plot.margin=unit(c(t=1,r=1.2,b=1.2,l=1),&quot;cm&quot;)) #custom margins
+  ctext
+
+light_t &lt;- theme(legend.background = element_rect(fill=&quot;grey95&quot;,colour=&quot;grey70&quot;, size=.5),
+                 plot.title=element_text(size=16, face=&quot;bold&quot;,family=&quot;Verdana&quot;,hjust=0,vjust=1), #set the plot title
+                 plot.subtitle=element_text(size=12,face=c(&quot;bold&quot;,&quot;italic&quot;),family=&quot;Verdana&quot;,hjust=0.01), #set subtitle
+                 
+                 panel.grid.minor = element_blank()) + #removes minor grid)
+  ctext
+
+# specify scale for year variable
+year.scale &lt;- c(1990,1995,2000,2005,2010,2014) # used for breaks below</code></pre>
+<p>For the next plots, I’ll only be focusing on the WHO Region of Africa. Two notes on the code below for the plots: <strong>1)</strong> I used the <code>forcats</code> <a href="https://blog.rstudio.org/2016/11/14/ggplot2-2-2-0/">package</a> to reverse the order of the countries on the y-axis. This package is useful when using ggplot2 for categorical data. <strong>2)</strong> For the legend scales, I used the <code>comma()</code> function in the <code>scales</code> package to include the comma’s for every thousand. The following code displays the estimated prevalence, mortality and incidence (per 100,000 people) for cases from each country in the WHO Africa Region.</p>
+<pre class="r"><code>#PREVALENCE per 100k
+library(forcats) #https://blog.rstudio.org/2016/11/14/ggplot2-2-2-0/
+pAFR &lt;-ggplot(AFR_whoregion,aes(y=fct_rev(country),x=e_prev_100k)) + # prevalence (100k)
+  labs(title=&quot;WHO | Tuberculosis Data&quot;,
+       subtitle=&quot;Africa Region&quot;, x=&quot;Estimated Prevalence (per 100,000)&quot;,y=&quot;&quot;,colour=&quot;#E0E0E0&quot;) +
+  geom_point(shape=20,aes(colour=year,fill=year),alpha=0.6,size=3) +
+  scale_y_discrete(expand=c(0.002, 1))+
+  scale_x_continuous(limits=c(0,1500),labels=scales::comma)+
+  scale_fill_gradient(guide_legend(title=&quot;Year&quot;),breaks=year.scale,low=&quot;#F9FA00&quot;,high=&quot;#8C00E6&quot;) + #assigns colours to fill in aes
+  scale_colour_gradient(guide_legend(title=&quot;Year&quot;),breaks=year.scale,low=&quot;#F9FA00&quot;,high=&quot;#8C00E6&quot;) + #assigns colours to colour in aes
+  dark_t
+
+#MORTALITY (including HIV) per 100k e_inc_tbhiv_100k
+mAFR &lt;- ggplot(AFR_whoregion,aes(y=fct_rev(country),x= e_mort_exc_tbhiv_100k)) + # Mortality exclude HIV (100k)
+  labs(title=&quot;WHO | Tuberculosis Data&quot;,
+       subtitle=&quot;Africa Region&quot;,x=&quot;Estimated Mortality excluding HIV (per 100,000)&quot;,y=&quot;&quot;,colour=&quot;#E0E0E0&quot;)+
+  geom_point(shape=20,aes(colour=year,fill=year),alpha=0.6,size=3) +
+  scale_y_discrete(expand=c(0.002, 1)) +
+  #scale_x_continuous(limits=c(0,250),labels=scales::comma) +
+  scale_fill_gradient(guide_legend(title=&quot;Year&quot;),breaks=year.scale,low=&quot;#F9FA00&quot;,high=&quot;#8C00E6&quot;) + #assigns colours to fill in aes
+  scale_colour_gradient(guide_legend(title=&quot;Year&quot;),breaks=year.scale,low=&quot;#F9FA00&quot;,high=&quot;#8C00E6&quot;) + #assigns colours to colour in aes
+  dark_t
+
+#INCIDENCE per 100k
+iAFR &lt;- ggplot(AFR_whoregion,aes(y=fct_rev(country),x= e_inc_100k)) + # Mortality exclude HIV (100k)
+  labs(title=&quot;WHO | Tuberculosis Data&quot;,
+       subtitle=&quot;Africa Region&quot;,x=&quot;Estimated Incidence (per 100,000)&quot;,y=&quot;&quot;,colour=&quot;#E0E0E0&quot;)+
+  geom_point(shape=20,aes(colour=year,fill=year),alpha=0.6,size=3) +
+  scale_y_discrete(expand=c(0.002, 1)) +
+  scale_x_continuous(limits=c(0,1500),labels=scales::comma) +
+  scale_fill_gradient(guide_legend(title=&quot;Year&quot;),breaks=year.scale,low=&quot;#F9FA00&quot;,high=&quot;#8C00E6&quot;) + #assigns colours to fill in aes
+  scale_colour_gradient(guide_legend(title=&quot;Year&quot;),breaks=year.scale,low=&quot;#F9FA00&quot;,high=&quot;#8C00E6&quot;) + #assigns colours to colour in aes
+  dark_t</code></pre>
+<p>Now the plots in the order of estimated prevalence, incidence and mortality…</p>
+<div class="figure">
+<img src="/post/who-tb-data-ggplot2/afr_prev_tb1.png" />
+
+</div>
+<div class="figure">
+<img src="/post/who-tb-data-ggplot2/afr_mort_tb_exc_hiv1.png" />
+
+</div>
+<div class="figure">
+<img src="/post/who-tb-data-ggplot2/afr_prev_tb1.png" />
+
+</div>
+<p>In the plots, the color yellow refers to a year closer to 1990 where purple is more recent towards 2014. Based on this we can see the relative changes over time on the estimated TB prevalence, incidence and mortality. Let’s focus on the prevalence and incidence plots – we can see most of the countries have lower estimated TB prevalences over time. The most drastic decreases can be seen in Central African Republic and Niger. We can also see that Lesotho, South Africa and Swaziland have increased estimated TB prevalence during the 1990-2014 time period. Namibia is an interesting one because it seems that the estimated TB prevalence increased then decreased roughly half way. To accurately visualize this trend in Namibia, we would need a choose a different method to better visualize this (a simple line plot).</p>
+<p><strong>Remember</strong> these plots are just a simple qualitative way to compare trends but doesn’t capture the full picture. I’ve learned that your method of visualizing data depends on which narrative of the data you want to highlight. These graphics could be used to see which countries have had the largest changes over time or as an example, identify countries who have improved (or failed) their national TB control, using estimated TB incidence as a proxy. Are TB control or prevention systems working in these countries? Based on allocated resources or programs, are the changes in line with the goals to reduce the <a href="http://www.who.int/tb/strategy/en/">global burden of TB</a>.</p>
+<p>You can tinker with the code to select which countries or regions you want to compare. I only displayed the plots for the WHO Africa Region but the other regions also looked interesting. You can adapt this code for the other WHO regions to see what the trends look like.</p>
+</div>
+<div id="closing-thoughts" class="section level2">
+<h2>Closing Thoughts</h2>
+<p>I hope this post was informative and you learned something about TB around the world. Despite this disease being preventable and curable, it remains a real threat for many people around the world. There are groups fighting TB around the world, just one close to Boston is the <strong>endTB</strong> partnership. Check out their <a href="http://endtb.org/">website</a> and see the groups (PIH, MSF) involved in the work of combating MDR-TB.</p>
+<p>As always I’m open to comments and suggestions on improving my code and graphics. If anyone has questions related to the code – send me a message, I’ll be more than happy to help. I’ve learned so much from online resources and communities like StackOverflow and would always want to help those new to using R.</p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/who-tb-data-ggplot2/&amp;text=WHO%20Tuberculosis%20Data%20&amp;amp;%20ggplot2" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/who-tb-data-ggplot2/&amp;t=WHO%20Tuberculosis%20Data%20&amp;amp;%20ggplot2" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=WHO%20Tuberculosis%20Data%20&amp;amp;%20ggplot2&amp;body=/post/who-tb-data-ggplot2/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/who-tb-data-ggplot2/&amp;title=WHO%20Tuberculosis%20Data%20&amp;amp;%20ggplot2" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=WHO%20Tuberculosis%20Data%20&amp;amp;%20ggplot2%20/post/who-tb-data-ggplot2/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/who-tb-data-ggplot2/&amp;title=WHO%20Tuberculosis%20Data%20&amp;amp;%20ggplot2" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hue7de8e7c44bf6b76bf08753b36f8bfaf_993967_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Eugene Joh</a></h5>
+      <h6 class="card-subtitle">Epidemiologist</h6>
+      <p class="card-text">☕ + 📊</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0001-9348-630X" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/eugejoh/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<div class="article-widget">
+  
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/post/ed-visits-regex-treemaps/" rel="next">Regular Expression &amp; Treemaps to Visualize Emergency Department Visits</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/unhcr-viz/" rel="prev">UNHCR Refugee Data Visualized</a>
+  </div>
+  
+</div>
+
+</div>
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/markdown.min.js"></script>
+        
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    © Eugene Joh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

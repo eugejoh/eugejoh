@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Eugene Joh">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="I had the opportunity to attend the Open Data Science Conference (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.
+One of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/ed-visits-regex-treemaps/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#B8CED6">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono%7CLato:400%7COpen+Sans&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130364870-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-130364870-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/post/ed-visits-regex-treemaps/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@eugejoh">
+  <meta property="twitter:creator" content="@eugejoh">
+  
+  <meta property="og:site_name" content="Eugene J">
+  <meta property="og:url" content="/post/ed-visits-regex-treemaps/">
+  <meta property="og:title" content="Regular Expression &amp; Treemaps to Visualize Emergency Department Visits | Eugene J">
+  <meta property="og:description" content="I had the opportunity to attend the Open Data Science Conference (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.
+One of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis."><meta property="og:image" content="/post/ed-visits-regex-treemaps/featured.png">
+  <meta property="twitter:image" content="/post/ed-visits-regex-treemaps/featured.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2017-05-25T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2017-05-25T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/ed-visits-regex-treemaps/"
+  },
+  "headline": "Regular Expression \u0026 Treemaps to Visualize Emergency Department Visits",
+  
+  "image": [
+    "/post/ed-visits-regex-treemaps/featured.png"
+  ],
+  
+  "datePublished": "2017-05-25T00:00:00Z",
+  "dateModified": "2017-05-25T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Eugene Joh"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eugene J",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "I had the opportunity to attend the Open Data Science Conference (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.\nOne of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#B8CED6",
+          "text": "#fff"
+        },
+        "button": {
+          "background": "#fff",
+          "text": "#B8CED6"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "/privacy/"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>Regular Expression &amp; Treemaps to Visualize Emergency Department Visits | Eugene J</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>About</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Regular Expression &amp; Treemaps to Visualize Emergency Department Visits</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    May 25, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    15 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/categories/r/">R</a>, <a href="/categories/public-health/">Public Health</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<p>I had the opportunity to attend the <a href="https://www.odsc.com/boston">Open Data Science Conference</a> (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.</p>
+<p>One of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis. This gave me the thought of applying some text analytics to visualize some data I was working on last summer. In this post I’m going to walk through how I used regular expression to label classification codes in a large dataset (<a href="https://www.cdc.gov/nchs/ahcd/about_ahcd.htm">NHAMCS</a>) representing emergency department visits in the United States and eventually visualize the data.</p>
+<div id="the-nhamcs-and-icd-9-codes" class="section level2">
+<h2>The NHAMCS and ICD-9 Codes</h2>
+<p>Without going into too much detail, the <strong>National Health Ambulatory Medical Care Survey</strong> (NHAMCS) is large sample survey used to provide an estimate of visits to outpatient and emergency departments in general/short-stay hospital at a national scale for the United States. Those who are well versed in complex probability-sample survey designs (or interested in it), you can read about how it’s set up <a href="https://www.cdc.gov/nchs/ahcd/ahcd_scope.htm">here</a>. For this post I only using the emergency department data, not outpatient. The main thing to keep in mind moving forward is that the survey’s basic unit of measurement are visits or encounters made in the United States to emergency departments.</p>
+<p>Diagnostic information on each visit is collected and coded in the NHAMCS by using the <a href="https://en.wikipedia.org/wiki/International_Statistical_Classification_of_Diseases_and_Related_Health_Problems">International Classification of Diseases</a> (ICD) codes maintained by the World Health Organization. Specifically the NHAMCS public data files (1992-2014) use the <a href="https://www.cdc.gov/nchs/icd/icd9cm.htm">ICD, 9th revision</a>, clinical modification (ICD-9-CM). The 10th revision being currently used throughout the world since 2015 and the 11th revision is in-process, most likely it will be disseminated in 2018. You can check out this <a href="https://jackwasey.github.io/icd/">package</a> I recently came across that validates and searches co-morbidities of ICD-9 and ICD-10 codes in R.</p>
+</div>
+<div id="the-data-game-plan" class="section level2">
+<h2>The Data Game Plan</h2>
+<p>In this post, the code is only for the 2005 emergency department (ED) NHAMCS dataset. If you interested in getting the original data you can go to <a href="https://www.cdc.gov/nchs/ahcd/ahcd_questionnaires.htm#public_use">this page</a>. There is extensive documentation on the NHAMCS website that helps you download the data for use in SAS, Stata and SPSS. From my current knowledge (hours searching the vast interweb) there is no method in R to download these files. If someone wants to take the challenge of developing a method of pulling down the data using R, go for it! For this post, the data I’m using were Stata files and I used an R package to read-in those files. I’ve included subsetted data for ED NHAMCS from 2005 to 2009 in my <a href="https://github.com/eugejoh/ICD-9_DV">GitHub repository</a> if anyone is interested in using those files with my code.</p>
+<p>To achieve our goal of visualizing diagnoses in ED visits we need to obtain, clean, and then appropriately setup our data. First we’re going to parse the text in official ICD-9-CM documentation using regular expression to create our own ICD dictionary/lookup table. Next, we’ll take the 2005 ED NHAMCS data, apply the survey design to get the correct estimates per ED visit. Then we’ll use our ICD dictionary to define each code, set it all up using the <code>data.table</code> <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html">package</a> to create a <a href="https://en.wikipedia.org/wiki/Treemapping">Treemap</a> visualization. <strong>I’ll be explaining a fair amount on data cleaning and regular expression, if you want to see the treemap you can scroll down to the end of the post.</strong></p>
+</div>
+<div id="using-regex-on-icd-9-codes" class="section level2">
+<h2>Using Regex on ICD-9 Codes</h2>
+<p>Regular expression or regex is not unique just to R but is used across other types of programming languages (Java, Python, Perl). Simply put, regex is used to extract patterns of characters in a string. There is a good tutorial video <a href="https://www.youtube.com/watch?v=q8SzNKib5-4">here</a> on regex and another video <a href="https://www.youtube.com/watch?v=NvHjYOilOf8">here</a> on using regex in R. Disclaimer: I am not an expert on regex! I am still learning and this post is based on my current knowledge I’ve gathered so far. A good and helpful source I’ve been using is <a href="http://www.rexegg.com/">Rexegg</a>. Regardless, let’s march forward towards our goal!</p>
+<p>I’m going to take the 3-digit grouping ICD-9-CM documentation from the CDC’s Health Statistics [website]<a href="ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Publications/ICD9-CM/2010" class="uri">ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Publications/ICD9-CM/2010</a>), where I downloaded the <code>DINDEX11.zip</code> file. Because of the annoying nature of the rich-text files (RTF), I just copied the entire document into a basic UTF-8 text file called <code>Dc_3d10.txt</code>. My entire code is in my GitHub, but I’ll be referring to particular sections in this post. So moving forward, I’ll read this into R using the <code>readLines</code> function and this output…</p>
+<pre class="r"><code>icd9.3 &lt;- readLines(&quot;Dc_3d10.txt&quot;) &gt; head(icd9.3,15)
+#  [1] &quot;Appendix E\u2028List of Three-Digit Categories&quot;
+#  [2] &quot;1.\tINFECTIOUS AND PARASITIC DISEASES&quot;
+#  [3] &quot;Intestinal infectious diseases (001-009)&quot;
+#  [4] &quot;001\tCholera&quot;
+#  [5] &quot;002\tTyphoid and paratyphoid fevers&quot;
+#  [6] &quot;003\tOther salmonella infections&quot;
+#  [7] &quot;004\tShigellosis&quot;
+#  [8] &quot;005\tOther food poisoning (bacterial)&quot;
+#  [9] &quot;006\tAmebiasis&quot;
+# [10] &quot;007\tOther protozoal intestinal diseases&quot;
+# [11] &quot;008\tIntestinal infections due to other organisms&quot;
+# [12] &quot;009\tIll-defined intestinal infections&quot;
+# [13] &quot;Tuberculosis (010-018)&quot;
+# [14] &quot;010\tPrimary tuberculous infection&quot;
+# [15] &quot;011\tPulmonary tuberculosis&quot;</code></pre>
+<p>It looks like there is a header/title at [1], numeric grouping at [2] “1.AND PARASITIC DISEASES”, subgrouping by ICD-9 code ranges, at [3] “Intestinal infectious diseases (001-009)” and then 3-digit ICD-9 codes followed by a specific diagnosis, at [10] “007protozoal intestinal diseases”. At the end we want to produce three separate data frames that we’ll categorize as:</p>
+<ol style="list-style-type: decimal">
+<li>Groups: the title which contains the general diagnosis grouping<br />
+</li>
+<li>Subgroups: the range of ICD-9 codes that contain a certain diagnosis subgroup<br />
+</li>
+<li>Classification: the specific 3-digit ICD-9 code that corresponds with a diagnosis</li>
+</ol>
+<p>First we’ll use a simple operation to remove the first line:</p>
+<pre class="r"><code>icd9.3 &lt;- icd9.3[-1]</code></pre>
+<p>Next we’ll use regex to extract the Groups using this…</p>
+<pre class="r"><code>icd9.3[grep(&quot;^[0-9]+\\.&quot;,icd9.3)]</code></pre>
+<p>The <code>grep()</code> function is used to extract patterns based on regex. To explain the regex, I am selecting lines that start with a digit of any length which is immediately followed by a period. The carat <code>^</code> initiates the pattern matching from the start of the string (going left to right). The <code>[0-9]</code> represents any digit from 0 through 9 and the plus sign <code>+</code> denotes at least one repeat of any digit. The two backslashes <code>\\</code> is required because periods in regex are special meta-characters that represent any character (number, letter, symbol). To summarize, this identifies strings that start with <code>1.</code>, <code>2.</code>, <code>3.</code>, …, <code>17.</code>, and beyond.</p>
+<p>Next I use the <code>gsub()</code> function, which replaces or substitutes based on regex to replace all the <code>\t</code> in the group names and replace it with two underscore <code>__</code> which we’ll use later as an identifier to split the string in half to make the data frame (if this isn’t clear right now, hopefully it will be when we do the splitting).</p>
+<pre class="r"><code>icd9.3g &lt;- gsub(&quot;\\.\t&quot;,&quot;__&quot;,icd9.3g) &gt; icd9.3g[1:3]
+# [1] &quot;1__INFECTIOUS AND PARASITIC DISEASES&quot;
+# [2] &quot;2__NEOPLASMS&quot;
+# [3] &quot;3__ENDOCRINE, NUTRITIONAL AND METABOLIC DISEASES, AND IMMUNITY DISORDERS&quot;</code></pre>
+<p>This regex removes all <code>\t</code> specifically when it follows a period. Here we use the <code>\\</code> again to identify a period.</p>
+<p>Now we’ll split the string into separate columns within a data frame using the <code>str_split_fixed</code> function in the <code>stringr</code> <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html">package</a>. I set <code>stringsAsFactors = FALSE</code> so that we maintain the data type of character with the strings. You can read about how this code has caused headaches for many users <a href="https://www.r-bloggers.com/one-solution-to-the-stringsasfactors-problem-or-hell-yeah-there-is-hellno/">here</a>. Here I assign <code>Group.n</code> for the number</p>
+<pre class="r"><code>diag.g &lt;- as.data.frame(stringr::str_split_fixed(icd9.3g,&quot;__&quot;,2),stringsAsFactors = F)
+names(diag.g) &lt;- c(&quot;Group.n&quot;,&quot;Group&quot;)
+diag.g &lt;- diag.g[c(&quot;Group&quot;,&quot;Group.n&quot;)] #swap order of columns &gt; head(diag.g)
+#                                                                   Group Group.n
+# 1                                     INFECTIOUS AND PARASITIC DISEASES     1
+# 2                                                             NEOPLASMS     2
+# 3 ENDOCRINE, NUTRITIONAL AND METABOLIC DISEASES, AND IMMUNITY DISORDERS     3
+# 4                            DISEASES OF BLOOD AND BLOOD-FORMING ORGANS     4
+# 5                                                      MENTAL DISORDERS     5
+# 6                       DISEASES OF THE NERVOUS SYSTEM AND SENSE ORGANS     6</code></pre>
+<p>Now we have a two-column data frame that contains the group number and name of that group so we can refer to for the future. However, later on (I realized when I got there) I needed to create additional columns to account for the range of 3-digit values that correspond to each Group. To do this I used the <code>grep()</code> function to first get the names of each Group and the index of the Group titles in the text file by changing the value argument in <code>grep()</code>.</p>
+<pre class="r"><code>groupn &lt;- grep(&quot;\\.\t&quot;,icd9.3,value=T) #names
+groupi &lt;- grep(&quot;\\.\t&quot;,icd9.3,value=F) #index</code></pre>
+<p>Afterwards I find the lower and upper limit of each Group range by using the index and simple vector arithmetic in combination of <code>gsub()</code> to extract only numbers. For the upper limit and added the maximum value of 999 (only 3-digits remember!) so that the lengths match, since I didn’t extract it from the code above. Then create the final dictionary for the Groups.</p>
+<pre class="r"><code>low.g &lt;- gsub(&quot;[^0-9]&quot;,&quot;&quot;,icd9.3[groupi+2]) #lower limit of range
+ 
+up.g &lt;- c(gsub(&quot;[^0-9]&quot;,&quot;&quot;,icd9.3[groupi-1]),&quot;999&quot;) #upper limit of range
+ 
+diag.g &lt;-data.frame(diag.g,low.g,up.g, stringsAsFactors = F)
+names(diag.g) &lt;- c(&quot;Group&quot;,&quot;Group.n&quot;,&quot;Start&quot;,&quot;End&quot;)</code></pre>
+<p>We move on to the Subgroups which we will extract based on the fact that all the corresponding lines have a parentheses contain a pattern of… 3 digits, a dash then another 3 digits. Ie. <em>“Fracture of skull (800-804)”</em> The appropriate regex is as follows…</p>
+<pre class="r"><code>icd9.3sg &lt;- icd9.3[grep(&quot;\\([0-9]{3}-[0-9]{3}\\)&quot;,icd9.3)]</code></pre>
+<p>The double backslashes are used for parentheses (just like for periods) and I specify the pattern of any 3 digits using the <code>{}</code> curly brackets. Next we remove any lingering <code>\t</code> that might exist and replace with a space <code>&quot; &quot;</code>. After that we’ll insert the <code>__</code> split identifier we used above. This is specified by using regex to match the pattern of 3-digit parentheses that follows directly after a space, which is denoted as <code>\\s</code>.</p>
+<pre class="r"><code>icd9.3sg &lt;- gsub(&quot;\t&quot;,&quot; &quot;,icd9.3sg)
+icd9.3sg &lt;- gsub(&quot;\\s\\(([0-9]{3}-[0-9]{3})\\)&quot;,&quot;__\\1&quot;,icd9.3sg)</code></pre>
+<p>Like we did for the Group above, we’ll split the based on the <code>__</code> split identifier.</p>
+<pre class="r"><code>diag.sg &lt;- as.data.frame(
+  stringr::str_split_fixed(icd9.3sg,&quot;__&quot;,2),
+  stringsAsFactors = F)</code></pre>
+<p>After that, we even want to split the ranges by the dash <code>-</code> so we can get the ‘start’ and ‘end’ of the ICD-9 code range for each Subgroup. Then we’ll assign the names of the columns in the newly created data frame.</p>
+<pre class="r"><code>diag.sg &lt;- as.data.frame(
+  cbind(
+    diag.sg,
+    stringr::str_split_fixed(diag.sg[,2],&quot;-&quot;,2),
+  stringsAsFactors = F))
+names(diag.sg) &lt;- c(&quot;Subgroup&quot;,&quot;Range&quot;,&quot;Start&quot;,&quot;End&quot;) &gt; head(diag.sg,4)
+                        # Subgroup &amp;nbsp; Range Start End
+# 1 Intestinal infectious diseases 001-009   001 009
+# 2                   Tuberculosis 010-018   010 018
+# 3    Zoonotic bacterial diseases 020-027   020 027
+# 4       Other bacterial diseases 030-041   030 041</code></pre>
+<p>Now we’ll extract the Classifications. We want to generate a regex that captures a pattern of:</p>
+<ol style="list-style-type: decimal">
+<li>A 3-digit sequence followed by a <code>\t</code></li>
+</ol>
+<p>We can use the “|” or the OR operator in regex to capture these 3 patterns. Using similar regex from the Groups and Subgroups we generate this…</p>
+<pre class="r"><code>icd9.3c &lt;- icd9.3[grep(&quot;(^[0-9]{3}\t)|(^V[0-9]{2}\t)|(E[0-9]{3}\t)&quot;,icd9.3)]</code></pre>
+<p>And then we can do the same method as the Group to remove any lingering “” and split the string to get an output of a data frame. Also</p>
+<pre class="r"><code>icd9.3c &lt;- gsub(&quot;\t&quot;,&quot;__&quot;,icd9.3c)
+diag.c &lt;- as.data.frame(stringr::str_split_fixed(icd9.3c,&quot;__&quot;,2),stringsAsFactors = F)
+names(diag.c) &lt;- c(&quot;Code&quot;,&quot;Classification&quot;)
+diag.c &lt;- diag.c[c(&quot;Classification&quot;,&quot;Code&quot;)] &gt; head(diag.c)
+#                     Classification Code
+# 1                          Cholera  001
+# 2   Typhoid and paratyphoid fevers  002
+# 3      Other salmonella infections  003
+# 4                      Shigellosis  004
+# 5 Other food poisoning (bacterial)  005
+# 6                        Amebiasis  006</code></pre>
+<p>We started with some messy text but now after all that regex we have successfully extracted 3 separate data frames for the ICD-9 Group, Subgroup and Classification that can used as a reference moving forward!</p>
+</div>
+<div id="applying-survey-design" class="section level2">
+<h2>Applying Survey Design</h2>
+<p>Since this post is focusing on regex, I will not go into detail about applying survey design to NHAMCS data files using R. In short, I used the <code>survey</code> <a href="http://r-survey.r-forge.r-project.org/survey/">package</a> to apply the appropriate weighting based on the <a href="https://www.cdc.gov/nchs/ahcd/ahcd_scope.htm#nhamcs_scope">4-stage probability sample survey</a> implemented by the NHAMCS. I’ve annotated my code for those who are interested about it but for the sake of this post I will not talk about it any further. All the details are based in the documentation files, that you can find by year in this <a href="ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHAMCS">link</a>.</p>
+<p>Why do we have to apply the weighting? By doing this, we can actually obtain accurate national estimates of ED visits in the United States. If we started running descriptive statistics on our data without this step, we’ll only be analyzing unweighted counts, which might not be an accurate representation of the sampling population. For those interested can read this post on about weighted surveys in R <a href="https://www.r-bloggers.com/social-science-goes-r-weighted-survey-data/">here</a>.</p>
+</div>
+<div id="matching-codes-to-descriptions" class="section level2">
+<h2>Matching Codes to Descriptions</h2>
+<p>For the sake of this analysis we’ll only look at the first column of ICD-9 codes in the 2005 ED NHAMCS dataset, denoted as <code>DIAG1</code>.</p>
+<pre class="r"><code># &gt; ed05$DIAG1[1:8]
+# [1] &quot;8472-&quot; &quot;78099&quot; &quot;V997-&quot; &quot;V997-&quot; &quot;7931-&quot; &quot;8489-&quot; &quot;920--&quot; &quot;8920-&quot;</code></pre>
+<p>At first glance we notice two main things…</p>
+<p>First, that each set of strings are five characters long. This is because the ICD-9 code system allows for more specificity with diagnoses beyond 3-digits. Take a quick look at the ICD-9 <a href="https://en.wikipedia.org/wiki/List_of_ICD-9_codes_390%E2%80%93459:_diseases_of_the_circulatory_system#Hypertensive_disease_.28401.E2.80.93405.29">Wiki page</a> for hypertensive disease. You can see that secondary hypertension can be further classified to malignant vs. benign and again whether it is renovascular or not. These classifications use up 5 digits (if you ignore the periods).</p>
+<p>Secondly, that there are dashes when there are less than five characters. If we were only working with uniform patterns the <code>match</code> function would have been a simple solution (link to a short explanatory <a href="https://www.r-bloggers.com/match-function-in-r/">post</a>), but this is not the case. It looks like we’ll have to use regex again to look at the first 3 characters in each element of the <code>DIAG1</code> vector.</p>
+<p>I created a loop to match the 3-digit Classification code to the <code>DIAG1</code> column. I created a new column and filled it with the appropriate code using regex matching. The last two lines are included to help us finalize our dictionary using <code>data.table</code> package.</p>
+<pre class="r"><code>ed05.df$Code &lt;- &quot;-&quot;
+for (k in paste0(&quot;^&quot;,diag.c[,2])){ #codes
+  gindex &lt;- grep(k,ed05.df[,1]) #matches code with DIAG1 column
+  ed05.df$Code[gindex] &lt;- diag.c$Code[grep(k,diag.c[,2])]
+  ed05.df$Code.n &lt;- as.numeric(ed05.df$Code) #some values are coered to NA
+  ed05.df$Code.n[which(is.na(ed05.df$Code.n))] &lt;- 1000 #treat all NA&#39;s wih value 1000
+}</code></pre>
+<p>Then we use the <code>join()</code> function from the <code>plyr</code> package to match the Classifications with the codes in our new data frame.</p>
+<pre class="r"><code>ed05.df &lt;- join(ed05.df,diag.c,by=&quot;Code&quot;)</code></pre>
+</div>
+<div id="overlap-joins-using-data.table" class="section level2">
+<h2>Overlap Joins using <code>data.table</code></h2>
+<p>I’m not going to get into much detail here because this was something I had to learn when I discovered that joins and merges based on character types (ie. “001” or “057”) were tedious and very annoying. Thankfully this StackOverflow <a href="https://stackoverflow.com/questions/24480031/roll-join-with-start-end-window">post</a> was extremely useful to understand how the <code>foverlaps()</code> <a href="https://www.rdocumentation.org/packages/data.table/versions/1.10.4/topics/foverlaps">function</a> works. In short to address this issue, I created numeric equivalents of the ICD-9 codes (ie. “019” became 19) because foverlaps() only works with numeric and integer values. After that I assigned the appropriate categories of Group and Subgroup to the Classification codes, cleaned it up a bit to remove unnecessary columns, and convert it back into a <code>data.frame</code> class. My code is annotated if you would want to look at it and I would refer to the post I mentioned above.</p>
+</div>
+<div id="visualizing-the-data" class="section level2">
+<h2>Visualizing the Data</h2>
+<p>Since we have somewhat hierarchical data we can visualize this using a treemap. Now we make sure the <code>treemap</code> <a href="https://cran.r-project.org/web/packages/treemap/index.html">package</a> is loaded and then use the lovely <a href="http://tools.medialab.sciences-po.fr/iwanthue/">IWantHue</a> website to get a nice color palette. I’ve annotated the code to explain what each argument does and after running this we get…</p>
+<pre class="r"><code>tree.n &lt;- treemap(df.ed05,
+  index = c(&quot;Group&quot;, &quot;Subgroup&quot;, &quot;Classification&quot;), #grouping for each
+  vSize = &quot;Freq&quot;, #area of rectangles by NHAMCS estimates
+  type = &quot;index&quot;, #see documentation
+  title = &quot;NHAMCS Emergency Department Visits in 2005&quot;,
+  overlap.labels = 0.5, ##see documentation
+  palette = pal1, #custom palette from IWantHue
+  border.col = c(&quot;#101010&quot;, &quot;#292929&quot;, &quot;#333333&quot;), #set border colors
+  fontsize.title = 40, #set font size
+  fontsize.labels = c(30, 24, 16), #set size for each grouping
+  lowerbound.cex.labels = .4, ##see documentation
+  fontcolor.labels = c(&quot;#000000&quot;, &quot;#292929&quot;, &quot;#333333&quot;), #set color
+  fontface.labels = c(2, 4, 1), # bold, bold-italic, normal
+  fontfamily.labels = c(&quot;sans&quot;), #sans font
+  inflate.labels = F, #see documentation
+  align.labels = c(&quot;center&quot;, &quot;center&quot;), #align all labels in center
+  bg.labels = 230 # 0 and 255 that determines the transparency
+)</code></pre>
+<div class="figure">
+<img src="/post/ed-visits-regex-treemaps/icd-9_tree_2005.png" style="width:95.0%" />
+
+</div>
+<p>From this we see that most ED visits had a diagnosis related to injury, poisoning, symptoms and respiratory system issues. This makes sense because usually you go to the hospital when you have an injury or some acute medical emergency. Below I’ve also created the treemaps for the other years leading up to 2009 with the colors corresponding with each group.</p>
+<p><img src="/post/ed-visits-regex-treemaps/icd-9_tree_2005.png" style="width:20.0%" /> <img src="/post/ed-visits-regex-treemaps/icd-9_tree_2006.png" style="width:20.0%" /> <img src="/post/ed-visits-regex-treemaps/icd-9_tree_2007.png" style="width:20.0%" /> <img src="/post/ed-visits-regex-treemaps/icd-9_tree_2008.png" style="width:20.0%" /> <img src="/post/ed-visits-regex-treemaps/icd-9_tree_2009.png" style="width:20.0%" /></p>
+<p>Some comments on the data and visualization:</p>
+<ul>
+<li>It does not include ICD-9 codes for Supplementary Classifications (codes that start with V’s and E’s). I ignored these due to tedious nature of matching the Groups with characters and maybe in the future I can write something that includes them to the visualization.<br />
+</li>
+<li>This data is for all visits regardless of demographic information. I suspect the treemaps between age, gender, race, and region would look very different.<br />
+</li>
+<li>These are national estimates and the true value is contained within a confidence interval dependent on the survey design. Other visualizations may be appropriate to show the probability ranges of this data.<br />
+</li>
+<li>There were missing or blank ICD-9 codes (the coders at the hospitals either didn’t fill them or there were no diagnoses?) accounted for 2.78% of all estimates.<br />
+</li>
+<li>Originally I wanted to create a radial or sunburst tree of the data, but I had difficulty setting up the data in an appropriate form (ie. classes Node to phylo). I would appreciate any knowledge on how to get around this and maybe make that my next mini-project.<br />
+</li>
+<li>This data is from ~10 years ago, it would be interesting to see what the most recent NHAMCS data says about emergency department visits.</li>
+</ul>
+</div>
+<div id="final-thoughts" class="section level2">
+<h2>Final Thoughts</h2>
+<p>From ODSC a speaker said that for data visualization, 80% of your work is cleaning setting up the data for the visualization and 20% is actually making the visualization… very true for this case. I did not expect the regex and data.table to take as long as it did. Regardless, I got the chance to learn more about the data.table package, practice my regular expression knowledge, and explore different tree visualizations! Any feedback, comments, and questions on the code or visualization are always welcome!</p>
+<div class="figure">
+<img src="/post/ed-visits-regex-treemaps/odsc.jpg" style="width:20.0%" />
+
+</div>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/ed-visits-regex-treemaps/&amp;text=Regular%20Expression%20&amp;amp;%20Treemaps%20to%20Visualize%20Emergency%20Department%20Visits" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/ed-visits-regex-treemaps/&amp;t=Regular%20Expression%20&amp;amp;%20Treemaps%20to%20Visualize%20Emergency%20Department%20Visits" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Regular%20Expression%20&amp;amp;%20Treemaps%20to%20Visualize%20Emergency%20Department%20Visits&amp;body=/post/ed-visits-regex-treemaps/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/ed-visits-regex-treemaps/&amp;title=Regular%20Expression%20&amp;amp;%20Treemaps%20to%20Visualize%20Emergency%20Department%20Visits" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Regular%20Expression%20&amp;amp;%20Treemaps%20to%20Visualize%20Emergency%20Department%20Visits%20/post/ed-visits-regex-treemaps/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/ed-visits-regex-treemaps/&amp;title=Regular%20Expression%20&amp;amp;%20Treemaps%20to%20Visualize%20Emergency%20Department%20Visits" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hue7de8e7c44bf6b76bf08753b36f8bfaf_993967_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Eugene Joh</a></h5>
+      <h6 class="card-subtitle">Epidemiologist</h6>
+      <p class="card-text">☕ + 📊</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0001-9348-630X" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/eugejoh/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<div class="article-widget">
+  
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/who-tb-data-ggplot2/" rel="prev">WHO Tuberculosis Data &amp; ggplot2</a>
+  </div>
+  
+</div>
+
+</div>
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/markdown.min.js"></script>
+        
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    © Eugene Joh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

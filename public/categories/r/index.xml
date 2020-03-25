@@ -5,7 +5,7 @@
     <link>/categories/r/</link>
       <atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     <description>R</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Wed, 04 Jan 2017 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Thu, 25 May 2017 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/avatar.jpg</url>
       <title>R</title>
@@ -13,10 +13,822 @@
     </image>
     
     <item>
+      <title>Regular Expression &amp; Treemaps to Visualize Emergency Department Visits</title>
+      <link>/post/ed-visits-regex-treemaps/</link>
+      <pubDate>Thu, 25 May 2017 00:00:00 +0000</pubDate>
+      <guid>/post/ed-visits-regex-treemaps/</guid>
+      <description>
+
+
+&lt;p&gt;I had the opportunity to attend the &lt;a href=&#34;https://www.odsc.com/boston&#34;&gt;Open Data Science Conference&lt;/a&gt; (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.&lt;/p&gt;
+&lt;p&gt;One of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis. This gave me the thought of applying some text analytics to visualize some data I was working on last summer. In this post I’m going to walk through how I used regular expression to label classification codes in a large dataset (&lt;a href=&#34;https://www.cdc.gov/nchs/ahcd/about_ahcd.htm&#34;&gt;NHAMCS&lt;/a&gt;) representing emergency department visits in the United States and eventually visualize the data.&lt;/p&gt;
+&lt;div id=&#34;the-nhamcs-and-icd-9-codes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The NHAMCS and ICD-9 Codes&lt;/h2&gt;
+&lt;p&gt;Without going into too much detail, the &lt;strong&gt;National Health Ambulatory Medical Care Survey&lt;/strong&gt; (NHAMCS) is large sample survey used to provide an estimate of visits to outpatient and emergency departments in general/short-stay hospital at a national scale for the United States. Those who are well versed in complex probability-sample survey designs (or interested in it), you can read about how it’s set up &lt;a href=&#34;https://www.cdc.gov/nchs/ahcd/ahcd_scope.htm&#34;&gt;here&lt;/a&gt;. For this post I only using the emergency department data, not outpatient. The main thing to keep in mind moving forward is that the survey’s basic unit of measurement are visits or encounters made in the United States to emergency departments.&lt;/p&gt;
+&lt;p&gt;Diagnostic information on each visit is collected and coded in the NHAMCS by using the &lt;a href=&#34;https://en.wikipedia.org/wiki/International_Statistical_Classification_of_Diseases_and_Related_Health_Problems&#34;&gt;International Classification of Diseases&lt;/a&gt; (ICD) codes maintained by the World Health Organization. Specifically the NHAMCS public data files (1992-2014) use the &lt;a href=&#34;https://www.cdc.gov/nchs/icd/icd9cm.htm&#34;&gt;ICD, 9th revision&lt;/a&gt;, clinical modification (ICD-9-CM). The 10th revision being currently used throughout the world since 2015 and the 11th revision is in-process, most likely it will be disseminated in 2018. You can check out this &lt;a href=&#34;https://jackwasey.github.io/icd/&#34;&gt;package&lt;/a&gt; I recently came across that validates and searches co-morbidities of ICD-9 and ICD-10 codes in R.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-data-game-plan&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The Data Game Plan&lt;/h2&gt;
+&lt;p&gt;In this post, the code is only for the 2005 emergency department (ED) NHAMCS dataset. If you interested in getting the original data you can go to &lt;a href=&#34;https://www.cdc.gov/nchs/ahcd/ahcd_questionnaires.htm#public_use&#34;&gt;this page&lt;/a&gt;. There is extensive documentation on the NHAMCS website that helps you download the data for use in SAS, Stata and SPSS. From my current knowledge (hours searching the vast interweb) there is no method in R to download these files. If someone wants to take the challenge of developing a method of pulling down the data using R, go for it! For this post, the data I’m using were Stata files and I used an R package to read-in those files. I’ve included subsetted data for ED NHAMCS from 2005 to 2009 in my &lt;a href=&#34;https://github.com/eugejoh/ICD-9_DV&#34;&gt;GitHub repository&lt;/a&gt; if anyone is interested in using those files with my code.&lt;/p&gt;
+&lt;p&gt;To achieve our goal of visualizing diagnoses in ED visits we need to obtain, clean, and then appropriately setup our data. First we’re going to parse the text in official ICD-9-CM documentation using regular expression to create our own ICD dictionary/lookup table. Next, we’ll take the 2005 ED NHAMCS data, apply the survey design to get the correct estimates per ED visit. Then we’ll use our ICD dictionary to define each code, set it all up using the &lt;code&gt;data.table&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html&#34;&gt;package&lt;/a&gt; to create a &lt;a href=&#34;https://en.wikipedia.org/wiki/Treemapping&#34;&gt;Treemap&lt;/a&gt; visualization. &lt;strong&gt;I’ll be explaining a fair amount on data cleaning and regular expression, if you want to see the treemap you can scroll down to the end of the post.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;using-regex-on-icd-9-codes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Using Regex on ICD-9 Codes&lt;/h2&gt;
+&lt;p&gt;Regular expression or regex is not unique just to R but is used across other types of programming languages (Java, Python, Perl). Simply put, regex is used to extract patterns of characters in a string. There is a good tutorial video &lt;a href=&#34;https://www.youtube.com/watch?v=q8SzNKib5-4&#34;&gt;here&lt;/a&gt; on regex and another video &lt;a href=&#34;https://www.youtube.com/watch?v=NvHjYOilOf8&#34;&gt;here&lt;/a&gt; on using regex in R. Disclaimer: I am not an expert on regex! I am still learning and this post is based on my current knowledge I’ve gathered so far. A good and helpful source I’ve been using is &lt;a href=&#34;http://www.rexegg.com/&#34;&gt;Rexegg&lt;/a&gt;. Regardless, let’s march forward towards our goal!&lt;/p&gt;
+&lt;p&gt;I’m going to take the 3-digit grouping ICD-9-CM documentation from the CDC’s Health Statistics [website]&lt;a href=&#34;ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Publications/ICD9-CM/2010&#34; class=&#34;uri&#34;&gt;ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Publications/ICD9-CM/2010&lt;/a&gt;), where I downloaded the &lt;code&gt;DINDEX11.zip&lt;/code&gt; file. Because of the annoying nature of the rich-text files (RTF), I just copied the entire document into a basic UTF-8 text file called &lt;code&gt;Dc_3d10.txt&lt;/code&gt;. My entire code is in my GitHub, but I’ll be referring to particular sections in this post. So moving forward, I’ll read this into R using the &lt;code&gt;readLines&lt;/code&gt; function and this output…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3 &amp;lt;- readLines(&amp;quot;Dc_3d10.txt&amp;quot;) &amp;gt; head(icd9.3,15)
+#  [1] &amp;quot;Appendix E\u2028List of Three-Digit Categories&amp;quot;
+#  [2] &amp;quot;1.\tINFECTIOUS AND PARASITIC DISEASES&amp;quot;
+#  [3] &amp;quot;Intestinal infectious diseases (001-009)&amp;quot;
+#  [4] &amp;quot;001\tCholera&amp;quot;
+#  [5] &amp;quot;002\tTyphoid and paratyphoid fevers&amp;quot;
+#  [6] &amp;quot;003\tOther salmonella infections&amp;quot;
+#  [7] &amp;quot;004\tShigellosis&amp;quot;
+#  [8] &amp;quot;005\tOther food poisoning (bacterial)&amp;quot;
+#  [9] &amp;quot;006\tAmebiasis&amp;quot;
+# [10] &amp;quot;007\tOther protozoal intestinal diseases&amp;quot;
+# [11] &amp;quot;008\tIntestinal infections due to other organisms&amp;quot;
+# [12] &amp;quot;009\tIll-defined intestinal infections&amp;quot;
+# [13] &amp;quot;Tuberculosis (010-018)&amp;quot;
+# [14] &amp;quot;010\tPrimary tuberculous infection&amp;quot;
+# [15] &amp;quot;011\tPulmonary tuberculosis&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It looks like there is a header/title at [1], numeric grouping at [2] “1.AND PARASITIC DISEASES”, subgrouping by ICD-9 code ranges, at [3] “Intestinal infectious diseases (001-009)” and then 3-digit ICD-9 codes followed by a specific diagnosis, at [10] “007protozoal intestinal diseases”. At the end we want to produce three separate data frames that we’ll categorize as:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Groups: the title which contains the general diagnosis grouping&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Subgroups: the range of ICD-9 codes that contain a certain diagnosis subgroup&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Classification: the specific 3-digit ICD-9 code that corresponds with a diagnosis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;First we’ll use a simple operation to remove the first line:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3 &amp;lt;- icd9.3[-1]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next we’ll use regex to extract the Groups using this…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3[grep(&amp;quot;^[0-9]+\\.&amp;quot;,icd9.3)]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;grep()&lt;/code&gt; function is used to extract patterns based on regex. To explain the regex, I am selecting lines that start with a digit of any length which is immediately followed by a period. The carat &lt;code&gt;^&lt;/code&gt; initiates the pattern matching from the start of the string (going left to right). The &lt;code&gt;[0-9]&lt;/code&gt; represents any digit from 0 through 9 and the plus sign &lt;code&gt;+&lt;/code&gt; denotes at least one repeat of any digit. The two backslashes &lt;code&gt;\\&lt;/code&gt; is required because periods in regex are special meta-characters that represent any character (number, letter, symbol). To summarize, this identifies strings that start with &lt;code&gt;1.&lt;/code&gt;, &lt;code&gt;2.&lt;/code&gt;, &lt;code&gt;3.&lt;/code&gt;, …, &lt;code&gt;17.&lt;/code&gt;, and beyond.&lt;/p&gt;
+&lt;p&gt;Next I use the &lt;code&gt;gsub()&lt;/code&gt; function, which replaces or substitutes based on regex to replace all the &lt;code&gt;\t&lt;/code&gt; in the group names and replace it with two underscore &lt;code&gt;__&lt;/code&gt; which we’ll use later as an identifier to split the string in half to make the data frame (if this isn’t clear right now, hopefully it will be when we do the splitting).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3g &amp;lt;- gsub(&amp;quot;\\.\t&amp;quot;,&amp;quot;__&amp;quot;,icd9.3g) &amp;gt; icd9.3g[1:3]
+# [1] &amp;quot;1__INFECTIOUS AND PARASITIC DISEASES&amp;quot;
+# [2] &amp;quot;2__NEOPLASMS&amp;quot;
+# [3] &amp;quot;3__ENDOCRINE, NUTRITIONAL AND METABOLIC DISEASES, AND IMMUNITY DISORDERS&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This regex removes all &lt;code&gt;\t&lt;/code&gt; specifically when it follows a period. Here we use the &lt;code&gt;\\&lt;/code&gt; again to identify a period.&lt;/p&gt;
+&lt;p&gt;Now we’ll split the string into separate columns within a data frame using the &lt;code&gt;str_split_fixed&lt;/code&gt; function in the &lt;code&gt;stringr&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html&#34;&gt;package&lt;/a&gt;. I set &lt;code&gt;stringsAsFactors = FALSE&lt;/code&gt; so that we maintain the data type of character with the strings. You can read about how this code has caused headaches for many users &lt;a href=&#34;https://www.r-bloggers.com/one-solution-to-the-stringsasfactors-problem-or-hell-yeah-there-is-hellno/&#34;&gt;here&lt;/a&gt;. Here I assign &lt;code&gt;Group.n&lt;/code&gt; for the number&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;diag.g &amp;lt;- as.data.frame(stringr::str_split_fixed(icd9.3g,&amp;quot;__&amp;quot;,2),stringsAsFactors = F)
+names(diag.g) &amp;lt;- c(&amp;quot;Group.n&amp;quot;,&amp;quot;Group&amp;quot;)
+diag.g &amp;lt;- diag.g[c(&amp;quot;Group&amp;quot;,&amp;quot;Group.n&amp;quot;)] #swap order of columns &amp;gt; head(diag.g)
+#                                                                   Group Group.n
+# 1                                     INFECTIOUS AND PARASITIC DISEASES     1
+# 2                                                             NEOPLASMS     2
+# 3 ENDOCRINE, NUTRITIONAL AND METABOLIC DISEASES, AND IMMUNITY DISORDERS     3
+# 4                            DISEASES OF BLOOD AND BLOOD-FORMING ORGANS     4
+# 5                                                      MENTAL DISORDERS     5
+# 6                       DISEASES OF THE NERVOUS SYSTEM AND SENSE ORGANS     6&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have a two-column data frame that contains the group number and name of that group so we can refer to for the future. However, later on (I realized when I got there) I needed to create additional columns to account for the range of 3-digit values that correspond to each Group. To do this I used the &lt;code&gt;grep()&lt;/code&gt; function to first get the names of each Group and the index of the Group titles in the text file by changing the value argument in &lt;code&gt;grep()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;groupn &amp;lt;- grep(&amp;quot;\\.\t&amp;quot;,icd9.3,value=T) #names
+groupi &amp;lt;- grep(&amp;quot;\\.\t&amp;quot;,icd9.3,value=F) #index&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Afterwards I find the lower and upper limit of each Group range by using the index and simple vector arithmetic in combination of &lt;code&gt;gsub()&lt;/code&gt; to extract only numbers. For the upper limit and added the maximum value of 999 (only 3-digits remember!) so that the lengths match, since I didn’t extract it from the code above. Then create the final dictionary for the Groups.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;low.g &amp;lt;- gsub(&amp;quot;[^0-9]&amp;quot;,&amp;quot;&amp;quot;,icd9.3[groupi+2]) #lower limit of range
+ 
+up.g &amp;lt;- c(gsub(&amp;quot;[^0-9]&amp;quot;,&amp;quot;&amp;quot;,icd9.3[groupi-1]),&amp;quot;999&amp;quot;) #upper limit of range
+ 
+diag.g &amp;lt;-data.frame(diag.g,low.g,up.g, stringsAsFactors = F)
+names(diag.g) &amp;lt;- c(&amp;quot;Group&amp;quot;,&amp;quot;Group.n&amp;quot;,&amp;quot;Start&amp;quot;,&amp;quot;End&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We move on to the Subgroups which we will extract based on the fact that all the corresponding lines have a parentheses contain a pattern of… 3 digits, a dash then another 3 digits. Ie. &lt;em&gt;“Fracture of skull (800-804)”&lt;/em&gt; The appropriate regex is as follows…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3sg &amp;lt;- icd9.3[grep(&amp;quot;\\([0-9]{3}-[0-9]{3}\\)&amp;quot;,icd9.3)]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The double backslashes are used for parentheses (just like for periods) and I specify the pattern of any 3 digits using the &lt;code&gt;{}&lt;/code&gt; curly brackets. Next we remove any lingering &lt;code&gt;\t&lt;/code&gt; that might exist and replace with a space &lt;code&gt;&amp;quot; &amp;quot;&lt;/code&gt;. After that we’ll insert the &lt;code&gt;__&lt;/code&gt; split identifier we used above. This is specified by using regex to match the pattern of 3-digit parentheses that follows directly after a space, which is denoted as &lt;code&gt;\\s&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3sg &amp;lt;- gsub(&amp;quot;\t&amp;quot;,&amp;quot; &amp;quot;,icd9.3sg)
+icd9.3sg &amp;lt;- gsub(&amp;quot;\\s\\(([0-9]{3}-[0-9]{3})\\)&amp;quot;,&amp;quot;__\\1&amp;quot;,icd9.3sg)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Like we did for the Group above, we’ll split the based on the &lt;code&gt;__&lt;/code&gt; split identifier.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;diag.sg &amp;lt;- as.data.frame(
+  stringr::str_split_fixed(icd9.3sg,&amp;quot;__&amp;quot;,2),
+  stringsAsFactors = F)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After that, we even want to split the ranges by the dash &lt;code&gt;-&lt;/code&gt; so we can get the ‘start’ and ‘end’ of the ICD-9 code range for each Subgroup. Then we’ll assign the names of the columns in the newly created data frame.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;diag.sg &amp;lt;- as.data.frame(
+  cbind(
+    diag.sg,
+    stringr::str_split_fixed(diag.sg[,2],&amp;quot;-&amp;quot;,2),
+  stringsAsFactors = F))
+names(diag.sg) &amp;lt;- c(&amp;quot;Subgroup&amp;quot;,&amp;quot;Range&amp;quot;,&amp;quot;Start&amp;quot;,&amp;quot;End&amp;quot;) &amp;gt; head(diag.sg,4)
+                        # Subgroup &amp;amp;nbsp; Range Start End
+# 1 Intestinal infectious diseases 001-009   001 009
+# 2                   Tuberculosis 010-018   010 018
+# 3    Zoonotic bacterial diseases 020-027   020 027
+# 4       Other bacterial diseases 030-041   030 041&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we’ll extract the Classifications. We want to generate a regex that captures a pattern of:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;A 3-digit sequence followed by a &lt;code&gt;\t&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We can use the “|” or the OR operator in regex to capture these 3 patterns. Using similar regex from the Groups and Subgroups we generate this…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3c &amp;lt;- icd9.3[grep(&amp;quot;(^[0-9]{3}\t)|(^V[0-9]{2}\t)|(E[0-9]{3}\t)&amp;quot;,icd9.3)]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then we can do the same method as the Group to remove any lingering “” and split the string to get an output of a data frame. Also&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icd9.3c &amp;lt;- gsub(&amp;quot;\t&amp;quot;,&amp;quot;__&amp;quot;,icd9.3c)
+diag.c &amp;lt;- as.data.frame(stringr::str_split_fixed(icd9.3c,&amp;quot;__&amp;quot;,2),stringsAsFactors = F)
+names(diag.c) &amp;lt;- c(&amp;quot;Code&amp;quot;,&amp;quot;Classification&amp;quot;)
+diag.c &amp;lt;- diag.c[c(&amp;quot;Classification&amp;quot;,&amp;quot;Code&amp;quot;)] &amp;gt; head(diag.c)
+#                     Classification Code
+# 1                          Cholera  001
+# 2   Typhoid and paratyphoid fevers  002
+# 3      Other salmonella infections  003
+# 4                      Shigellosis  004
+# 5 Other food poisoning (bacterial)  005
+# 6                        Amebiasis  006&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We started with some messy text but now after all that regex we have successfully extracted 3 separate data frames for the ICD-9 Group, Subgroup and Classification that can used as a reference moving forward!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;applying-survey-design&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Applying Survey Design&lt;/h2&gt;
+&lt;p&gt;Since this post is focusing on regex, I will not go into detail about applying survey design to NHAMCS data files using R. In short, I used the &lt;code&gt;survey&lt;/code&gt; &lt;a href=&#34;http://r-survey.r-forge.r-project.org/survey/&#34;&gt;package&lt;/a&gt; to apply the appropriate weighting based on the &lt;a href=&#34;https://www.cdc.gov/nchs/ahcd/ahcd_scope.htm#nhamcs_scope&#34;&gt;4-stage probability sample survey&lt;/a&gt; implemented by the NHAMCS. I’ve annotated my code for those who are interested about it but for the sake of this post I will not talk about it any further. All the details are based in the documentation files, that you can find by year in this &lt;a href=&#34;ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHAMCS&#34;&gt;link&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Why do we have to apply the weighting? By doing this, we can actually obtain accurate national estimates of ED visits in the United States. If we started running descriptive statistics on our data without this step, we’ll only be analyzing unweighted counts, which might not be an accurate representation of the sampling population. For those interested can read this post on about weighted surveys in R &lt;a href=&#34;https://www.r-bloggers.com/social-science-goes-r-weighted-survey-data/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;matching-codes-to-descriptions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Matching Codes to Descriptions&lt;/h2&gt;
+&lt;p&gt;For the sake of this analysis we’ll only look at the first column of ICD-9 codes in the 2005 ED NHAMCS dataset, denoted as &lt;code&gt;DIAG1&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# &amp;gt; ed05$DIAG1[1:8]
+# [1] &amp;quot;8472-&amp;quot; &amp;quot;78099&amp;quot; &amp;quot;V997-&amp;quot; &amp;quot;V997-&amp;quot; &amp;quot;7931-&amp;quot; &amp;quot;8489-&amp;quot; &amp;quot;920--&amp;quot; &amp;quot;8920-&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At first glance we notice two main things…&lt;/p&gt;
+&lt;p&gt;First, that each set of strings are five characters long. This is because the ICD-9 code system allows for more specificity with diagnoses beyond 3-digits. Take a quick look at the ICD-9 &lt;a href=&#34;https://en.wikipedia.org/wiki/List_of_ICD-9_codes_390%E2%80%93459:_diseases_of_the_circulatory_system#Hypertensive_disease_.28401.E2.80.93405.29&#34;&gt;Wiki page&lt;/a&gt; for hypertensive disease. You can see that secondary hypertension can be further classified to malignant vs. benign and again whether it is renovascular or not. These classifications use up 5 digits (if you ignore the periods).&lt;/p&gt;
+&lt;p&gt;Secondly, that there are dashes when there are less than five characters. If we were only working with uniform patterns the &lt;code&gt;match&lt;/code&gt; function would have been a simple solution (link to a short explanatory &lt;a href=&#34;https://www.r-bloggers.com/match-function-in-r/&#34;&gt;post&lt;/a&gt;), but this is not the case. It looks like we’ll have to use regex again to look at the first 3 characters in each element of the &lt;code&gt;DIAG1&lt;/code&gt; vector.&lt;/p&gt;
+&lt;p&gt;I created a loop to match the 3-digit Classification code to the &lt;code&gt;DIAG1&lt;/code&gt; column. I created a new column and filled it with the appropriate code using regex matching. The last two lines are included to help us finalize our dictionary using &lt;code&gt;data.table&lt;/code&gt; package.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ed05.df$Code &amp;lt;- &amp;quot;-&amp;quot;
+for (k in paste0(&amp;quot;^&amp;quot;,diag.c[,2])){ #codes
+  gindex &amp;lt;- grep(k,ed05.df[,1]) #matches code with DIAG1 column
+  ed05.df$Code[gindex] &amp;lt;- diag.c$Code[grep(k,diag.c[,2])]
+  ed05.df$Code.n &amp;lt;- as.numeric(ed05.df$Code) #some values are coered to NA
+  ed05.df$Code.n[which(is.na(ed05.df$Code.n))] &amp;lt;- 1000 #treat all NA&amp;#39;s wih value 1000
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we use the &lt;code&gt;join()&lt;/code&gt; function from the &lt;code&gt;plyr&lt;/code&gt; package to match the Classifications with the codes in our new data frame.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ed05.df &amp;lt;- join(ed05.df,diag.c,by=&amp;quot;Code&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;overlap-joins-using-data.table&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Overlap Joins using &lt;code&gt;data.table&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;I’m not going to get into much detail here because this was something I had to learn when I discovered that joins and merges based on character types (ie. “001” or “057”) were tedious and very annoying. Thankfully this StackOverflow &lt;a href=&#34;https://stackoverflow.com/questions/24480031/roll-join-with-start-end-window&#34;&gt;post&lt;/a&gt; was extremely useful to understand how the &lt;code&gt;foverlaps()&lt;/code&gt; &lt;a href=&#34;https://www.rdocumentation.org/packages/data.table/versions/1.10.4/topics/foverlaps&#34;&gt;function&lt;/a&gt; works. In short to address this issue, I created numeric equivalents of the ICD-9 codes (ie. “019” became 19) because foverlaps() only works with numeric and integer values. After that I assigned the appropriate categories of Group and Subgroup to the Classification codes, cleaned it up a bit to remove unnecessary columns, and convert it back into a &lt;code&gt;data.frame&lt;/code&gt; class. My code is annotated if you would want to look at it and I would refer to the post I mentioned above.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;visualizing-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Visualizing the Data&lt;/h2&gt;
+&lt;p&gt;Since we have somewhat hierarchical data we can visualize this using a treemap. Now we make sure the &lt;code&gt;treemap&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/treemap/index.html&#34;&gt;package&lt;/a&gt; is loaded and then use the lovely &lt;a href=&#34;http://tools.medialab.sciences-po.fr/iwanthue/&#34;&gt;IWantHue&lt;/a&gt; website to get a nice color palette. I’ve annotated the code to explain what each argument does and after running this we get…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tree.n &amp;lt;- treemap(df.ed05,
+  index = c(&amp;quot;Group&amp;quot;, &amp;quot;Subgroup&amp;quot;, &amp;quot;Classification&amp;quot;), #grouping for each
+  vSize = &amp;quot;Freq&amp;quot;, #area of rectangles by NHAMCS estimates
+  type = &amp;quot;index&amp;quot;, #see documentation
+  title = &amp;quot;NHAMCS Emergency Department Visits in 2005&amp;quot;,
+  overlap.labels = 0.5, ##see documentation
+  palette = pal1, #custom palette from IWantHue
+  border.col = c(&amp;quot;#101010&amp;quot;, &amp;quot;#292929&amp;quot;, &amp;quot;#333333&amp;quot;), #set border colors
+  fontsize.title = 40, #set font size
+  fontsize.labels = c(30, 24, 16), #set size for each grouping
+  lowerbound.cex.labels = .4, ##see documentation
+  fontcolor.labels = c(&amp;quot;#000000&amp;quot;, &amp;quot;#292929&amp;quot;, &amp;quot;#333333&amp;quot;), #set color
+  fontface.labels = c(2, 4, 1), # bold, bold-italic, normal
+  fontfamily.labels = c(&amp;quot;sans&amp;quot;), #sans font
+  inflate.labels = F, #see documentation
+  align.labels = c(&amp;quot;center&amp;quot;, &amp;quot;center&amp;quot;), #align all labels in center
+  bg.labels = 230 # 0 and 255 that determines the transparency
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/ed-visits-regex-treemaps/icd-9_tree_2005.png&#34; style=&#34;width:95.0%&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;From this we see that most ED visits had a diagnosis related to injury, poisoning, symptoms and respiratory system issues. This makes sense because usually you go to the hospital when you have an injury or some acute medical emergency. Below I’ve also created the treemaps for the other years leading up to 2009 with the colors corresponding with each group.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/ed-visits-regex-treemaps/icd-9_tree_2005.png&#34; style=&#34;width:20.0%&#34; /&gt; &lt;img src=&#34;/post/ed-visits-regex-treemaps/icd-9_tree_2006.png&#34; style=&#34;width:20.0%&#34; /&gt; &lt;img src=&#34;/post/ed-visits-regex-treemaps/icd-9_tree_2007.png&#34; style=&#34;width:20.0%&#34; /&gt; &lt;img src=&#34;/post/ed-visits-regex-treemaps/icd-9_tree_2008.png&#34; style=&#34;width:20.0%&#34; /&gt; &lt;img src=&#34;/post/ed-visits-regex-treemaps/icd-9_tree_2009.png&#34; style=&#34;width:20.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Some comments on the data and visualization:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It does not include ICD-9 codes for Supplementary Classifications (codes that start with V’s and E’s). I ignored these due to tedious nature of matching the Groups with characters and maybe in the future I can write something that includes them to the visualization.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;This data is for all visits regardless of demographic information. I suspect the treemaps between age, gender, race, and region would look very different.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;These are national estimates and the true value is contained within a confidence interval dependent on the survey design. Other visualizations may be appropriate to show the probability ranges of this data.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;There were missing or blank ICD-9 codes (the coders at the hospitals either didn’t fill them or there were no diagnoses?) accounted for 2.78% of all estimates.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Originally I wanted to create a radial or sunburst tree of the data, but I had difficulty setting up the data in an appropriate form (ie. classes Node to phylo). I would appreciate any knowledge on how to get around this and maybe make that my next mini-project.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;This data is from ~10 years ago, it would be interesting to see what the most recent NHAMCS data says about emergency department visits.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;final-thoughts&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;From ODSC a speaker said that for data visualization, 80% of your work is cleaning setting up the data for the visualization and 20% is actually making the visualization… very true for this case. I did not expect the regex and data.table to take as long as it did. Regardless, I got the chance to learn more about the data.table package, practice my regular expression knowledge, and explore different tree visualizations! Any feedback, comments, and questions on the code or visualization are always welcome!&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/ed-visits-regex-treemaps/odsc.jpg&#34; style=&#34;width:20.0%&#34; /&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>WHO Tuberculosis Data &amp; ggplot2</title>
+      <link>/post/who-tb-data-ggplot2/</link>
+      <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
+      <guid>/post/who-tb-data-ggplot2/</guid>
+      <description>
+
+
+&lt;p&gt;For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/who-tb-data-ggplot2/mycobacterium20tuberculosis20030.jpg&#34; alt=&#34;Electron micrograph of Mycobacterium tuberculosis&#34; /&gt;
+&lt;/p&gt;
+&lt;div id=&#34;what-is-tuberculosis&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is Tuberculosis?&lt;/h2&gt;
+&lt;p&gt;Tuberculosis (TB) is a nasty disease caused by the bacterium Mycobacterium tuberculosis. It was first described by Hippocrates and has a history concurrent with human civilization. Individuals infected with TB usually do not develop active disease but if they develop active TB, they can on average infect 8-10 people. Most of the time when we hear of TB, we think of the infection within the lungs, but I learned during my time volunteering in a medical clinic in Peru that TB can manifest in other sites of the body (extra-pulmonary TB). This bacterium has infected roughly a third of the world’s population and is a top 10 cause of death around the globe.&lt;/p&gt;
+&lt;p&gt;There are two major modern concerns with TB…&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;strong&gt;TB and HIV co-infection&lt;/strong&gt;, where there is a disproportionate mortality rate by TB with HIV infected individuals. HIV infects CD4+ T-cells, which are essential for an appropriate immune response to combat TB. This relationship has been reported in patients.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multi-drug resistant TB (MDR-TB)&lt;/strong&gt; is a growing public health concern that threatens the control of TB infection throughout the world. There have been reports of extensive-drug resistant TB (XDR-TB) which is resistant to the standard treatment of isoniazid and rifampin alongside any fluoroquinolone and at least one secondary-treatment drug. Fewer treatment options put patients under rigorous and strenuous regimens and present a risk of transmission to others.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-retrieval&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data Retrieval&lt;/h2&gt;
+&lt;p&gt;The data I used for this post is taken from the World Health Organization from &lt;a href=&#34;http://www.who.int/tb/country/data/download/en/&#34;&gt;this link&lt;/a&gt; to the TB data. Specifically I used the data dictionary and TB burden estimates. When you click these links, they generate a comma-delimited file (.csv) and date-stamp the file. I downloaded these files back in February 2016. Just remember where you save these in your local directory so you can read them into R for the near future.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-started&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Getting Started&lt;/h2&gt;
+&lt;p&gt;The code I use for my posts can be found on my &lt;a href=&#34;https://github.com/eugejoh/&#34;&gt;GitHub account&lt;/a&gt;, open for free use and adaptation. I’m always open to comments and suggestions on how to improve my code or even a completely different method to reach the same goal. Optimization of R programming is something I am working towards bit by bit.&lt;/p&gt;
+&lt;p&gt;After setting up your working directory, read your comma-delimited files using the &lt;code&gt;read.csv()&lt;/code&gt; function. The WHO files are conveniently formatted so there is no need for elaborate arguments for headers, field separators or assigning missing values.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;TB.burden &amp;lt;- read.csv(&amp;quot;TB_burden_countries_2016-02-18.csv&amp;quot;) #TB burden dataset
+TB.dic &amp;lt;- read.csv(&amp;quot;TB_data_dictionary_2016-02-18.csv&amp;quot;) #TB documentation dictionary&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;customized-search-function&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Customized Search Function&lt;/h2&gt;
+&lt;p&gt;While completing an R assignment for one of my classes, I ran into the &lt;code&gt;readline()&lt;/code&gt; function which allows for some interactive functionality within R. The reason I created this interactive custom search function is because of the fact that the column variables in the TB burden .csv file are not completely straightforward and it’s annoying to manually search through the file itself in Microsoft Excel. So instead of memorizing all of them (only to forget after I write 10 lines of code), I decided to create this function whenever I start to write code for a new plot and need to remind myself the exact description of the variable I am working with…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;TB.search &amp;lt;- function (x){ #
+  look &amp;lt;- names(x) #assign the names/column names of the subsetted data
+  message(&amp;quot;Matching variable names found in the documentation files&amp;quot;)
+  TB.d &amp;lt;- as.character(TB.dic[,4]) # conversion to character to have &amp;quot;clean&amp;quot; output
+  out &amp;lt;- look[look %in% TB.dic[,1]] #assignment of vector: which names of the selected subset are in the documentation file
+  print(out) #check which variable names from dictionary match the input
+  message(&amp;quot;Above includes all names for variable names found in the documentation files&amp;quot;) #message prompt for output
+  
+  z &amp;lt;- readline(&amp;quot;Search Variable Definition (CASE-SENSITIVE): &amp;quot;) #interactive read-in of variable name
+  if (z %in% out){ # NEED TO MAKE THE CONDITION TO SEPARATE integer(0) from real integer values
+    print(TB.d[grep(paste0(&amp;quot;^(&amp;quot;,z,&amp;quot;){1}?&amp;quot;),TB.dic[,1])]) #print the definition found in TB.d
+  }else{
+    
+    repeat{ #repeat the line below for readline() if exact match of doesn&amp;#39;t exist
+      y&amp;lt;-readline(&amp;quot;Please re-input (press &amp;#39;ESC&amp;#39; to exit search): &amp;quot;) #second prompt
+      if (y %in% out) break # the condition that ends the repeat, that the input matches a name in the documentation
+    }
+    print(TB.d[grep(paste0(&amp;quot;^&amp;quot;,y,&amp;quot;{1}?&amp;quot;),TB.dic[,1])]) #print the definition found in documentation file TB.dic
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I’m only going to highlight a couple things in the code above. I converted the definitions found in the documentation file because the original data type was a &lt;code&gt;factor&lt;/code&gt;. This was a problem with the print output because it would show all the unnecessary information on the number of factors and values of the factors I had no interest in. Secondly I ended up using a &lt;code&gt;repeat&lt;/code&gt; in my &lt;code&gt;if&lt;/code&gt; statement to prompt the user if they incorrectly typed in a variable name in the console. This &lt;a href=&#34;https://www.programiz.com/r-programming/repeat-loop&#34;&gt;link&lt;/a&gt; provides some helpful information on the &lt;code&gt;repeat&lt;/code&gt; loop. Other then that, I used &lt;a href=&#34;http://www.endmemo.com/program/R/grep.php&#34;&gt;regular expression&lt;/a&gt; to specify the search to match what was actually in the documentation file.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cleaning-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Cleaning Data&lt;/h2&gt;
+&lt;p&gt;As with all data, it doesn’t come in the form that you always want it in. Luckily the WHO TB data wasn’t in bad shape and I just converted all integer valued columns into numeric types using a simple loop.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#convert all the rows with type &amp;#39;integer&amp;#39; to &amp;#39;numeric
+for (k in 1:length(names(TB.burden))){
+  if (is.integer(TB.burden[,k])){
+    TB.burden[,k] &amp;lt;- as.numeric(TB.burden[,k])
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After that, I used the &lt;code&gt;mapvalues()&lt;/code&gt; function from the &lt;code&gt;plyr&lt;/code&gt; package to change the levels in the country variable. I used this because the basic functions in R require me to specify all the levels in the factor and using 219 country names seemed tedious. Quite simply, I just listed the old names I wanted to change and created a respective character vector of the the new country names.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(plyr)
+TB.burden$country &amp;lt;- (mapvalues((TB.burden$country), from = c(
+  &amp;quot;Bolivia (Plurinational State of)&amp;quot;,
+  &amp;quot;Bonaire, Saint Eustatius and Saba&amp;quot;,
+  &amp;quot;China, Hong Kong SAR&amp;quot;,
+  &amp;quot;China, Macao SAR&amp;quot;,
+  &amp;quot;Democratic People&amp;#39;s Republic of Korea&amp;quot;,
+  &amp;quot;Democratic Republic of the Congo&amp;quot;,
+  &amp;quot;Iran (Islamic Republic of)&amp;quot;,
+  &amp;quot;Lao People&amp;#39;s Democratic Republic&amp;quot;,
+  &amp;quot;Micronesia (Federated States of)&amp;quot;,
+  &amp;quot;Republic of Korea&amp;quot;,
+  &amp;quot;Saint Vincent and the Grenadines&amp;quot;,
+  &amp;quot;Sint Maarten (Dutch part)&amp;quot;,
+  &amp;quot;The Former Yugoslav Republic of Macedonia&amp;quot;,
+  &amp;quot;United Kingdom of Great Britain and Northern Ireland&amp;quot;,
+  &amp;quot;United Republic of Tanzania&amp;quot;,
+  &amp;quot;Venezuela (Bolivarian Republic of)&amp;quot;,
+  &amp;quot;West Bank and Gaza Strip&amp;quot;)
+  
+  , to = c(
+    &amp;quot;Bolivia&amp;quot;,
+    &amp;quot;Caribbean Netherlands&amp;quot;,
+    &amp;quot;Hong Kong&amp;quot;,
+    &amp;quot;Macao&amp;quot;,
+    &amp;quot;North Korea&amp;quot;,
+    &amp;quot;DRC&amp;quot;,
+    &amp;quot;Iran&amp;quot;,
+    &amp;quot;Laos&amp;quot;,
+    &amp;quot;Micronesia&amp;quot;,
+    &amp;quot;South Korea&amp;quot;,
+    &amp;quot;St. Vincent &amp;amp;amp;amp;amp;amp; Grenadines&amp;quot;,
+    &amp;quot;Sint Maarten&amp;quot;,
+    &amp;quot;Former Yugoslav (Macedonia)&amp;quot;,
+    &amp;quot;UK &amp;amp;amp;amp;amp;amp; Northern Ireland&amp;quot;,
+    &amp;quot;Tanzania&amp;quot;,
+    &amp;quot;Venezuela&amp;quot;,
+    &amp;quot;West Bank and Gaza&amp;quot;)
+))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I threw in some random subsetting into the code to pull out values for specific questions (ie. what was the estimated prevalence per 100,000 people of TB in Peru during 2014). You can see it in the actual code in the &lt;a href=&#34;https://github.com/eugejoh/WHO-TB-Data/blob/master/TB-WHO-post.R&#34;&gt;GitHub repository&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;visualizing-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Visualizing the Data&lt;/h2&gt;
+&lt;p&gt;I was interested in what estimated rates of TB were by WHO region, so I ran a simple loop to assign new variable names to each region (this is not the best practice IMO but it does the trick).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for (i in levels(TB.burden$g_whoregion)){ #selection of the WHO regions (AFR, AMR, EMR, EUR, SEA, WPR)
+  nam &amp;lt;- paste0(i,&amp;quot;_whoregion&amp;quot;) #creation of the name based on acronyms from levels
+  assign(nam, subset(TB.burden,TB.burden$g_whoregion %in% paste(i))) #assigning each level a subset based on the region
+}
+ls() #just to show what variables are stored...
+#look for AFR_whoregion, AMR_whoregion, EMR_whoregion, EUR_whoregion, SEA_whoregion, WPR_whoregion&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we set up the themes we want to use for &lt;code&gt;ggplot2.&lt;/code&gt; I set the year scale for the legends, customized the text on the axes and assigned &lt;code&gt;dark_t&lt;/code&gt; to be a dark, black-grey background and &lt;code&gt;light_t&lt;/code&gt; as a simple, white-grey background &lt;code&gt;theme&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ctext &amp;lt;- theme(axis.ticks = element_blank(),
+               plot.title=element_text(family=&amp;quot;Verdana&amp;quot;),
+               axis.text.x=element_text(size=9,family=&amp;quot;Verdana&amp;quot;), #http://www.cookbook-r.com/Graphs/Fonts/#table-of-fonts
+               axis.title.x=element_text(size=10),
+               axis.text.y=element_text(size=7.5,family=&amp;quot;Verdana&amp;quot;),
+               axis.title.y-element_text(size=10,family=&amp;quot;Verdana&amp;quot;),
+               legend.title=element_text(size=9,family=&amp;quot;Verdana&amp;quot;,vjust=0.5), #specify legend title color
+               legend.text=element_text(size=7,family=&amp;quot;Verdana&amp;quot;,face=&amp;quot;italic&amp;quot;)
+)
+
+dark_t &amp;lt;- theme_minimal()+
+  theme(
+    plot.background = element_rect(fill=&amp;quot;#191919&amp;quot;), #plot background
+    panel.border = element_blank(), #removes border
+    panel.background = element_rect(fill = &amp;quot;#000000&amp;quot;,colour=&amp;quot;#000000&amp;quot;,size=2), #panel background and border
+    panel.grid = element_line(colour = &amp;quot;#333131&amp;quot;), #panel grid colours
+    panel.grid.major = element_line(colour = &amp;quot;#333131&amp;quot;), #panel major grid color
+    panel.grid.minor = element_blank(), #removes minor grid
+    
+    plot.title=element_text(size=16, face=&amp;quot;bold&amp;quot;,family=&amp;quot;Verdana&amp;quot;,hjust=0,vjust=1,color=&amp;quot;#E0E0E0&amp;quot;), #set the plot title
+    plot.subtitle=element_text(size=12,face=c(&amp;quot;bold&amp;quot;,&amp;quot;italic&amp;quot;),family=&amp;quot;Verdana&amp;quot;,hjust=0.01,color=&amp;quot;#E0E0E0&amp;quot;), #set subtitle
+    
+    axis.text.x = element_text(size=9,angle = 0, hjust = 0.5,vjust=1,margin=margin(r=10),colour=&amp;quot;#E0E0E0&amp;quot;), # axis ticks
+    axis.title.x = element_text(size=11,angle = 0,colour=&amp;quot;#E0E0E0&amp;quot;), #axis labels from labs() below
+    axis.text.y = element_text(size=9,margin = margin(r=5),colour=&amp;quot;#E0E0E0&amp;quot;), #y-axis labels
+    
+    legend.title=element_text(size=11,face=&amp;quot;bold&amp;quot;,vjust=0.5,colour=&amp;quot;#E0E0E0&amp;quot;), #specify legend title color
+    legend.background = element_rect(fill=&amp;quot;#262626&amp;quot;,colour=&amp;quot;#383838&amp;quot;, size=.5), #legend background and cborder
+    legend.text=element_text(colour=&amp;quot;#E0E0E0&amp;quot;)) + #legend text colour
+  # plot.margin=unit(c(t=1,r=1.2,b=1.2,l=1),&amp;quot;cm&amp;quot;)) #custom margins
+  ctext
+
+light_t &amp;lt;- theme(legend.background = element_rect(fill=&amp;quot;grey95&amp;quot;,colour=&amp;quot;grey70&amp;quot;, size=.5),
+                 plot.title=element_text(size=16, face=&amp;quot;bold&amp;quot;,family=&amp;quot;Verdana&amp;quot;,hjust=0,vjust=1), #set the plot title
+                 plot.subtitle=element_text(size=12,face=c(&amp;quot;bold&amp;quot;,&amp;quot;italic&amp;quot;),family=&amp;quot;Verdana&amp;quot;,hjust=0.01), #set subtitle
+                 
+                 panel.grid.minor = element_blank()) + #removes minor grid)
+  ctext
+
+# specify scale for year variable
+year.scale &amp;lt;- c(1990,1995,2000,2005,2010,2014) # used for breaks below&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For the next plots, I’ll only be focusing on the WHO Region of Africa. Two notes on the code below for the plots: &lt;strong&gt;1)&lt;/strong&gt; I used the &lt;code&gt;forcats&lt;/code&gt; &lt;a href=&#34;https://blog.rstudio.org/2016/11/14/ggplot2-2-2-0/&#34;&gt;package&lt;/a&gt; to reverse the order of the countries on the y-axis. This package is useful when using ggplot2 for categorical data. &lt;strong&gt;2)&lt;/strong&gt; For the legend scales, I used the &lt;code&gt;comma()&lt;/code&gt; function in the &lt;code&gt;scales&lt;/code&gt; package to include the comma’s for every thousand. The following code displays the estimated prevalence, mortality and incidence (per 100,000 people) for cases from each country in the WHO Africa Region.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#PREVALENCE per 100k
+library(forcats) #https://blog.rstudio.org/2016/11/14/ggplot2-2-2-0/
+pAFR &amp;lt;-ggplot(AFR_whoregion,aes(y=fct_rev(country),x=e_prev_100k)) + # prevalence (100k)
+  labs(title=&amp;quot;WHO | Tuberculosis Data&amp;quot;,
+       subtitle=&amp;quot;Africa Region&amp;quot;, x=&amp;quot;Estimated Prevalence (per 100,000)&amp;quot;,y=&amp;quot;&amp;quot;,colour=&amp;quot;#E0E0E0&amp;quot;) +
+  geom_point(shape=20,aes(colour=year,fill=year),alpha=0.6,size=3) +
+  scale_y_discrete(expand=c(0.002, 1))+
+  scale_x_continuous(limits=c(0,1500),labels=scales::comma)+
+  scale_fill_gradient(guide_legend(title=&amp;quot;Year&amp;quot;),breaks=year.scale,low=&amp;quot;#F9FA00&amp;quot;,high=&amp;quot;#8C00E6&amp;quot;) + #assigns colours to fill in aes
+  scale_colour_gradient(guide_legend(title=&amp;quot;Year&amp;quot;),breaks=year.scale,low=&amp;quot;#F9FA00&amp;quot;,high=&amp;quot;#8C00E6&amp;quot;) + #assigns colours to colour in aes
+  dark_t
+
+#MORTALITY (including HIV) per 100k e_inc_tbhiv_100k
+mAFR &amp;lt;- ggplot(AFR_whoregion,aes(y=fct_rev(country),x= e_mort_exc_tbhiv_100k)) + # Mortality exclude HIV (100k)
+  labs(title=&amp;quot;WHO | Tuberculosis Data&amp;quot;,
+       subtitle=&amp;quot;Africa Region&amp;quot;,x=&amp;quot;Estimated Mortality excluding HIV (per 100,000)&amp;quot;,y=&amp;quot;&amp;quot;,colour=&amp;quot;#E0E0E0&amp;quot;)+
+  geom_point(shape=20,aes(colour=year,fill=year),alpha=0.6,size=3) +
+  scale_y_discrete(expand=c(0.002, 1)) +
+  #scale_x_continuous(limits=c(0,250),labels=scales::comma) +
+  scale_fill_gradient(guide_legend(title=&amp;quot;Year&amp;quot;),breaks=year.scale,low=&amp;quot;#F9FA00&amp;quot;,high=&amp;quot;#8C00E6&amp;quot;) + #assigns colours to fill in aes
+  scale_colour_gradient(guide_legend(title=&amp;quot;Year&amp;quot;),breaks=year.scale,low=&amp;quot;#F9FA00&amp;quot;,high=&amp;quot;#8C00E6&amp;quot;) + #assigns colours to colour in aes
+  dark_t
+
+#INCIDENCE per 100k
+iAFR &amp;lt;- ggplot(AFR_whoregion,aes(y=fct_rev(country),x= e_inc_100k)) + # Mortality exclude HIV (100k)
+  labs(title=&amp;quot;WHO | Tuberculosis Data&amp;quot;,
+       subtitle=&amp;quot;Africa Region&amp;quot;,x=&amp;quot;Estimated Incidence (per 100,000)&amp;quot;,y=&amp;quot;&amp;quot;,colour=&amp;quot;#E0E0E0&amp;quot;)+
+  geom_point(shape=20,aes(colour=year,fill=year),alpha=0.6,size=3) +
+  scale_y_discrete(expand=c(0.002, 1)) +
+  scale_x_continuous(limits=c(0,1500),labels=scales::comma) +
+  scale_fill_gradient(guide_legend(title=&amp;quot;Year&amp;quot;),breaks=year.scale,low=&amp;quot;#F9FA00&amp;quot;,high=&amp;quot;#8C00E6&amp;quot;) + #assigns colours to fill in aes
+  scale_colour_gradient(guide_legend(title=&amp;quot;Year&amp;quot;),breaks=year.scale,low=&amp;quot;#F9FA00&amp;quot;,high=&amp;quot;#8C00E6&amp;quot;) + #assigns colours to colour in aes
+  dark_t&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now the plots in the order of estimated prevalence, incidence and mortality…&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/who-tb-data-ggplot2/afr_prev_tb1.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/who-tb-data-ggplot2/afr_mort_tb_exc_hiv1.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/who-tb-data-ggplot2/afr_prev_tb1.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;In the plots, the color yellow refers to a year closer to 1990 where purple is more recent towards 2014. Based on this we can see the relative changes over time on the estimated TB prevalence, incidence and mortality. Let’s focus on the prevalence and incidence plots – we can see most of the countries have lower estimated TB prevalences over time. The most drastic decreases can be seen in Central African Republic and Niger. We can also see that Lesotho, South Africa and Swaziland have increased estimated TB prevalence during the 1990-2014 time period. Namibia is an interesting one because it seems that the estimated TB prevalence increased then decreased roughly half way. To accurately visualize this trend in Namibia, we would need a choose a different method to better visualize this (a simple line plot).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Remember&lt;/strong&gt; these plots are just a simple qualitative way to compare trends but doesn’t capture the full picture. I’ve learned that your method of visualizing data depends on which narrative of the data you want to highlight. These graphics could be used to see which countries have had the largest changes over time or as an example, identify countries who have improved (or failed) their national TB control, using estimated TB incidence as a proxy. Are TB control or prevention systems working in these countries? Based on allocated resources or programs, are the changes in line with the goals to reduce the &lt;a href=&#34;http://www.who.int/tb/strategy/en/&#34;&gt;global burden of TB&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can tinker with the code to select which countries or regions you want to compare. I only displayed the plots for the WHO Africa Region but the other regions also looked interesting. You can adapt this code for the other WHO regions to see what the trends look like.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;closing-thoughts&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Closing Thoughts&lt;/h2&gt;
+&lt;p&gt;I hope this post was informative and you learned something about TB around the world. Despite this disease being preventable and curable, it remains a real threat for many people around the world. There are groups fighting TB around the world, just one close to Boston is the &lt;strong&gt;endTB&lt;/strong&gt; partnership. Check out their &lt;a href=&#34;http://endtb.org/&#34;&gt;website&lt;/a&gt; and see the groups (PIH, MSF) involved in the work of combating MDR-TB.&lt;/p&gt;
+&lt;p&gt;As always I’m open to comments and suggestions on improving my code and graphics. If anyone has questions related to the code – send me a message, I’ll be more than happy to help. I’ve learned so much from online resources and communities like StackOverflow and would always want to help those new to using R.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>UNHCR Refugee Data Visualized</title>
+      <link>/post/unhcr-viz/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      <guid>/post/unhcr-viz/</guid>
+      <description>
+
+
+&lt;p&gt;The new United States presidential administration formulated an &lt;a href=&#34;https://www.nytimes.com/interactive/2017/01/25/us/politics/document-Trump-EO-Draft-on-Refugees.html&#34;&gt;executive order&lt;/a&gt; the end of last week, if issued, will suspend visas of internationals in the United States (either for school or work) from select countries, prevent the the entrance of Syrian refugees indefinitely and a “readjustment” of the the Refugee and Immigration Programs. Because of this disruptive change in immigration – especially for the most vulnerable populations that include refugees, asylum seekers and displaced people, all fleeing from conflict, instability or persecution – I wanted create a post on this topic.&lt;/p&gt;
+&lt;div id=&#34;wheres-the-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Where’s the Data?&lt;/h1&gt;
+&lt;p&gt;The &lt;a href=&#34;http://popstats.unhcr.org/en/overview&#34;&gt;data&lt;/a&gt; I’m using is taken from the &lt;strong&gt;United Nations High Commissioner for Refugees (UNHCR)&lt;/strong&gt; &lt;a href=&#34;http://www.unhcr.org/en-us&#34;&gt;website&lt;/a&gt; – the UN Refugee Agency. You can read more on what they do and why the exist in the link above.&lt;/p&gt;
+&lt;p&gt;In this post I am not going to share my views on the current political landscape in the United States (that can be a complete separate blog on its own). Similar to my previous posts, I’m going to do a walkthrough with data cleaning, ask a couple questions and visualize the data in some meaningful way. &lt;strong&gt;If you want to skip the details on the code, you can just scroll down to the figures.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;working-in-r&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Working in R&lt;/h1&gt;
+&lt;p&gt;As usual, all the code is in my GitHub &lt;a href=&#34;https://github.com/eugejoh/Mapping_Refugees/blob/master/UNHCR_Refugees.R&#34;&gt;repository&lt;/a&gt; for whoever wants to download and use it for themselves. For this post, I’m going to use the following packages &lt;code&gt;ggplot2&lt;/code&gt;, &lt;code&gt;grid&lt;/code&gt;, &lt;code&gt;scales&lt;/code&gt;, &lt;code&gt;reshape2&lt;/code&gt;, and &lt;code&gt;worldcloud&lt;/code&gt;. I was reading some R manuals and I discovered a “new”&amp;quot; way to access your working directory environment. It involves the use of the &lt;code&gt;list.files()&lt;/code&gt; function, which lists the files or folders in your current working directory. You can also further specify the path name (which saves the time of constantly changing the pathname in the &lt;code&gt;setwd()&lt;/code&gt; function (which I have been foolishly doing for a while).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;setwd(&amp;quot;~/Documents/UNHCR Data/&amp;quot;) # ~ acts as base for home directory
+ 
+list.files(full.names=TRUE) # gives full path for files or folders
+files.all &amp;lt;- list.files(path=&amp;quot;All_Data/&amp;quot;) #assigns name to file names in the All_Data folder
+length(files.all) #checks how many objects there are in the /All_Data folder
+files.all&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Since the file is a comm delimited file (.csv) we use the &lt;code&gt;read.csv()&lt;/code&gt; function to read it in and assign it the name “ref.d”. I used what I know with the &lt;code&gt;paste0()&lt;/code&gt; function We set the skip argument equal to 2 because by visual inspection of the file, the first two rows are committed to the file title (we don’t want to read that into R). I also used the na.string argument to specify that any blanks (“”), dashes (“-”) and asterisks (“*“) would be considered missing data, &lt;code&gt;NA&lt;/code&gt;. The asterisks are specified to be redacted information, based on the UNHCR website.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ref.d &amp;lt;- read.csv(paste0(&amp;quot;All_Data/&amp;quot;,files.all), #insert filepath and name into 1st argument
+    header=T, #select the headers in 3rd row
+    skip=2, #skips the first rows (metadata in .csv file)
+    na.string=c(&amp;quot;&amp;quot;,&amp;quot;-&amp;quot;,&amp;quot;*&amp;quot;), #convert all blanks, &amp;quot;i&amp;quot;,&amp;quot;*&amp;quot; cells into missing type NA
+    col.names=new.names #since we already made new names
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First thing I see, the names for the columns names are long and they would be annoying to reproduce. So first we’ll change these using the &lt;code&gt;names()&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;new.names &amp;lt;- c(&amp;quot;Year&amp;quot;, &amp;quot;Country&amp;quot;, &amp;quot;Country_Origin&amp;quot;, &amp;quot;Refugees&amp;quot;, &amp;quot;Asylum_Seekers&amp;quot;, &amp;quot;Returned_Refugees&amp;quot;, &amp;quot;IDPs&amp;quot;, &amp;quot;Returned_IDPs&amp;quot;, &amp;quot;Stateless_People&amp;quot;, &amp;quot;Others_of_Concern&amp;quot;,&amp;quot;Total&amp;quot;)
+names(ref.d) &amp;lt;- new.names&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By using &lt;code&gt;summary()&lt;/code&gt; and &lt;code&gt;str()&lt;/code&gt; on the dataset we can see that the range of the data spans from 1951 to 2014, it contains information on the country where refugees are situated, their country of origin, counts for each population of concern and total counts.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(ref.d)
+#      Year        Country          Country_Origin        Refugees
+# Min.   :1951   Length:103746      Length:103746      Min.   :      1
+# 1st Qu.:2000   Class :character   Class :character   1st Qu.:      3
+# Median :2006   Mode  :character   Mode  :character   Median :     16
+# Mean   :2004                                         Mean   :   5992
+# 3rd Qu.:2010                                         3rd Qu.:    167
+# Max.   :2014                                         Max.   :3272290
+#                                                      NA&amp;#39;s   :19353
+# Asylum_Seekers     Returned_Refugees      IDPs         Returned_IDPs
+# Min.   :     0.0   Min.   :      1   Min.   :    470   Min.   :     23
+# 1st Qu.:     1.0   1st Qu.:      2   1st Qu.:  90746   1st Qu.:   5000
+# Median :     5.0   Median :     16   Median : 261704   Median :  27284
+# Mean   :   255.9   Mean   :   6737   Mean   : 540579   Mean   : 111224
+# 3rd Qu.:    34.0   3rd Qu.:    247   3rd Qu.: 594443   3rd Qu.: 104230
+# Max.   :358056.0   Max.   :9799410   Max.   :7632500   Max.   :1186889
+# NA&amp;#39;s   :46690      NA&amp;#39;s   :97327     NA&amp;#39;s   :103330    NA&amp;#39;s   :103544
+# Stateless_People  Others_of_Concern      Total
+# Min.   :      1   Min.   :     1.0   Min.   :      1
+# 1st Qu.:    205   1st Qu.:    14.8   1st Qu.:      3
+# Median :   1720   Median :   444.5   Median :     16
+# Mean   :  66803   Mean   : 24672.5   Mean   :   8605
+# 3rd Qu.:  11462   3rd Qu.:  6000.0   3rd Qu.:    166
+# Max.   :3500000   Max.   :957000.0   Max.   :9799410
+# NA&amp;#39;s   :103103    NA&amp;#39;s   :103018     NA&amp;#39;s   :2433&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s always good practice to identify missing data as well (especially when we set the condition of the &lt;code&gt;read.csv&lt;/code&gt; argument above). For non-numeric variables you can use a simple function using &lt;code&gt;apply()&lt;/code&gt; and &lt;code&gt;is.na()&lt;/code&gt; to identify missing values or &lt;code&gt;NA&lt;/code&gt; in your data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;apply(ref.d,2, function(x) sum(is.na(x)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When I used &lt;code&gt;str()&lt;/code&gt; on the data, I saw that the country names were as factors and the populations of concern categories were integers. I made a short for loop to change these to a character and numeric type respectively.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# &amp;quot;2&amp;quot;-ignores the first column (we want to keep Year as an integer)
+for(i in 2:length(names(ref.d))){ 
+    if (class(ref.d[,i])==&amp;quot;factor&amp;quot;){
+        ref.d[,i] &amp;lt;- as.character(ref.d[,i])}
+    if (class(ref.d[,i])==&amp;quot;integer&amp;quot;){
+        ref.d[,i] &amp;lt;- as.numeric(ref.d[,i])}
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Also another nuance, I wanted to change some of the names of the countries (they were either very long or had extra information). I first identified the names I wanted to change and then replace them a new set of names. I did this using a for loop as well.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;old.countries &amp;lt;- c(&amp;quot;Bolivia (Plurinational State of)&amp;quot;,
+    &amp;quot;China, Hong Kong SAR&amp;quot;,
+    &amp;quot;China, Macao SAR&amp;quot;,
+    &amp;quot;Iran (Islamic Rep. of)&amp;quot;,
+    &amp;quot;Micronesia (Federated States of)&amp;quot;,
+    &amp;quot;Serbia and Kosovo (S/RES/1244 (1999))&amp;quot;,
+    &amp;quot;Venezuela (Bolivarian Republic of)&amp;quot;,
+    &amp;quot;Various/Unknown&amp;quot;)
+# replacement names
+new.countries &amp;lt;- c(&amp;quot;Bolivia&amp;quot;,&amp;quot;Hong Kong&amp;quot;,&amp;quot;Macao&amp;quot;,&amp;quot;Iran&amp;quot;,&amp;quot;Micronesia&amp;quot;,&amp;quot;Serbia &amp;amp;amp;amp; Kosovo&amp;quot;,&amp;quot;Venezuela&amp;quot;,&amp;quot;Unknown&amp;quot;)
+for (k in 1:length(old.countries)){
+    ref.d$Country_Origin[ref.d$Country_Origin==old.countries[k]]&amp;amp;amp;lt;-new.countries[k]
+    ref.d$Country[ref.d$Country==old.countries[k]]&amp;amp;amp;lt;-new.countries[k]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If any has alternative ways to achieve the above (ie. using the apply family), comment below! Just a short disclaimer on for loops in R. There has been a lot of argument on the effectiveness of for loops in R compared to the apply function family. A quick &lt;a href=&#34;https://www.google.com/search?q=apply+vs+for+loop+in+r&amp;amp;oq=apply+vs+for+loop&#34;&gt;Google Search&lt;/a&gt; shows many opinions on this issue, based on computing speed/power, simplicity, elegance, etc. &lt;a href=&#34;http://adv-r.had.co.nz/Functionals.html&#34;&gt;Advanced R&lt;/a&gt; by Hadley Wickham talks about this and I’ve generally used this as a guideline on whether to use a &lt;code&gt;for&lt;/code&gt; loop or an &lt;code&gt;apply&lt;/code&gt; function.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;some-descriptives-and-north-korea&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Some Descriptives and North Korea&lt;/h1&gt;
+&lt;p&gt;Just to get an idea of the data, we can create a list of the countries and countries of origin&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clist&amp;lt;-sort(unique(ref.d$Country)) #alphabetical
+clist
+or.clist&amp;lt;-sort(unique(ref.d$Country_Origin)) #alphabetical
+or.clist&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can then compare them for any differences either using matching operators or the &lt;code&gt;setdiff()&lt;/code&gt; function. First we’ll do this…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clist[!clist %in% or.clist] # or
+setdiff(clist,or.clist)
+ 
+# [1] &amp;quot;Bonaire&amp;quot;                   &amp;quot;Montserrat&amp;quot;
+# [3] &amp;quot;Sint Maarten (Dutch part)&amp;quot; &amp;quot;State of Palestine&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;… we can infer that these countries haven’t produced refugees or there is no data on these countries in the UNHCR database. If we reverse the comparison…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;or.clist[!or.clist %in% clist] # or
+setdiff(or.clist,clist)
+ 
+#  [1] &amp;quot;Andorra&amp;quot;                     &amp;quot;Anguilla&amp;quot;
+#  [3] &amp;quot;Bermuda&amp;quot;                     &amp;quot;Cook Islands&amp;quot;
+#  [5] &amp;quot;Dem. People&amp;#39;s Rep. of Korea&amp;quot; &amp;quot;Dominica&amp;quot;
+#  [7] &amp;quot;French Polynesia&amp;quot;            &amp;quot;Gibraltar&amp;quot;
+#  [9] &amp;quot;Guadeloupe&amp;quot;                  &amp;quot;Holy See (the)&amp;quot;
+# [11] &amp;quot;Kiribati&amp;quot;                    &amp;quot;Maldives&amp;quot;
+# [13] &amp;quot;Marshall Islands&amp;quot;            &amp;quot;Martinique&amp;quot;
+# [15] &amp;quot;New Caledonia&amp;quot;               &amp;quot;Niue&amp;quot;
+# [17] &amp;quot;Norfolk Island&amp;quot;              &amp;quot;Palestinian&amp;quot;
+# [19] &amp;quot;Puerto Rico&amp;quot;                 &amp;quot;Samoa&amp;quot;
+# [21] &amp;quot;San Marino&amp;quot;                  &amp;quot;Sao Tome and Principe&amp;quot;
+# [23] &amp;quot;Seychelles&amp;quot;                  &amp;quot;Stateless&amp;quot;
+# [25] &amp;quot;Tibetan&amp;quot;                     &amp;quot;Tuvalu&amp;quot;
+# [27] &amp;quot;Wallis and Futuna Islands &amp;quot;  &amp;quot;Western Sahara&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;… we get a list of countries that have only produced refugees (not taken any refugees in) or there is missing data in the UNHCR. I myself being Korean-Canadian I noticed North Korea (the Democratic People’s Republic of Korea) on this list. I wanted to ask the question, which countries have the largest number of North Korean refugees based on the UNHCR Data? What are the top 10?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;NK.tot&amp;lt;- aggregate(cbind(Total)~Country,data=NK,FUN=sum)
+NK.tot[order(-NK.tot[,2]),][1:10,]
+
+#                     Country Total
+# 31           United Kingdom  4808
+# 5                    Canada  2954
+# 10                  Germany  2845
+# 18              Netherlands   487
+# 3                   Belgium   435
+# 23       Russian Federation   357
+# 32 United States of America   346
+# 1                 Australia   318
+# 20                   Norway   262
+# 9                    France   228&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We find that the UK has the highest number of North Koreans refugees, followed by Canada and Germany with similar counts. Learned something new today.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;word-clouds-in-r&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Word Clouds in R&lt;/h1&gt;
+&lt;p&gt;If you haven’t guessed based on the packages I loaded in the beginning, a word cloud was inevitable. Making word clouds in R is pretty simple thanks to the &lt;a href=&#34;https://cran.r-project.org/web/packages/wordcloud/wordcloud.pdf&#34;&gt;wordcloud&lt;/a&gt; package. Remember that word clouds are an esthetically decent way to qualitatively see your data. There are bunch of pros and cons on using word clouds. Generally this is appropriate if you just want see the general relative frequency of words in your data. Making any quantitative conclusions would be erroneous.&lt;/p&gt;
+&lt;p&gt;First we’ll aggregate the counts for the country of origin.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;or.count.tot &amp;lt;- aggregate(cbind(Total)~Country_Origin,data=ref.d,FUN=sum)
+or.count.tot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then set color palette using HEX codes, much thanks to &lt;a href=&#34;http://tools.medialab.sciences-po.fr/iwanthue/&#34;&gt;I Want Hue&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pal3 &amp;lt;- c(&amp;quot;#274c56&amp;quot;,
+&amp;quot;#664c47&amp;quot;,
+&amp;quot;#4e5c48&amp;quot;,
+&amp;quot;#595668&amp;quot;,
+&amp;quot;#395e68&amp;quot;,
+&amp;quot;#516964&amp;quot;,
+&amp;quot;#6b6454&amp;quot;,
+&amp;quot;#58737f&amp;quot;,
+&amp;quot;#846b6b&amp;quot;,
+&amp;quot;#807288&amp;quot;,
+&amp;quot;#758997&amp;quot;,
+&amp;quot;#7e9283&amp;quot;,
+&amp;quot;#a79486&amp;quot;,
+&amp;quot;#aa95a2&amp;quot;,
+&amp;quot;#8ba7b4&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then let’s make a word cloud based on the countries of origin for the populations of concern in the data and save it as a .png file. I’ve commented the code for each line We can see that Afghanistan seems to have the highest relative number and those with unknown countries of origin is second. Other high conflict countries are visible too like DRC, Iraq, Sudan, Syria, Somalia, etc.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# COUNTRY OF ORIGIN
+png(&amp;quot;wordcloud_count_or.png&amp;quot;,width=600,height=850,res=200)
+wordcloud(or.count.tot[,1], #list of words
+    or.count.tot[,2], #frequencies for words
+    scale=c(3,.5), #scale of size range
+    min.freq=100, #minimum frequency
+    max.words=100, #maximum number of words show (others dropped)
+    family=&amp;quot;Garamond&amp;quot;, font=2, #text edit (The font &amp;quot;face&amp;quot; (1=plain, 2=bold, 3=italic, 4=bold-italic))
+    random.order=F, #F-plotted in decreasing frequency
+    colors=rev(pal3)) #colours from least to most frequent (reverse order)
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;historical-data-visualized&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Historical Data Visualized&lt;/h1&gt;
+&lt;p&gt;So in the UNHCR data, it contains information not only on countries but based on the year from 1951 to 2014. I wanted to see the trends over time between each of the populations of concern. There are seven types of populations in the dataset. Their definitions can be found &lt;a href=&#34;http://popstats.unhcr.org/en/overview&#34;&gt;here&lt;/a&gt; on the UNHCR website. To visualize the data using ggplot2, it’s a good practice to convert the data from wide to long form. The benefits on using long form can be read &lt;a href=&#34;https://stanford.edu/~ejdemyr/r-tutorials/wide-and-long/&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;http://vita.had.co.nz/papers/tidy-data.html&#34;&gt;here&lt;/a&gt;. The accomplish this, we’re going to use the reshape2 package and the melt() function. This &lt;a href=&#34;http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/&#34;&gt;tutorial&lt;/a&gt; is helpful in understanding what’s going on.&lt;/p&gt;
+&lt;p&gt;I first subset to remove the country, country of origin and total columns.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;no.count&amp;lt;-(ref.d[c(-2,-3,-11)]) #removes Country, Country of Origin and Total
+lno.count&amp;lt;-melt(no.count,id=c(&amp;quot;Year&amp;quot;))
+
+head(lno.count)
+
+#   Year variable  value
+# 1 1951 Refugees 180000
+# 2 1951 Refugees 282000
+# 3 1951 Refugees  55000
+# 4 1951 Refugees 168511
+# 5 1951 Refugees  10000
+# 6 1951 Refugees 265000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then I set the &lt;code&gt;ggplot2&lt;/code&gt; theme and the color palette I want to use.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;blank_t &amp;lt;- theme_minimal()+
+  theme(
+  panel.border = element_blank(), #removes border
+  panel.background = element_rect(fill = &amp;quot;#d0d1cf&amp;quot;,colour=NA),
+  panel.grid = element_line(colour = &amp;quot;#ffffff&amp;quot;),
+  plot.title=element_text(size=20, face=&amp;quot;bold&amp;quot;,hjust=0,vjust=2), #set the plot title
+  plot.subtitle=element_text(size=15,face=c(&amp;quot;bold&amp;quot;,&amp;quot;italic&amp;quot;),hjust=0.01), #set subtitle
+  legend.title=element_text(size=10,face=&amp;quot;bold&amp;quot;,vjust=0.5), #specify legend title
+  axis.text.x = element_text(size=9,angle = 0, hjust = 0.5,vjust=1,margin=margin(r=10)),
+  axis.text.y = element_text(size=10,margin = margin(r=5)),
+  legend.background = element_rect(fill=&amp;quot;gray90&amp;quot;, size=.5),
+  legend.position=c(0.15,0.65),
+  plot.margin=unit(c(t=1,r=1.2,b=1.2,l=1),&amp;quot;cm&amp;quot;)
+  )
+pal5 &amp;lt;- c(&amp;quot;#B53C26&amp;quot;, #Refugees 7 TOTAL
+&amp;quot;#79542D&amp;quot;, #Asylum Seekers
+&amp;quot;#DA634D&amp;quot;, #Returned Refugees
+&amp;quot;#0B4659&amp;quot;, #IDPs
+&amp;quot;#4B8699&amp;quot;, #Returned IDPs
+&amp;quot;#D38F47&amp;quot;, #Stateless People
+&amp;quot;#09692A&amp;quot;) #Others of Concern&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then use &lt;code&gt;geom_bar()&lt;/code&gt; and the &lt;code&gt;fill&lt;/code&gt; argument to make the stacked bar graph over time by specifying what titles and axis labels. In the &lt;code&gt;scale_fill_manual()&lt;/code&gt; I used the &lt;code&gt;gsub()&lt;/code&gt; function remove the underscores from the names (I was lazy to rewrite the names out in a vector and assign it to the labels).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg1 &amp;lt;-ggplot(lno.count,aes(Year,value)) +
+    geom_bar(aes(fill=variable),stat=&amp;quot;identity&amp;quot;) +
+    labs(title=&amp;quot;UNHCR Population Statistics Database&amp;quot;,
+    subtitle=&amp;quot;(1951 - 2014)&amp;quot;,
+    x=&amp;quot;Year&amp;quot;,y=&amp;quot;Number of People (Millions)&amp;quot;) + blank_t +
+    scale_fill_manual(guide_legend(title=&amp;quot;Populations of Concern&amp;quot;),labels=gsub(&amp;quot;*_&amp;quot;,&amp;quot; &amp;quot;,names(ref.d)[c(-1,-2,-3,-11)]),values=pal5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next while modifying the axes, I wanted to change the scale of the y-axis to shows it as millions versus 6 zeros. I set the labels argument in &lt;code&gt;scale_y_continuous()&lt;/code&gt; to a short function that converts it by a factor of &lt;code&gt;10e-6&lt;/code&gt;. The plot is below and you can click on it to see the full-sized version.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mil.func &amp;lt;- function(x) {x/1000000}
+gg2 &amp;lt;-gg1+
+scale_y_continuous(limits=c(0,6e7),
+breaks=pretty(0:6e7,n=5),
+labels=mil.func,
+expand=c(0.025,0)) +
+scale_x_continuous(limits=c(1950,2015),
+breaks=seq(1950,2015,by=5),
+expand=c(0.01,0))
+ggsave(plot=gg2,filename=&amp;quot;UNHCR_Totals_Yr.png&amp;quot;, width=9.5, height=5.5, dpi=200)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So based on this, we can see that there has been a large increase of the total populations of concern the past 30 years. Internally Displaced People (IDPs) have also increased dramatically in the past 20 years. Based on the &lt;a href=&#34;http://www.unhcr.org/en-us/figures-at-a-glance.html&#34;&gt;most recent data&lt;/a&gt;, the totals are reaching 65.3 million! (that’s above the y-limit in the bar graph)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;lets-be-real&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Let’s Be Real&lt;/h1&gt;
+&lt;p&gt;(Not R related) Based on doing this, I learned that the UK hosts the highest number of North Korean refugees in the world, that Afghanistan has historically produced the largest number of refugees and there is a upward trend (qualitative conclusion) with the total number of displaced people in recent history. Remembering that these vulnerable populations are mostly undocumented so the numbers in this dataset are likely underestimates to the actual numbers of people who fall under the population of concern definition. In the midst of the news and social media firestorm on all the unfortunate events happening in the world, I think it’s easy to dissociate and just live our own lives. I believe that those with access to resources should be generous with how we use them. A simple act of kindness like a Samaritan can go a long way. Some simple steps that I’ve taken were to educate myself on these issues, advocate where I am able, donate financially and engage where I can. There are a plethora of organizations committed to relieving the burden of these populations – one of them I support is the &lt;a href=&#34;https://www.rescue.org/&#34;&gt;International Rescue Committee&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So I hope this post was informative and demonstrates how one can pull some data off the internet, tinker around with R and discover some news things about the world. Any feedback on the code, alternative ways on what I did are always welcome!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Descriptive Analysis of MLST Data for MRSA</title>
+      <link>/post/mlst-mrsa/</link>
+      <pubDate>Tue, 24 Jan 2017 00:00:00 +0000</pubDate>
+      <guid>/post/mlst-mrsa/</guid>
+      <description>
+
+
+&lt;p&gt;During one of my summers, I had the opportunity to conduct some research on the prevalence of methicillin-resistant Staphylococcus aureus (MRSA) in vulnerable populations and examining US emergency department data and I thought this would be a pretty interesting topic to expand on for my thesis in light of the increasing concerns of antimicrobial resistance, both at the &lt;a href=&#34;https://www.cdc.gov/drugresistance/&#34;&gt;domestic&lt;/a&gt; and &lt;a href=&#34;http://www.who.int/antimicrobial-resistance/en/&#34;&gt;international&lt;/a&gt; level. This resulted in an systematic review of the recent literature of MRSA in the major Far East countries (China, Hong Kong, Japan, South Korea and Taiwan) which has a wide variety of genotypes and strains. If you’re interested in understanding &lt;em&gt;S. aureus&lt;/em&gt; in Asia, a good starting point is this &lt;a href=&#34;https://dx.doi.org/10.1111/1469-0691.12705&#34;&gt;article&lt;/a&gt;. An extensive and great &lt;a href=&#34;https://dx.doi.org/10.1128%2FCMR.00081-09&#34;&gt;review&lt;/a&gt; on community-associated MRSA written by two researchers from Chicago if you really want to dig deep into this topic.&lt;/p&gt;
+&lt;div id=&#34;what-is-mrsa&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is MRSA?&lt;/h2&gt;
+&lt;p&gt;MRSA is a gram-positive bacteria which is found on almost every continent on earth, which developed resistance to &lt;a href=&#34;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2065735/&#34;&gt;methicillin&lt;/a&gt; (a narrow spectrum β-lactam antibiotic from the penicillin class) in the early 60s. MRSA was originally considered to only cause infections within hospital settings (ICUs, EDs, surgery) but towards the end of the 1980s and into the 1990s, cases of severe MRSA infections were being reported in &lt;a href=&#34;https://dx.doi.org/10.1128%2FCMR.00081-09&#34;&gt;communities outside of healthcare centers&lt;/a&gt;. MRSA typically causes skin and soft tissue infections but some cases when left untreated can cause havoc to respiratory system, bloodstream and eventually cause sepsis – not a pretty picture. Over the next 20 years, reports of different strains of this “new” MRSA started to appear around the globe. Some of these strains successfully disseminated from their country of origin to neighboring regions and even across continents with the help of globalization. With the advent and advancement of genotyping technology – researchers were able to track and identify the strains causing outbreaks across the world. One classification system is called Multi Locus Sequence Typing (&lt;a href=&#34;http://saureus.mlst.net/misc/info.asp&#34;&gt;MLST&lt;/a&gt;) which was developed by researchers at Imperial College, UK. In short, it is based on creating a profile or sequence type (&lt;strong&gt;ST&lt;/strong&gt;) of each &lt;em&gt;S. aureus&lt;/em&gt; strain based on sequencing specific internal nucleotide fragments of &lt;a href=&#34;http://www.sciencedirect.com/science/article/pii/S1198743X1464698X&#34;&gt;seven house-keeping genes&lt;/a&gt;. Using this method, investigators are able to discriminate between strains and identify evolutionary changes over time.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reading-in-the-data-using-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Reading in the data using R&lt;/h2&gt;
+&lt;p&gt;This post has nothing too fancy in R – I’m just going to do a &lt;strong&gt;step-by-step walkthrough&lt;/strong&gt; of data cleaning and asking a couple questions, then running descriptive analyses to find some answers. For those you are proficient in doing this might find this a little boring (you can just scroll down to the end and see the results). The data is taken from &lt;a href=&#34;https://pubmlst.org/saureus/&#34; class=&#34;uri&#34;&gt;https://pubmlst.org/saureus/&lt;/a&gt; by selecting the link “download as MS excel” and downloading the spreadsheet to a local directory. The data is complied from submissions to the database which report new MLSTs with some demographic information. This database doesn’t really provide information of a specific strain’s prevalence – it’s just a timestamp report for novel strains. This file contains nine sheets. The one using for this post is called “profile”. I saved this as a comma-delimited file manually but there are lots of resources on the internet of doing this in R using some packages.&lt;/p&gt;
+&lt;p&gt;So now you should have a .csv file someone on your local directory. You first want to set your working directory. You can read a brief description of how to do this &lt;a href=&#34;http://www.statmethods.net/interface/workspace.html&#34;&gt;here&lt;/a&gt;. I’m using R &lt;code&gt;3.3.2&lt;/code&gt; on Mac OS as an FYI, the link before talks about the differences when you set your working directory in Windows and Mac OS.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;getwd() #shows what your current working directory is
+setwd(&amp;quot;/Users/myname/Documents/Folder&amp;quot;) #sets your working directory&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we’re gonna read the comma delimited file into R using the &lt;code&gt;read.csv()&lt;/code&gt; function and assigning it the name “profile”. The first argument you want input the filename with the .csv extension. The second argument tells the function that the first row in the file contains the headers or column names. Based on a quick visual inspection of spreadsheet file using Excel, there are many missing values just left as blank cells. The final argument I used specifies to convert any blank cells to NA type so that R can just treat these as missing data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;profile &amp;lt;- read.csv(&amp;quot;name_of_your_file.csv&amp;quot;, header=T, na.strings=c(&amp;quot;&amp;quot;, NA))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A good practice I always do when I read in spreadsheets into R is to get a idea of what I’m dealing with. I want to know how many columns and rows there are, the names of the headers/columns and the type of data in each column. To accomplish this, we run the &lt;code&gt;dim()&lt;/code&gt;, &lt;code&gt;names()&lt;/code&gt; and &lt;code&gt;str()&lt;/code&gt; functions for each respective question.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dim(profile) #dimensions of the dataset
+names(profile) # names of the columns in dataset
+str(profile) #structure of the data frame&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When we do this, the data frame should have 4703 rows and 25 columns. The 25 headers include the following…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# [1] &amp;quot;id&amp;quot; &amp;quot;strain&amp;quot; &amp;quot;other_name&amp;quot; &amp;quot;st&amp;quot; &amp;quot;country&amp;quot;
+# [6] &amp;quot;region&amp;quot; &amp;quot;year&amp;quot; &amp;quot;age_yr&amp;quot; &amp;quot;age_mth&amp;quot; &amp;quot;sex&amp;quot;
+# [11] &amp;quot;disease&amp;quot; &amp;quot;sourcce&amp;quot; &amp;quot;epidemiology&amp;quot; &amp;quot;species&amp;quot; &amp;quot;oxsau&amp;quot;
+# [16] &amp;quot;methicillin&amp;quot; &amp;quot;vancomycin&amp;quot; &amp;quot;spa_type&amp;quot; &amp;quot;reference&amp;quot; &amp;quot;comments&amp;quot;
+# [21] &amp;quot;sender&amp;quot; &amp;quot;curator&amp;quot; &amp;quot;date_entered&amp;quot; &amp;quot;datestamp&amp;quot; &amp;quot;username&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Most of the time the columns names can be cryptic. You always want to have the metadata or the documentation files for the datasets so that you know exactly what each column represents. In this case for this file, it is pretty straightforward – we can see that for each submission there is an id number, strain name, sequence type (st), who submitted the info, time/date stamps and some other demographic information.&lt;/p&gt;
+&lt;p&gt;When we run &lt;code&gt;str(profile)&lt;/code&gt;, our output shows the class type of each column. This will be important as R tends to have functions that run only for specific types of data. A good overview the different types of data in R can be found &lt;a href=&#34;https://www.tutorialspoint.com/r/r_data_types.htm&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Two major things stick out to me when I look through the data – first the column with country names is type factor. I want to convert into a string type, so later on I can subset the data by country by referring to the actual name, versus the factor level (which would be confusing and annoying to keep track of).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt; # Change country to character from factor type
+profile$country &amp;lt;- as.character(profile$country)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Second, I noticed the classification of a lot of categorical columns have multiple levels. Sex has 6 levels!? Methicillin resistance has 9 levels? What does this mean…? Well, the problem for databases that are derived from public submissions is that there is no standardization with the data input. When we inspect what the levels are for sex by running the line of code below, we see that due to the lack of data input standardization, we have &lt;code&gt;F&lt;/code&gt;, &lt;code&gt;female&lt;/code&gt; and &lt;code&gt;Female&lt;/code&gt; for those categorized as female sex. For male sex we have &lt;code&gt;M&lt;/code&gt; and &lt;code&gt;Male&lt;/code&gt;, and then Unspecified for those contributors who didn’t leave it blank.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# &amp;gt; summary(profile$sex)
+# F      female      Female           M        Male Unspecified        NA&amp;#39;s
+# 17           1         814          19         842        1343        1667&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I’m not particularly interested in distribution of gender with these reports so I’m okay with leaving this alone. But we have to same issue with the column for methicillin resistance and I want to simplify it to a binary category of resistant and susceptible. When we look at the levels for the the methicillin column we see this…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#  &amp;gt; summary(profile$methicillin)
+# I   MIC 4mg/L  MIC 64mg/L           r           R           s           S
+# 1           2           1           1        1533           3        2175
+# Unknown Unspecified        NA&amp;#39;s
+# 4         199         784&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Since we want to simplify this, we can use the &lt;code&gt;levels()&lt;/code&gt; function to set and rename the levels in this column. First, we’re gonna merge the lower and uppercase letters together (r will be R and s will be S)&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;levels(profile$methicillin) &amp;lt;- c(&amp;quot;I&amp;quot;, &amp;quot;MIC4&amp;quot;, &amp;quot;MIC64&amp;quot;, &amp;quot;R&amp;quot;, &amp;quot;R&amp;quot;, &amp;quot;S&amp;quot;, &amp;quot;S&amp;quot;, &amp;quot;Unknown&amp;quot;, &amp;quot;Unspecified&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Minimum Inhibitory Concentration (MIC) is the lowest concentration of an antibiotic that inhibits the growth of an organism. If you have two strains of &lt;em&gt;S. aureus&lt;/em&gt; (#1 and #2) where #1 has a higher MIC to methicillin or oxacillin (another antibiotic) compared to strain #2 strain, #1 is considered to be more resistant to that tested antibiotic compared to #2. This is a method used to provide more granularity in defining antimicrobial resistance. Here in this case, I recognize MIC’s above 4mg/L are considered resistant (I’m making an assumption that all the reports used the same standard and technique to make this definition, a limitation is simplifying this). There’s more information on MIC’s for MRSA on the &lt;a href=&#34;https://www.cdc.gov/mrsa/lab/&#34;&gt;CDC’s website&lt;/a&gt;. So with all this in mind, I going to merge the MIC4 and MIC64 into the resistant category. After doing this, we only have four levels in the methicillin column: R, S, Unknown and Unspecified. We can check this by running&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;levels(profile$methicillin) &amp;lt;- c(&amp;quot;R&amp;quot;,&amp;quot;R&amp;quot;,&amp;quot;R&amp;quot;,&amp;quot;R&amp;quot;,&amp;quot;S&amp;quot;,&amp;quot;Unknown&amp;quot;,&amp;quot;Unspecified&amp;quot;)
+    
+factor(profile$methicillin)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Before we move on, another good practice is to be aware (and quantify) missing values in each of the columns. Lets say we want to know how many missing sequence types (STs) are there? We can use the &lt;code&gt;is.na()&lt;/code&gt; and &lt;code&gt;which()&lt;/code&gt; together to figure out which rows are missing values under the st column.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# &amp;gt; which(is.na(profile$st))
+# [1] 1596 1897 4602 4605&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Using this, we now know that there are four rows missing STs. Row numbers 1596, 1897, 4602 and 4605. If we wanted to subset the data for those missing STs, we can just use square brackets &lt;code&gt;[...]&lt;/code&gt; to accomplish this. If you’re unfamiliar with this, you can read this post to learn more on these accessors.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;profile[which(is.na(profile$st)),]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;lets-ask-some-questions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Let’s ask some questions&lt;/h2&gt;
+&lt;p&gt;Now that we’re done with the appropriate cleaning of the data, let’s ask some (random) questions&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Which countries reported sequence type 239 (ST-239)?&lt;/strong&gt; Based on my literature review, ST-239 is a common hospital-associated strain in Asia and it’s prevalence has increased in China, where is it the most common strain in the entire country. Other variants of ST-239 are common in Eastern Europe and South America as well, in particular Hungary and Brazil respectively.&lt;/p&gt;
+&lt;p&gt;To answer this question, we use the logic statements with subsetting to accomplish this.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;id.239 &amp;lt;- which(profile$st==239) #index of rows with ST-239
+st.239 &amp;lt;-profile[id.239,] #new dataframe of only ST-239
+sort(unique(st.239$country)) # alphabetical list of countries with ST-239&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When we run the &lt;code&gt;sort()&lt;/code&gt; function we get a vector of 29 countries in alphabetical order which have reported ST-239.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# [1] &amp;quot;Algeria&amp;quot;              &amp;quot;Australia&amp;quot;            &amp;quot;Brazil&amp;quot;
+# [4] &amp;quot;China&amp;quot;                &amp;quot;Czech republic&amp;quot;       &amp;quot;Eire&amp;quot;
+# [7] &amp;quot;Finland&amp;quot;              &amp;quot;Germany&amp;quot;              &amp;quot;Greece&amp;quot;
+# [10] &amp;quot;Hungary&amp;quot;              &amp;quot;India&amp;quot;                &amp;quot;Iran&amp;quot;
+# [13] &amp;quot;Malaysia&amp;quot;             &amp;quot;Pakistan&amp;quot;             &amp;quot;Poland&amp;quot;
+# [16] &amp;quot;Portugal&amp;quot;             &amp;quot;Scotland&amp;quot;             &amp;quot;Slovenia&amp;quot;
+# [19] &amp;quot;South Africa&amp;quot;         &amp;quot;Spain&amp;quot;                &amp;quot;Sweden&amp;quot;
+# [22] &amp;quot;Switzerland&amp;quot;          &amp;quot;Taiwan&amp;quot;               &amp;quot;Thailand&amp;quot;
+# [25] &amp;quot;The Netherlands&amp;quot;      &amp;quot;Turkey&amp;quot;               &amp;quot;UK&amp;quot;
+# [28] &amp;quot;United Arab Emirates&amp;quot; &amp;quot;USA&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;2. Which countries reported ST8 and &lt;em&gt;spa&lt;/em&gt; type t008?&lt;/strong&gt; &lt;a href=&#34;http://www.applied-maths.com/applications/staphylococcus-aureus-spa-typing&#34;&gt;&lt;em&gt;spa&lt;/em&gt; typing&lt;/a&gt; is another classification technique used for &lt;em&gt;S. aureus&lt;/em&gt; strains. It is a single-locus typing method, so it’s much more &lt;a href=&#34;https://dx.doi.org/10.1089%2Fmdr.2014.0238&#34;&gt;cost-effective&lt;/a&gt; compared to MLST.&lt;/p&gt;
+&lt;p&gt;We use the similar code as above except we add another condition to the logic statement to specify the &lt;em&gt;spa&lt;/em&gt; type.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;id.ST8.t008 &amp;lt;- which(profile$st==8 &amp;amp; profile$spa_type==&amp;quot;t008&amp;quot;)
+ST8.t008 &amp;lt;- profile[id.ST8.t008,]
+sort(unique(ST8.t008$country))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We see that 4 countries that have reported ST-8 with &lt;em&gt;spa&lt;/em&gt; type t008.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# [1] &amp;quot;Algeria&amp;quot;     &amp;quot;France&amp;quot;      &amp;quot;Portugal&amp;quot;    &amp;quot;Switzerland&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3. What is the proportion of methicillin-susceptible vs. -resistant &lt;em&gt;S. aureus&lt;/em&gt; reports are there in North America?&lt;/strong&gt; I was honestly just curious, the results we get from this are definitely limited due to the assumptions we had with the definitions and simplification discussed earlier.&lt;/p&gt;
+&lt;p&gt;First, since there is no column specifying the region of North America, we have to specify which countries to include to this subset. By visual inspection of the countries using &lt;code&gt;sort(unique(profile$country))&lt;/code&gt;, we see that there Canada and USA but no Mexico. So we’ll subset the data to only Canada and USA.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#selection of North American countries
+NorthA.MRSA &amp;lt;- profile[profile$country==&amp;quot;USA&amp;quot; | profile$country==&amp;quot;Canada&amp;quot;,] &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then running the following line, we get the counts of methicillin-resistant and methicillin-susceptible in North America.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# table(NorthA.MRSA$methicillin,useNA=&amp;quot;always&amp;quot;)
+# R           S     Unknown Unspecified        &amp;lt;NA&amp;gt;
+# 138         148           0          15          75&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;4. How many different STs are there in China, S Korea, Taiwan and Japan?&lt;/strong&gt; This is just coming from my thesis and getting an idea of distributions in the region of the world.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;F.east &amp;lt;- profile[profile$country==&amp;quot;China&amp;quot; | profile$country==&amp;quot;South Korea&amp;quot; | profile$country==&amp;quot;Japan&amp;quot; | profile$country==&amp;quot;Taiwan&amp;quot;,]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The following lines of code will answer some other questions related to this…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;factor(F.east$st) #find the number of STs in all these countries
+sum(is.na(F.east$st)) #number of missing values
+table(F.east$country) #counts of STs by country&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Based on 573 entries, we find that 289 different STs; China has 241, Japan has 259, South Korea has 26 and Taiwan 59.&lt;/p&gt;
+&lt;p&gt;If we want to only look those without missing values…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#removal of all rows that are missing an entry for country
+FE.final&amp;lt;-F.east[complete.cases(F.east$country),] &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To go further we can look at each specific country, lets ask what are the top 5 most reported STs in China?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# FE.China &amp;lt;- FE.final[FE.final$country==&amp;quot;China&amp;quot;,] #subset for China
+# sort(table(FE.China$st),decreasing=T)[1:5] #top 5 most reported
+#  
+# 97  239  398   88 2154
+# 21   13    5    3    3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;5. What are the 10 most frequently STs reported in North America in this database?&lt;/strong&gt; Let’s also visualize this in a basic pie chart? First need to setup the data so that it is easier to visualize using the &lt;code&gt;ggplot2&lt;/code&gt; package. So we setup the STs for North America and then order the the counts/frequencies of STs. *note you can also accomplish this using the &lt;code&gt;count()&lt;/code&gt; function in &lt;code&gt;plyr&lt;/code&gt; package&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;c.NorthA.MRSA &amp;lt;-as.data.frame(table(NorthA.MRSA$st))
+names(c.NorthA.MRSA) &amp;lt;- c(&amp;quot;ST&amp;quot;,&amp;quot;count&amp;quot;) #data frame containing count frequencies of the STs
+c.NorthA.MRSA&amp;lt;-c.NorthA.MRSA[order(-c.NorthA.MRSA$count),] #order the STs by count frequencies
+c.NorthA.MRSA[1:10,] # top ten&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we use ggplot2 to create the pie chart! First specifying the theme so we can tinker around with font size, remove the background grid, etc. I used the scales package to display the percentages in the pie chart for each ST. I stumbled across this incredible resource for color palettes for data visualization where you can choose distinct colors (with color-blind friendly options as well!). This specific case I choose the pastel color option.&lt;/p&gt;
+&lt;p&gt;We use &lt;code&gt;ggplot2&lt;/code&gt; to create the pie chart! First specifying the theme so we can tinker around with font size, remove the background grid, etc. I used the scales package to display the percentages in the pie chart for each ST. I stumbled across this incredible resource for color palettes for data visualization where you can choose distinct colors (with color-blind friendly options as well!). This specific case I choose the pastel color option.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;blank_t &amp;lt;-theme(
+axis.title.x = element_blank(),
+axis.title.y = element_blank(),
+panel.border = element_blank(),
+panel.grid=element_blank(),
+axis.ticks = element_blank(),
+plot.title=element_text(size=20, face=&amp;quot;bold&amp;quot;,hjust=0.6),
+plot.subtitle=element_text(size=15,face=c(&amp;quot;bold&amp;quot;,&amp;quot;italic&amp;quot;),hjust=0.6),
+axis.text.x=element_blank(),
+legend.title=element_text(size=14,face=&amp;quot;bold&amp;quot;,vjust=0.5),
+panel.margin=unit(2,&amp;quot;cm&amp;quot;)
+)
+ 
+pie1&amp;lt;-ggplot(c.NorthA.MRSA[1:10,], aes(x=&amp;quot;&amp;quot;,y=count,fill=ST,order=ST)) +
+geom_bar(width=1, stat=&amp;quot;identity&amp;quot;) +
+ggtitle(element_text(size=50))+
+labs(title = &amp;quot;STs in North America&amp;quot;, subtitle = &amp;quot;Canada and United States&amp;quot;,y=NULL) +
+coord_polar(theta=&amp;quot;y&amp;quot;)+
+geom_text(aes(label = scales::percent(count/sum(c.NorthA.MRSA[1:10,2]))),size=4, position = position_stack(vjust = 0.6)) +
+blank_t +
+scale_fill_manual(guide_legend(title=&amp;quot;STs&amp;quot;),
+values=c(&amp;quot;#e6b4c9&amp;quot;,
+&amp;quot;#bce5c2&amp;quot;, # color palette hexcodes
+&amp;quot;#c7b5de&amp;quot;,
+&amp;quot;#e3e4c5&amp;quot;,
+&amp;quot;#a1bbdd&amp;quot;,
+&amp;quot;#e5b6a5&amp;quot;,
+&amp;quot;#99d5e5&amp;quot;,
+&amp;quot;#bdbda0&amp;quot;,
+&amp;quot;#dcd1e1&amp;quot;,
+&amp;quot;#99c6b8&amp;quot;))
+ 
+print(pie1)
+ggsave(plot=pie1,filename=&amp;quot;North_America_STs_MLSTdatabase.png&amp;quot;, width=5.75, height=7, dpi=120)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we get the pie chart that looks like this… &lt;img src=&#34;/post/mlst-mrsa/index_files/mrsa_st_na.png&#34; style=&#34;width:95.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see that ST-5 and ST-8 have the most number of reports, while the remainder are ≤10%. All the &lt;a href=&#34;https://github.com/eugejoh/MRSA_MLST/blob/master/MRSA_MLST_edit1.R&#34;&gt;code&lt;/a&gt; is on Github, open for anyone to use and adapt. I’m always open for suggestions to how to improve the methodology and code. I know pie charts are “controversial” so any input on other graphics to display this type of information is always welcome.&lt;/p&gt;
+&lt;p&gt;Hopefully this post demonstrates the power and flexibility of R when you have some questions and how easily you can find the answers in your data. It is always important to remember where the data came from, who collected it, when you received it, how you processed it and any assumptions you make along the way – this can change the interpretation for the results dramatically. The results from this specific dataset are just informative and descriptive of the MLST database and potentially lead to some hypotheses. Another possible extension of this data is attaching the strain information by country and displaying it in a map. There is a wealth of resources on mapping in R (the link is from the R-Bloggers website) and many packages exist for displaying spatial data – so this might be something I might tinker with in the near future.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>SIR model with deSolve and ggplot2</title>
-      <link>/post/sir-model-with-desolve-and-ggplot2/</link>
+      <link>/post/sir-model/</link>
       <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>/post/sir-model-with-desolve-and-ggplot2/</guid>
+      <guid>/post/sir-model/</guid>
       <description>
 
 

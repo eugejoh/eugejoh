@@ -2,9 +2,10 @@
 title: SIR model with deSolve and ggplot2
 author: Eugene
 date: '2017-01-04'
-slug: sir-model-with-desolve-and-ggplot2
+slug: sir-model
 categories:
   - R
+  - Infectious Diseases
 tags: []
 subtitle: ''
 summary: ''
@@ -14,6 +15,7 @@ featured: false
 image:
   caption: ""
   focal_point: ""
+  preview_only: yes
 ---
 ```{r include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
