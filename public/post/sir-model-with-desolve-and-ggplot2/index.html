@@ -28,10 +28,11 @@
   
     
   
-  <meta name="description" content="Personal website of Eugene Joh">
+  <meta name="description" content="In my infectious disease epidemiology course back in 2016, I first learned about a basic compartmental disease transmission model. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.
+The basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the susceptible, infected, and recovered – hence the SIR Model.">
 
   
-  <link rel="alternate" hreflang="en-us" href="/post/">
+  <link rel="alternate" hreflang="en-us" href="/post/sir-model-with-desolve-and-ggplot2/">
 
   
 
@@ -244,14 +245,12 @@
 
 
   
-  <link rel="alternate" href="/post/index.xml" type="application/rss+xml" title="Eugene J">
-  
 
   <link rel="manifest" href="/index.webmanifest">
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/post/">
+  <link rel="canonical" href="/post/sir-model-with-desolve-and-ggplot2/">
 
   
   
@@ -267,17 +266,68 @@
   <meta property="twitter:creator" content="@eugejoh">
   
   <meta property="og:site_name" content="Eugene J">
-  <meta property="og:url" content="/post/">
-  <meta property="og:title" content="Posts | Eugene J">
-  <meta property="og:description" content="Personal website of Eugene Joh"><meta property="og:image" content="/img/avatar.jpg">
+  <meta property="og:url" content="/post/sir-model-with-desolve-and-ggplot2/">
+  <meta property="og:title" content="SIR model with deSolve and ggplot2 | Eugene J">
+  <meta property="og:description" content="In my infectious disease epidemiology course back in 2016, I first learned about a basic compartmental disease transmission model. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.
+The basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the susceptible, infected, and recovered – hence the SIR Model."><meta property="og:image" content="/img/avatar.jpg">
   <meta property="twitter:image" content="/img/avatar.jpg"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2017-01-04T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-03-24T19:12:59-04:00">
   
 
   
 
 
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/sir-model-with-desolve-and-ggplot2/"
+  },
+  "headline": "SIR model with deSolve and ggplot2",
+  
+  "datePublished": "2017-01-04T00:00:00Z",
+  "dateModified": "2020-03-24T19:12:59-04:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Eugene Joh"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eugene J",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "In my infectious disease epidemiology course back in 2016, I first learned about a basic compartmental disease transmission model. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.\nThe basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the susceptible, infected, and recovered – hence the SIR Model."
+}
+</script>
+
+  
+
+  
 
 
   
@@ -319,7 +369,7 @@
 
 
 
-  <title>Posts | Eugene J</title>
+  <title>SIR model with deSolve and ggplot2 | Eugene J</title>
 
 </head>
 
@@ -509,356 +559,33 @@
 </nav>
 
 
-  
-
-
-
-
-
-
-
-
-
-
-
+  <article class="article">
 
   
 
+
+
+
+
+
+
+
+
+
+
+
+  
+
   
   
+  
+<div class="article-container pt-3">
+  <h1>SIR model with deSolve and ggplot2</h1>
+
+  
+
   
     
-  
-<div class="universal-wrapper pt-3">
-  <h1>Posts</h1>
-
-  
-
-  
-</div>
-
-
-
-<div class="universal-wrapper">
-
-  
-
-  
-  
-    
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="media stream-item">
-  <div class="media-body">
-
-    <h3 class="article-title mb-0 mt-0">
-      <a href="/post/test/" >test</a>
-    </h3>
-
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
-
-
-<div class="article-metadata">
-
-  
-  
-
-  
-  <span class="article-date">
-    
-    
-      
-          Last updated on
-      
-    
-    Feb 9, 2020
-  </span>
-  
-
-  
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    0 min read
-  </span>
-  
-
-  
-  
-  
-
-  
-  
-
-</div>
-
-      
-    </div>
-
-    
-
-  </div>
-  <div class="ml-3">
-    
-    
-  </div>
-</div>
-
-    
-  
-    
-      
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<div class="media stream-item">
-  <div class="media-body">
-
-    <h3 class="article-title mb-0 mt-0">
-      <a href="/post/writing-technical-content/" >Writing technical content in Academic</a>
-    </h3>
-
-    
-    <div class="article-style">
-      Academic is designed to give technical content creators a seamless experience. You can focus on the content and Academic handles the …
-    </div>
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
-
-
-<div class="article-metadata">
-
-  
-  
-
-  
-  <span class="article-date">
-    
-    
-      
-          Last updated on
-      
-    
-    Feb 8, 2020
-  </span>
-  
-
-  
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    5 min read
-  </span>
-  
-
-  
-  
-  
-
-  
-  
-
-</div>
-
-      
-    </div>
-
-    
-
-  </div>
-  <div class="ml-3">
-    
-    
-    
-    <a href="/post/writing-technical-content/" >
-      <img src="/post/writing-technical-content/featured_huc72159e0fc0d14b85f60d34436a630f0_266353_150x0_resize_q90_lanczos.jpg" alt="">
-    </a>
-    
-  </div>
-</div>
-
-    
-  
-    
-      
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<div class="media stream-item">
-  <div class="media-body">
-
-    <h3 class="article-title mb-0 mt-0">
-      <a href="/post/jupyter/" >Display Jupyter Notebooks with Academic</a>
-    </h3>
-
-    
-    <div class="article-style">
-      Learn how to blog in Academic using Jupyter notebooks
-    </div>
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
-
-
-<div class="article-metadata">
-
-  
-  
-  
-  
-  <div>
-    
-
-
-
-  
-  <span><a href="/authors/admin/">Eugene Joh</a></span>
-
-  </div>
-  
-  
-
-  
-  <span class="article-date">
-    
-    
-      
-          Last updated on
-      
-    
-    Feb 8, 2020
-  </span>
-  
-
-  
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    2 min read
-  </span>
-  
-
-  
-  
-  
-
-  
-  
-
-</div>
-
-      
-    </div>
-
-    
-
-  </div>
-  <div class="ml-3">
-    
-    
-    
-    <a href="/post/jupyter/" >
-      <img src="/post/jupyter/featured_hub1daa031c2af6888ff37bd93eb033a1a_71549_150x0_resize_lanczos_2.png" alt="">
-    </a>
-    
-  </div>
-</div>
-
-    
-  
-    
-      
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<div class="media stream-item">
-  <div class="media-body">
-
-    <h3 class="article-title mb-0 mt-0">
-      <a href="/post/sir-model-with-desolve-and-ggplot2/sir-model-with-desolve-and-ggplot2/" >SIR model with deSolve and ggplot2</a>
-    </h3>
-
-    
-    <div class="article-style">
-      In my infectious disease epidemiology course back in 2016, I first learned about a basic compartmental disease transmission model. I …
-    </div>
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
 
 
 <div class="article-metadata">
@@ -883,7 +610,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    5 min read
+    4 min read
   </span>
   
 
@@ -900,134 +627,339 @@
 
 </div>
 
-      
-    </div>
-
     
 
-  </div>
-  <div class="ml-3">
-    
-    
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 </div>
 
-    
-  
-    
-      
 
 
+  <div class="article-container">
 
-
-
-
-
-
-
-
-
-
-  
-
-
-<div class="media stream-item">
-  <div class="media-body">
-
-    <h3 class="article-title mb-0 mt-0">
-      <a href="/post/getting-started/" >Academic: the website builder for Hugo</a>
-    </h3>
-
-    
     <div class="article-style">
-      Create a beautifully simple website in under 10 minutes.
-    </div>
-    
-
-    <div class="stream-meta article-metadata">
-
       
 
+
+<p>In my infectious disease epidemiology course back in 2016, I first learned about a basic compartmental disease transmission model. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.</p>
+<p>The basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the susceptible, infected, and recovered – hence the SIR Model. The relationship of these three groups is described by a set of differential equations first derived by Kermack and McKendrick. The SIR model details the transmission of infection through the contact of susceptible individuals with an infected host. If you are interested in learning more on this model, there is an online module.</p>
+<div id="the-sir-model" class="section level1">
+<h1>The SIR Model</h1>
+<center>
+<p>dS/dt = -βSI</p>
+<p>dI/dt = βSI – γI</p>
+<p>dR/dt = γI</p>
+β = cp <br>
+</center>
+<p><br></p>
+<p><em>S</em> – proportion of susceptible individuals in total population<br />
+<em>I</em> – proportion of infected individuals in total population<br />
+<em>R</em> – proportion of recovered individuals in total population<br />
+<em>β</em> – transmission parameter (rate of infection for susceptible-infected contact)<br />
+<em>c</em> – number of contacts each host has per unit time (contact rate)<br />
+<em>p</em> – probability of transmission of infection per contact (transmissibility)<br />
+<em>γ</em> – recovery parameter (rate of infected transitioning to recovered)</p>
+<p>This model is very basic and has important assumptions. The first being the population is closed and fixed, in other words – no one it added into the susceptible group (no births), all individuals who transition from being infected to recovered are permanently resistant to infection and there are no deaths. Second, the population is homogenous (all individuals are the same) and only differ by their disease state. Third, infection and that individual’s “infectiveness” or ability to infect susceptible individuals, occurs simultaneously.</p>
+</div>
+<div id="now-on-to-using-r" class="section level1">
+<h1>Now on to using R!</h1>
+<p>I used the deSolve package which was developed to solve the initial condition values of differential equations in R. The code to setup the SIR model was adapted from the MATLAB code from Modeling Infectious Diseases in Humans and Animals and an online demo in R.</p>
+<p>To begin, I setup my R function to be dependent on the input of three parameters: time period (in days), and the values of β and γ. These are denoted by t,b,g within the function.</p>
+<p>The initial conditions are set to have the proportion of the populationg being in the Susceptible group at &gt;99.9% (1-1E-6 to be exact), the Infected group to be close to 0 (1E-6) and no one in the Recovered group. The SIR model is going to be plotted at 0.5 days for higher resolution.</p>
+<pre class="r"><code>library(deSolve)
+SIR.model &lt;- function(t, b, g){
+init &lt;- c(S=1-1e-6,I=1e-6,R=0)
+parameters &lt;- c(bet=b,gamm=g)
+time &lt;- seq(0,t,by=t/(2*length(1:t))) }</code></pre>
+<p>Next we setup the differential equation (from above) so that we can run the ode function from the deSolve package correctly.</p>
+<pre class="r"><code>eqn &lt;- function(time,state,parameters){
+with(as.list(c(state,parameters)),{
+    dS &lt;- -bet*S*I
+    dI &lt;- bet*S*I-gamm*I
+    dR &lt;- gamm*I
+    return(list(c(dS,dI,dR)))})}</code></pre>
+<p>Then we run the ode function based on the parameters we set above and save coerce the output as a data frame class.</p>
+<pre class="r"><code>out&lt;-ode(y=init,times=time,eqn,parms=parameters)
+out.df&lt;-as.data.frame(out)</code></pre>
+<p>Now that we’ve solved the differential equation, the next task is to plot it. To do this I am going to be using the elegant visualization package ggplot2 (version 2.1.0).</p>
+<p>First I’m going to set a theme for the plot, by modifying one of the built-in ggplot2 themes, <code>theme_bw</code>. I referred to ggplot2 documentation found here.</p>
+<pre class="r"><code>require(ggplot2)
+mytheme4 &lt;- theme_bw() +
+theme(text=element_text(colour=&quot;black&quot;)) +
+theme(panel.grid = element_line(colour = &quot;white&quot;)) +
+theme(panel.background = element_rect(fill = &quot;#B2B2B2&quot;))
+theme_set(mytheme4)</code></pre>
+<p>Here I set the title for the plot as SIR Model: Basic. For the subtitle it will show the values of β and γ set when first running the function. The use of <code>bquote</code> was based reading some material on R expressions, trial and error, with some scouring of Stack Overflow (which is an incredible resource FYI).</p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
       
         
-
-
-<div class="article-metadata">
-
-  
-  
-  
-  
-  <div>
-    
-
-
-
-  
-  <span><a href="/authors/admin/">Eugene Joh</a></span>
-
-  </div>
-  
-  
-
-  
-  <span class="article-date">
-    
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/sir-model-with-desolve-and-ggplot2/&amp;text=SIR%20model%20with%20deSolve%20and%20ggplot2" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
     
       
-          Last updated on
       
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/sir-model-with-desolve-and-ggplot2/&amp;t=SIR%20model%20with%20deSolve%20and%20ggplot2" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
     
-    Feb 8, 2020
-  </span>
-  
-
-  
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    3 min read
-  </span>
-  
-
-  
-  
-  
-
-  
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="/categories/demo/">Demo</a></span>
-  
-
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=SIR%20model%20with%20deSolve%20and%20ggplot2&amp;body=/post/sir-model-with-desolve-and-ggplot2/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/sir-model-with-desolve-and-ggplot2/&amp;title=SIR%20model%20with%20deSolve%20and%20ggplot2" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=SIR%20model%20with%20deSolve%20and%20ggplot2%20/post/sir-model-with-desolve-and-ggplot2/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/sir-model-with-desolve-and-ggplot2/&amp;title=SIR%20model%20with%20deSolve%20and%20ggplot2" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
       
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hue7de8e7c44bf6b76bf08753b36f8bfaf_993967_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Eugene Joh</a></h5>
+      <h6 class="card-subtitle">Epidemiologist</h6>
+      <p class="card-text">☕ + 📊</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0001-9348-630X" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/eugejoh/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
     </div>
-
-    
-
   </div>
-  <div class="ml-3">
-    
-    
-    
-    <a href="/post/getting-started/" >
-      <img src="/post/getting-started/featured_hub9ee31969f44a6711206a2baf9f065b4_241861_150x0_resize_q90_lanczos.jpg" alt="">
-    </a>
-    
+
+
+
+
+
+
+
+<div class="article-widget">
+  
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/post/jupyter/" rel="next">Display Jupyter Notebooks with Academic</a>
   </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/getting-started/" rel="prev">Academic: the website builder for Hugo</a>
+  </div>
+  
 </div>
 
-    
-  
-
-  
-
-
 </div>
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 

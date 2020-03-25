@@ -316,6 +316,117 @@ date: 2019-09-01
     </item>
     
     <item>
+      <title>SIR model with deSolve and ggplot2</title>
+      <link>/post/sir-model-with-desolve-and-ggplot2/sir-model-with-desolve-and-ggplot2/</link>
+      <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
+      <guid>/post/sir-model-with-desolve-and-ggplot2/sir-model-with-desolve-and-ggplot2/</guid>
+      <description>
+
+
+&lt;p&gt;In my infectious disease epidemiology course back in 2016, I first learned about a basic &lt;strong&gt;compartmental disease transmission model&lt;/strong&gt;. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.&lt;/p&gt;
+&lt;p&gt;The basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the &lt;strong&gt;susceptible&lt;/strong&gt;, &lt;strong&gt;infected&lt;/strong&gt;, and &lt;strong&gt;recovered&lt;/strong&gt; – hence the &lt;strong&gt;SIR model&lt;/strong&gt;. The relationship of these three groups is described by a set of differential equations first derived by &lt;a href=&#34;https://dx.doi.org/10.1098%2Frspa.1927.0118&#34;&gt;Kermack and McKendrick&lt;/a&gt;. The SIR model details the transmission of infection through the contact of susceptible individuals with an infected host. If you are interested in learning more on this model, there is an &lt;a href=&#34;http://www.maa.org/press/periodicals/loci/joma/the-sir-model-for-spread-of-disease-the-differential-equation-model&#34;&gt;online module&lt;/a&gt;.&lt;/p&gt;
+&lt;div id=&#34;the-sir-model&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;The SIR Model&lt;/h1&gt;
+&lt;center&gt;
+&lt;p&gt;dS/dt = -βSI&lt;/p&gt;
+&lt;p&gt;dI/dt = βSI – γI&lt;/p&gt;
+&lt;p&gt;dR/dt = γI&lt;/p&gt;
+β = cp &lt;br&gt;
+&lt;/center&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;S&lt;/em&gt; – proportion of susceptible individuals in total population&lt;br /&gt;
+&lt;em&gt;I&lt;/em&gt; – proportion of infected individuals in total population&lt;br /&gt;
+&lt;em&gt;R&lt;/em&gt; – proportion of recovered individuals in total population&lt;br /&gt;
+&lt;em&gt;β&lt;/em&gt; – transmission parameter (rate of infection for susceptible-infected contact)&lt;br /&gt;
+&lt;em&gt;c&lt;/em&gt; – number of contacts each host has per unit time (contact rate)&lt;br /&gt;
+&lt;em&gt;p&lt;/em&gt; – probability of transmission of infection per contact (transmissibility)&lt;br /&gt;
+&lt;em&gt;γ&lt;/em&gt; – recovery parameter (rate of infected transitioning to recovered)&lt;/p&gt;
+&lt;p&gt;This model is very basic and has important assumptions. The first being the population is closed and fixed, in other words – no one it added into the susceptible group (no births), all individuals who transition from being infected to recovered are permanently resistant to infection and there are no deaths. Second, the population is homogenous (all individuals are the same) and only differ by their disease state. Third, infection and that individual’s “infectiveness” or ability to infect susceptible individuals, occurs simultaneously.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;now-on-to-using-r&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Now on to using R!&lt;/h1&gt;
+&lt;p&gt;I used the &lt;a href=&#34;https://cran.r-project.org/web/packages/deSolve/index.html&#34;&gt;deSolve package&lt;/a&gt; which was developed to solve the initial condition values of differential equations in R. The code to setup the SIR model was adapted from the MATLAB code from &lt;a href=&#34;http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.1/index.html&#34;&gt;Modeling Infectious Diseases in Humans and Animals&lt;/a&gt; and an &lt;a href=&#34;http://archives.aidanfindlater.com/blog/2010/04/20/the-basic-sir-model-in-r/&#34;&gt;online demo&lt;/a&gt; in R.&lt;/p&gt;
+&lt;p&gt;To begin, I setup my R function to be dependent on the input of three parameters: time period (in days), and the values of β and γ. These are denoted by t,b,g within the function.&lt;/p&gt;
+&lt;p&gt;The initial conditions are set to have the proportion of the populationg being in the Susceptible group at &amp;gt;99.9% (1-1E-6 to be exact), the Infected group to be close to 0 (1E-6) and no one in the Recovered group. The SIR model is going to be plotted at 0.5 days for higher resolution.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(deSolve)
+SIR.model &amp;lt;- function(t, b, g) {
+  init &amp;lt;- c(S = 1 - 1e-6, I = 1e-6, R = 0)
+  parameters &amp;lt;- c(bet = b, gamm = g)
+  time &amp;lt;- seq(0, t, by = t / (2 * length(1:t)))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next we setup the differential equation (from above) so that we can run the ode function from the deSolve package correctly.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;eqn &amp;lt;- function(time, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    dS &amp;lt;- -bet * S * I
+    dI &amp;lt;- bet * S * I - gamm * I
+    dR &amp;lt;- gamm * I
+    return(list(c(dS, dI, dR)))
+  })
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we run the ode function based on the parameters we set above and save coerce the output as a data frame class.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;out &amp;lt;- ode(y=init, times=time, eqn, parms=parameters)
+out.df &amp;lt;- as.data.frame(out)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now that we’ve solved the differential equation, the next task is to plot it. To do this I am going to be using the elegant visualization package &lt;a href=&#34;http://ggplot2.org/&#34;&gt;ggplot2&lt;/a&gt; (version 2.1.0).&lt;/p&gt;
+&lt;p&gt;First I’m going to set a theme for the plot, by modifying one of the built-in ggplot2 themes, &lt;code&gt;theme_bw&lt;/code&gt;. I referred to ggplot2 documentation found &lt;a href=&#34;http://docs.ggplot2.org/current/theme.html#&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
+mytheme4 &amp;lt;- theme_bw() +
+  theme(text = element_text(colour = &amp;quot;black&amp;quot;)) +
+  theme(panel.grid = element_line(colour = &amp;quot;white&amp;quot;)) +
+  theme(panel.background = element_rect(fill = &amp;quot;#B2B2B2&amp;quot;))
+  theme_set(mytheme4)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here I set the title for the plot as SIR Model: Basic. For the subtitle it will show the values of β and γ set when first running the function. The use of &lt;code&gt;bquote&lt;/code&gt; was based reading some &lt;a href=&#34;http://adv-r.had.co.nz/Expressions.html&#34;&gt;material&lt;/a&gt; on R expressions, trial and error, with some scouring of &lt;a href=&#34;http://stackoverflow.com/questions/tagged/r&#34;&gt;Stack Overflow&lt;/a&gt; (which is an incredible resource FYI).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;title &amp;lt;- bquote(&amp;quot;SIR Model: Basic&amp;quot;)
+subtit &amp;lt;- bquote(list(beta==.(parameters[1]),~gamma==.(parameters[2])))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now I describe the plot, essentially I am selecting the data frame from the &lt;code&gt;ode&lt;/code&gt; function. Most of the code for &lt;code&gt;theme&lt;/code&gt; and &lt;code&gt;legend&lt;/code&gt; is just for aesthetics.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;res &amp;lt;- ggplot(out.df, aes(x = time)) +
+  ggtitle(bquote(atop(bold(.(
+    title
+  )), atop(bold(
+    .(subtit)
+  ))))) +
+  geom_line(aes(y = S, colour = &amp;quot;Susceptible&amp;quot;)) +
+  geom_line(aes(y = I, colour = &amp;quot;Infected&amp;quot;)) +
+  geom_line(aes(y = R, colour = &amp;quot;Recovered&amp;quot;)) +
+  ylab(label = &amp;quot;Proportion&amp;quot;) +
+  xlab(label = &amp;quot;Time (days)&amp;quot;) +
+  theme(legend.justification = c(1, 0),
+        legend.position = c(1, 0.5)) +
+  theme(
+    legend.title = element_text(size = 12, face = &amp;quot;bold&amp;quot;),
+    legend.background = element_rect(
+      fill = &amp;#39;#FFFFFF&amp;#39;,
+      size = 0.5,
+      linetype = &amp;quot;solid&amp;quot;
+    ),
+    legend.text = element_text(size = 10),
+    legend.key = element_rect(
+      colour = &amp;quot;#FFFFFF&amp;quot;,
+      fill = &amp;#39;#C2C2C2&amp;#39;,
+      size = 0.25,
+      linetype = &amp;quot;solid&amp;quot;
+    )
+  ) +
+  scale_colour_manual(
+    &amp;quot;Compartments&amp;quot;,
+    breaks = c(&amp;quot;Susceptible&amp;quot;, &amp;quot;Infected&amp;quot;, &amp;quot;Recovered&amp;quot;),
+    values = c(&amp;quot;blue&amp;quot;, &amp;quot;red&amp;quot;, &amp;quot;darkgreen&amp;quot;)
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So now the function runs, it prints the plot and write a .png image file to the file directory with the specified parameters in the filename. The ggsave function accomplishes this with ease.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(res)
+ggsave(
+  plot=res, 
+  filename=paste0(&amp;quot;SIRplot_&amp;quot;,&amp;quot;time&amp;quot;,t,&amp;quot;beta&amp;quot;,b,&amp;quot;gamma&amp;quot;,g,&amp;quot;.png&amp;quot;), 
+  width=8,
+  height=6,
+  dpi=180)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The fully annotated code can be found in my GitHub repository SIR-interact. You can download the code and tinker around with it.&lt;/p&gt;
+&lt;p&gt;So when we run the function while setting the period to 70 days, β = 1.4 and γ = 0.3 &lt;code&gt;SIR.model(70,1.4,0.3)&lt;/code&gt; we write a file with the name &lt;code&gt;SIRplot_time70beta1.4gamma0.3.png&lt;/code&gt; and get output plot looking like…&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;sir_plot.png&#34; width=&#34;345&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Academic: the website builder for Hugo</title>
       <link>/post/getting-started/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
