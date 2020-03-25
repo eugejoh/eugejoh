@@ -14,9 +14,9 @@
     
     <item>
       <title>SIR model with deSolve and ggplot2</title>
-      <link>/post/sir-model-with-desolve-and-ggplot2/sir-model-with-desolve-and-ggplot2/</link>
+      <link>/post/sir-model-with-desolve-and-ggplot2/</link>
       <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>/post/sir-model-with-desolve-and-ggplot2/sir-model-with-desolve-and-ggplot2/</guid>
+      <guid>/post/sir-model-with-desolve-and-ggplot2/</guid>
       <description>
 
 
@@ -118,7 +118,10 @@ ggsave(
   dpi=180)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The fully annotated code can be found in my GitHub repository SIR-interact. You can download the code and tinker around with it.&lt;/p&gt;
 &lt;p&gt;So when we run the function while setting the period to 70 days, β = 1.4 and γ = 0.3 &lt;code&gt;SIR.model(70,1.4,0.3)&lt;/code&gt; we write a file with the name &lt;code&gt;SIRplot_time70beta1.4gamma0.3.png&lt;/code&gt; and get output plot looking like…&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;sir_plot.png&#34; width=&#34;345&#34; /&gt;&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/sir-model-with-desolve-and-ggplot2/2017-01-04-sir-model-with-desolve-and-ggplot2_files/sir_plot.png&#34; style=&#34;width:95.0%&#34; /&gt;
+
+&lt;/div&gt;
 &lt;/div&gt;
 </description>
     </item>
