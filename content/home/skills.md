@@ -31,7 +31,7 @@ subtitle = ""
   icon = "file-alt"
   icon_pack = "fas"
   name = "Reproducible Workflows"
-  description = "Reproducible reporting and research using Git and R Markdown"
+  description = "Reproducible reporting and research using R Markdown and Git"
   
 [[feature]]
   icon = "database"
@@ -43,7 +43,7 @@ subtitle = ""
   icon = "chart-line"
   icon_pack = "fas"
   name = "Data Analysis"
-  description = "Exploratory data analyses, statistical modeling, and spatial analyses"
+  description = "Exploratory data analysis, statistical modeling, and spatial analysis"
   
 [[feature]]
   icon = "poll"
