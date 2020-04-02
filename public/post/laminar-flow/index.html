@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Eugene Joh">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.
+Laminar Flow A simple definition of laminar flow is when a fluid flows through a pipe in parallel layers with no disruptions between these layers. Turbulent flow occurs when there is mixing or any disruption between these layers.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/laminar-flow/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#B8CED6">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/idea.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/idea.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono%7CLato:400%7COpen+Sans&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130364870-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-130364870-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/post/laminar-flow/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@eugejoh">
+  <meta property="twitter:creator" content="@eugejoh">
+  
+  <meta property="og:site_name" content="Eugene J">
+  <meta property="og:url" content="/post/laminar-flow/">
+  <meta property="og:title" content="Laminar flow with ggplot2 and gganimate | Eugene J">
+  <meta property="og:description" content="This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.
+Laminar Flow A simple definition of laminar flow is when a fluid flows through a pipe in parallel layers with no disruptions between these layers. Turbulent flow occurs when there is mixing or any disruption between these layers."><meta property="og:image" content="/post/laminar-flow/featured.jpg">
+  <meta property="twitter:image" content="/post/laminar-flow/featured.jpg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-04-05T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2018-04-05T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/laminar-flow/"
+  },
+  "headline": "Laminar flow with ggplot2 and gganimate",
+  
+  "image": [
+    "/post/laminar-flow/featured.jpg"
+  ],
+  
+  "datePublished": "2018-04-05T00:00:00Z",
+  "dateModified": "2018-04-05T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Eugene Joh"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eugene J",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.\nLaminar Flow A simple definition of laminar flow is when a fluid flows through a pipe in parallel layers with no disruptions between these layers. Turbulent flow occurs when there is mixing or any disruption between these layers."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#B8CED6",
+          "text": "#F4F8FC"
+        },
+        "button": {
+          "background": "#F4F8FC",
+          "text": "#B8CED6"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "/privacy/"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>Laminar flow with ggplot2 and gganimate | Eugene J</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>About</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Laminar flow with ggplot2 and gganimate</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Apr 5, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    7 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/categories/r/">R</a>, <a href="/categories/hemodynamics/">Hemodynamics</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<p>This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.</p>
+<div id="laminar-flow" class="section level2">
+<h2>Laminar Flow</h2>
+<p>A simple definition of <a href="https://en.wikipedia.org/wiki/Laminar_flow">laminar flow</a> is when a fluid flows through a pipe in parallel layers with no disruptions between these layers. Turbulent flow occurs when there is mixing or any disruption between these layers. Laminar flow is a simple analysis of fluid dynamics that considers the viscosity (“thickness/gooeyness”) of a liquid. This model is based on a number of assumptions where the fluid flows through a straight cylindrical pipe of fixed diameter, there is no acceleration (only a balance between pressure and viscous/shear forces) and gravitational forces are ignored. The walls of the pipe exhibit the maximum <a href="https://en.wikipedia.org/wiki/Shear_force">shearing force</a> and the axial centre of the pipe has zero shear. This results in a parabolic <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/pfric2.html">velocity profile</a> where the velocity is at it’s maximum at centre of the pipe.</p>
+</div>
+<div id="matlab-to-r" class="section level2">
+<h2>MATLAB to R?</h2>
+<p>First you might wonder, why is this post randomly on laminar flow? A short trip down memory lane while organizing some undergraduate course folders resulted in my rediscovery of some lecture notes and code related to medical biophysics and hemodynamics. Not having used MATLAB in over 4 years, <strong>I was curious whether I could translate some of the MATLAB code into something similar into R</strong>. Some points on the <a href="https://www.mathworks.com/discovery/matlab-vs-r.html">differences</a>, MATLAB is a proprietary numerical computing programming software based on matrix algorithms while R is a open-source programming language centered on statistical analyses. There are some StackOverflow <a href="https://stackoverflow.com/questions/1738087/what-can-matlab-do-that-r-cannot-do">discussions</a> on these comparisons if you want to explore this further. I also discovered the <code>pracma</code> <a href="https://cran.r-project.org/web/packages/pracma/index.html">package</a> for numerical analysis that uses some MATLAB function names (#tbt). Now to the actual R code!</p>
+</div>
+<div id="initial-conditions" class="section level2">
+<h2>Initial Conditions</h2>
+<p>First we’ll load the relevant packages. I’ve commented in the code lines on some basic descriptions on each package. Just a small note that some of these packages need to be downloaded from GitHub repositories using the <code>devtools</code> <a href="https://cran.r-project.org/web/packages/devtools/index.html">package</a>.</p>
+<pre class="r"><code># Packages ####
+library(pracma) #load practical math package
+library(ggplot2) #data viz
+library(scales) #plot scales
+library(dplyr) #data wrangling
+library(viridis) #data viz palette
+library(animation) #animation
+library(gganimate) #ggplot animation</code></pre>
+<p>Next, for any type of model you need to first set the <strong>initial conditions</strong> or parameters. In this case, we’ll specify the conditions for the pressure difference at the beginning at the end of the pipe, the viscous force, the dimensions of the pipe (radius and length).</p>
+<pre class="r"><code>## Initial Conditions ####
+# Pressure difference (delta P)
+Pi &lt;- 10 #initial pressure [Pa]
+Pf &lt;- 50 #final pressure [Pa]
+ 
+## Boundary Conditions ####
+# Pipe and fluid characteristics
+mu &lt;- 8.94e-4 #viscosity for water. units: [Pa*s] at temp = 25 C
+R &lt;- 0.1 #radius of pipe [m]
+l &lt;- 4 #length of pipe [m]
+ 
+N &lt;- 100 #radial resolution
+r &lt;- seq(-R,R,length.out=N) #diameter of pipe
+S &lt;- pi*(R^2) #cross-sectional area of pipe</code></pre>
+<p>Since we’re also playing with the <code>animation</code> <a href="https://cran.r-project.org/web/packages/animation/index.html">package</a>, we’ll also input a vector of time units to loop and animate the visualization.</p>
+<pre class="r"><code># time dependent
+time &lt;- seq(0,19) #length 20
+Pit &lt;- 0.2*time*Pi
+Pft &lt;- 0.2*time*Pf
+Pdiff &lt;- abs(Pft-Pit) #pressure difference over time</code></pre>
+</div>
+<div id="data-setup" class="section level2">
+<h2>Data Setup</h2>
+<p>Now what we’ll do is run a loop over the time sequence we’ve specified (20 arbitrary units of time, seconds for example) to create the output data. The pressure difference will be increased as a function of time, simulating increased flow of the fluid (water in this case) over time. The equation in the code below is the flow velocity as a function of the pipe radius derived from <a href="https://en.wikipedia.org/wiki/Hagen%E2%80%93Poiseuille_equation">Hagen-Poiseuille’s Law</a> specified below. So after running <code>lapply()</code> over the pressure differences, we then massage the list output into a data frame – first by “unlisting” the list elements, creating a matrix object where each column represents a different time point, and coercing the matrix into a data frame (and as always <a href="https://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/">remembering</a> to use <code>stringsAsFactors = FALSE</code>).</p>
+<blockquote>
+<p>Hagen-Poiseuille’s Law<br />
+Q = πR4Δp / 8μl</p>
+</blockquote>
+<pre class="r"><code># Create Data Viz ####
+# plot shows V (average speed) and r (pipe radius)
+# ((Pdiff)*(R^2)/(4*mu*l))*(1-(r^2)/R^2) #eqn for V
+out1 &lt;- lapply(seq_along(Pdiff), function(x) {
+  ((Pdiff[x]) * (R ^ 2) / (4 * mu * l)) * (1 - (r ^ 2) / R ^ 2)
+})
+
+out1_df &lt;-data.frame(
+  matrix(unlist(out1), ncol = length(time)), 
+  stringsAsFactors = FALSE
+  )
+
+names(out1_df) &lt;- seq_along(names(out1_df))</code></pre>
+<p>Now we have a data frame with each column containing the velocity of the fluid as a function of the radius. There are twenty time periods and 100 rows representing the resolution of the x-axis (e.g. 100 ticks). The problem now is that this data frame is not in a <code>ggplot2</code> friendly format. We’ll have to use the <code>tidyr</code> <a href="https://cran.r-project.org/web/packages/tidyr/index.html">package</a> to manipulate the data. The code below <a href="http://garrettgman.github.io/tidying/">“gathers”</a> the columns so they become grouped elements in one column and then we use the <code>dplyr</code> <a href="https://cran.r-project.org/web/packages/dplyr/index.html">package</a> to add the radius values as new column, coerce the “time” column into an integer type, and add the flowrate (a function of the velocity profile and pipe cross-sectional area) as another column. A note here that when the <code>rbind()</code> function is used, if the length/# of rows of the object’s (<code>r</code>) being “binded”&quot; is a multiple of the other object’s (<code>df_t</code>) length/# of rows, it will repeat based on the multiple. Since we looped based on the the radial resolution (100) specified before, <code>rbind()</code> will fill the column with 20 multiples (20*100) of the radius ticks.</p>
+<pre class="r"><code>df_t &lt;- tidyr::gather(out1_df,key=&quot;time&quot;,value=&quot;V&quot;)
+ 
+df_t2 &lt;- df_t %&gt;% #previous object
+mutate(time = as.integer(time)) %&gt;% #change to integer type
+  mutate(Qv = V/(1-(r^2)/R^2)) #add volumetric flowrate (Qv)</code></pre>
+</div>
+<div id="data-visualization" class="section level2">
+<h2>Data Visualization</h2>
+<p>Now we have our data in a nice format to visualize and loop over to create our GIF. We specify the data frame we want to use, map the aesthetics and specifically the <code>frame</code> and <code>cumulative</code> arguments. The <code>frame</code> aesthetic tells the <code>gganimate</code> <a href="https://github.com/dgrtwo/gganimate">package</a> to loop over the values defined in <code>frame</code> or time in our case. We’ll use the amazing <code>viridis</code> package to add some time colours, use the built-in <code>ggplot2</code> <code>theme_dark</code>, tinker with the text sizes, and provide a good title and axis labels (yay for plotting best practices). The legend here displays the flow rate through the pipe going from purple (low flowrate) to yellow (high flowrate).</p>
+<pre class="r"><code>p1 &lt;- ggplot(data=df_t2, aes(y=r,x=V,col=Qv,frame=time,cumulative=TRUE)) +
+geom_path() + geom_point(alpha=0.05) +
+scale_colour_viridis(option = &quot;C&quot;, discrete = FALSE) +
+theme_dark() +
+labs(title = &quot;Hagen-Poiseuille&#39;s Law: Velocity Profile t =&quot;,
+y = &quot;Pipe Radius (m)&quot;, x = &quot;Velocity (m/s)&quot;)
+ 
+ggsave(p1,filename = &quot;Vprofile1.png&quot;,width = 250, height=100,units = &quot;mm&quot;)</code></pre>
+<div class="figure">
+<img src="/post/laminar-flow/vprofile1.png" style="width:99.0%" />
+
+</div>
+<p>The title might look strange but the empty “t =”&quot; will be useful to indicate which time point each frame describes when we create the .gif (look at the <code>title_frame</code> argument in the <code>gganimate()</code> function below. This will add the value provided to the frame aesthetic and include it into the plot title. We also specify the intervals for each frame (0.2 seconds) and the dimensions of the output.</p>
+<pre class="r"><code>gganimate(p1,filename = &quot;Vprofile1.gif&quot;, title_frame = TRUE,
+interval=0.2, ani.width = 900, ani.height = 350)</code></pre>
+<div class="figure">
+<img src="/post/laminar-flow/vprofile11.gif" style="width:105.0%" />
+
+</div>
+<p>Now we have this nice animation visualizing the laminar flow velocity profile of a pipe at different time points where the pressure difference increases, in turn increasing the maximum velocity of the fluid. Another way to see it, is that at time 0, there is no pressure difference, therefore no flow. But once the pressure difference increases (decreased lower pressure at the end of pipe e.g. increased flow of fluid out of the end of the pipe) the velocity profile or flow increases.</p>
+<p>The entire script containing the code is found in my GitHub repo if you would want to fork it or tinker with it yourself.</p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/laminar-flow/&amp;text=Laminar%20flow%20with%20ggplot2%20and%20gganimate" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/laminar-flow/&amp;t=Laminar%20flow%20with%20ggplot2%20and%20gganimate" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Laminar%20flow%20with%20ggplot2%20and%20gganimate&amp;body=/post/laminar-flow/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/laminar-flow/&amp;title=Laminar%20flow%20with%20ggplot2%20and%20gganimate" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Laminar%20flow%20with%20ggplot2%20and%20gganimate%20/post/laminar-flow/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/laminar-flow/&amp;title=Laminar%20flow%20with%20ggplot2%20and%20gganimate" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hue7de8e7c44bf6b76bf08753b36f8bfaf_993967_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Eugene Joh</a></h5>
+      <h6 class="card-subtitle">Epidemiologist</h6>
+      <p class="card-text">☕ + 📊</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0001-9348-630X" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/eugejoh/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<div class="article-widget">
+  
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/wm-breaks/" rel="prev">Watermain Breaks in the City of Toronto</a>
+  </div>
+  
+</div>
+
+</div>
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    © Eugene Joh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

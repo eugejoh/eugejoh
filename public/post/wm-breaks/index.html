@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Eugene Joh">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This post goes into using open data provided by the City of Toronto and all the code is found on Github.
+Drinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/wm-breaks/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#B8CED6">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/idea.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/idea.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono%7CLato:400%7COpen+Sans&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130364870-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-130364870-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/post/wm-breaks/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@eugejoh">
+  <meta property="twitter:creator" content="@eugejoh">
+  
+  <meta property="og:site_name" content="Eugene J">
+  <meta property="og:url" content="/post/wm-breaks/">
+  <meta property="og:title" content="Watermain Breaks in the City of Toronto | Eugene J">
+  <meta property="og:description" content="This post goes into using open data provided by the City of Toronto and all the code is found on Github.
+Drinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030."><meta property="og:image" content="/post/wm-breaks/featured.png">
+  <meta property="twitter:image" content="/post/wm-breaks/featured.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2017-12-09T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2017-12-09T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/wm-breaks/"
+  },
+  "headline": "Watermain Breaks in the City of Toronto",
+  
+  "image": [
+    "/post/wm-breaks/featured.png"
+  ],
+  
+  "datePublished": "2017-12-09T00:00:00Z",
+  "dateModified": "2017-12-09T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Eugene Joh"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eugene J",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "This post goes into using open data provided by the City of Toronto and all the code is found on Github.\nDrinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#B8CED6",
+          "text": "#F4F8FC"
+        },
+        "button": {
+          "background": "#F4F8FC",
+          "text": "#B8CED6"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "/privacy/"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>Watermain Breaks in the City of Toronto | Eugene J</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Eugene J</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>About</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Watermain Breaks in the City of Toronto</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 9, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    13 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/categories/r/">R</a>, <a href="/categories/water-quality/">Water Quality</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<p>This post goes into using open data provided by the City of Toronto and all the code is found on <a href="https://github.com/eugejoh/TO_Watermain">Github</a>.</p>
+<div id="drinking-water" class="section level2">
+<h2>Drinking Water</h2>
+<p>Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th <a href="http://www.un.org/sustainabledevelopment/water-and-sanitation/">Sustainable Development Goal</a> to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030.</p>
+<p>In Ontario (province of Canada) we are fortunate to have good water quality in most cities, towns, municipalities. It’s important to note that a disparity exists between regions across the province: large vs. small cities, southern vs. northern locations, and within <a href="https://globalnews.ca/news/3238948/first-nations-drinking-water-crisis-liberals-promise/">indigenous communities</a>. Across the province, there are different types of drinking water systems, various combinations of owners/operators, and (complex) regulatory network ensuring that the quality of the water reaching users is acceptable for consumption.</p>
+</div>
+<div id="watermain-breaks" class="section level2">
+<h2>Watermain Breaks</h2>
+<p>Within these drinking water systems, the large pipes that carry most of the water through the system from the treatment plant through the distribution system are called <strong>watermains</strong> (or water mains). In the event of a watermain failing, either by a crack, some leaking or a catastrophic break, this can have potential effects on the flow of water to users. There can be loss of pressure in the distribution system, potentially allowing contaminants (chemical or microbiological) to enter the drinking water system due to the loss of pressure. No one wants to have E. coli or some industrial chemical in their tap water.</p>
+<p>There are many factors behind a watermain failure. Most of the time there multiple concurrent factors that cause the pipe to crack or break. A non-exhaustive list of factors include type of pipe material, age of pipe, surrounding soil conditions, corrosion, pressure fluctuations, direct damage, extreme temperatures, extreme weather events, and poor system design.</p>
+<p><img src="/post/wm-breaks/watermain-break.jpg" style="width:95.0%" /> ## Toronto Watermain Break Data The City of Toronto has an <a href="https://www1.toronto.ca/wps/portal/contentonly?vgnextoid=1a66e03bb8d1e310VgnVCM10000071d60f89RCRD">Open Data Catalogue</a> containing various types of datasets on a number of topics like environment, public safety, development, and government. You can follow them on <a href="http://www.twitter.com/open_to">Twitter</a> to know when they update/refresh their data. I downloaded the Excel flat-file containing the date and geographic location of watermain breaks from 1990 to 2016 within the city of Toronto boundaries. For this post I will be focusing on the temporal nature of the data, aka what do the trends of watermain breaks look like over time in Toronto.</p>
+</div>
+<div id="data-import-exploration-processing" class="section level2">
+<h2>Data Import, Exploration, Processing</h2>
+<p>After downloading the Excel file into my data folder, I use the <code>list.files()</code> function and some regular expression to identify the <code>.xlsx</code> files in the folder. This isn’t necessary since we only have one file in our folder but I’ve decided to make it good practice to have a standard method in selecting multiple files and file types in my data folder in a programmatic fashion. Afterwards I use the <code>read_excel()</code> function from the <code>readxl</code> <a href="https://cran.r-project.org/web/packages/readxl/index.html">package</a> to import the dataset into R.</p>
+<pre class="r"><code>watermain.files &lt;- list.files(&quot;data&quot;, pattern = &quot;\\.xlsx$&quot;)
+wm.df &lt;- readxl::read_excel(paste0(&quot;data/&quot;,watermain.files))</code></pre>
+<p>We see that there are 35461 rows or (assumed) unique watermain breaks. After using the <code>str()</code> function to get a basic idea of the types of columns I have. I rename the column names using the <code>names()</code> function and create a new column with the year as a <code>factor</code> type (I actually don’t end up using this).</p>
+<pre class="r"><code>wm.df &lt;- read_excel(paste0(&quot;data/&quot;,watermain.files))
+names(wm.df) &lt;- c(&quot;Date&quot;,&quot;Year&quot;,&quot;X_coord&quot;,&quot;Y_coord&quot;) #change column names
+wm.df$Year_f &lt;- as.factor(wm.df$Year) #create new column with &#39;Year&#39; as factor
+wm.df$Year &lt;- as.integer(wm.df$Year) #convert original &#39;Year&#39; to an integer</code></pre>
+<p>Next I use the <code>floor_date()</code> function from the <code>lubridate</code> <a href="https://cran.r-project.org/web/packages/lubridate/index.html">package</a> to create new columns containing the month and week. This will be useful later on when I want to aggregate the frequency counts of watermain breaks by week or month.</p>
+<pre class="r"><code>wm.df$week &lt;- floor_date(wm.df$Date, unit = &quot;week&quot;) #floor to week
+wm.df$month &lt;- floor_date(wm.df$Date, unit = &quot;month&quot;) #floor to month</code></pre>
+<p>Then I just create a new column that contains the same date information but instead of <code>POSIXct</code>, it is in <code>Date</code> format.</p>
+<pre class="r"><code>wm.df &lt;- wm.df %&gt;% mutate(date = as.Date(Date))</code></pre>
+<p><em>This is not related to the temporal information but a good step with the data exploratory workflow.</em> I want to do a bit a quality control/assurance with the data I have. I use the <code>summary()</code> function to look at the <code>Date</code>, <code>Year</code>, <code>X_coord</code>, and <code>Y_coord</code> columns. First thing that catches my eye is that there seems to be some extreme values or outliers in the spatial information, specifically the <code>X_coord</code> maximum and <code>Y_coord</code> minimum. For geographic information, typical errors include inputting latitude when it should be longitude, and vice-versa.</p>
+<pre class="r"><code>wm.df %&gt;% select(X_coord, Y_coord) %&gt;% summary()
+ #    X_coord           Y_coord
+ # Min.   : 294164   Min.   : 304472
+ # 1st Qu.: 303580   1st Qu.:4838095
+ # Median : 311195   Median :4842843
+ # Mean   : 311820   Mean   :4841655
+ # 3rd Qu.: 318587   3rd Qu.:4846416
+ # Max.   :4845682   Max.   :4855952</code></pre>
+<p>First I look at the <code>X_coord</code> first and discover that the maximum value is not likely a <code>Y_coord</code> and it is the only “error” in this column. The code below shows the steps I took to identify and remove this outlier.</p>
+<pre class="r"><code>wm.df %&gt;% arrange(desc(X_coord)) #error is X_coord = 4845681.6, not a Y_coord either
+sort(wm.df$X_coord,decreasing = T)[1:3] # look at the top 3 largest values
+summary(wm.df$X_coord) #identify the error/outlier
+wm.df[which(wm.df$X_coord == max(wm.df$X_coord)),] #identify the row with the error/outlier
+wm.df &lt;- wm.df[-which(wm.df$X_coord == max(wm.df$X_coord)),] #remove error 2000-01-22</code></pre>
+<p>Then for the <code>Y_coord</code> I do the same steps and discover there are three errors within this column. Again, the code below shows the steps I took to remove them.</p>
+<pre class="r"><code>wm.df %&gt;% arrange(Y_coord) #first three Y_coord are duplicates of X_coord
+sort(wm.df$Y_coord,decreasing = F)[1:3] # Y_coord errors, three
+wm.df[which(wm.df$Y_coord %in% sort(wm.df$Y_coord,decreasing = F)[1:3]),]
+wm.df &lt;- wm.df[-which(wm.df$Y_coord %in% sort(wm.df$Y_coord,decreasing = F)[1:3]),] #remove these errors</code></pre>
+<p>Now I can aggregate the data by each week, month, and date simply using the <code>count()</code> function from the <code>dplyr</code> package.</p>
+<pre class="r"><code>month.wm &lt;- wm.df %&gt;% count(month) #month
+week.wm &lt;- wm.df %&gt;% count(week) #week
+year.wm &lt;- wm.df %&gt;% count(Year) #year</code></pre>
+</div>
+<div id="data-visualization" class="section level2">
+<h2>Data Visualization</h2>
+<p>Then we can use ggplot2 create a simple plot that visualizes the number of watermain breaks per week from 1990 to 2016.</p>
+<pre class="r"><code>ggplot(data = week.wm, aes(x=week, y=n)) +
+   geom_line() + labs(title = &quot;Watermain Breaks in Toronto (1990-2016)&quot;,
+                      x = &quot;Year&quot;, y = &quot;Number of Breaks per Week&quot;) +
+  scale_x_datetime(date_breaks = &quot;2 years&quot;, date_labels = &quot;%Y&quot;) + 
+  theme_minimal()</code></pre>
+<div class="figure">
+<img src="/post/wm-breaks/simple_weekly_wm.png" style="width:95.0%" />
+
+</div>
+<p>It looks like there is some pattern over time with peaks occurring in a periodic fashion. Let’s take a look at the seasonality of watermain breaks by month and week. We can add a new column to our data frame that codes for the month using the <code>mutate()</code> function.</p>
+<pre class="r"><code>mth.wm &lt;- wm.df %&gt;% 
+  group_by(month, Year) %&gt;%
+  count(month) %&gt;%
+  mutate(month_n = as.factor(month(month, label = T)))
+
+mthwk.wm &lt;- wm.df %&gt;% 
+  group_by(week, month, Year) %&gt;%
+  count(week, month, Year) %&gt;%
+  mutate(month_n = as.factor(month(month, label = T))) %&gt;%
+  mutate(yweek = week(week))</code></pre>
+<p>Then we can visualize this using boxplots representing the number of watermain breaks per month.</p>
+<pre class="r"><code>ggplot(mth.wm, aes(x = month_n, y = n)) +
+  geom_boxplot(aes(group = month_n)) +
+  labs(title = &quot;Seasonality of Watermain Breaks in Toronto (1990-2016)&quot;,
+       x = &quot;Month&quot;, y = &quot;Number of Breaks&quot;) + theme_minimal()</code></pre>
+<div class="figure">
+<img src="/post/wm-breaks/mth_season_wm.png" style="width:95.0%" />
+
+</div>
+<p>Looking at the dark black line in each boxplot, we can see that there is a clear increase in the median number of watermain breaks in Toronto during the colder months (November, December, January, February). Let’s use the nifty <code>animation</code> <a href="https://cran.r-project.org/web/packages/animation/index.html">package</a> and create a <code>.gif</code> file to see how trend changes over the 27 year period. The boxplots in the animation below are for the entire time period from 1990 to 2016 and the changing line represents the median number of watermain breaks per month in the specified year in the title.</p>
+<pre class="r"><code>library(animation)
+aspect.w &lt;- 800
+aspect.r &lt;- 1.6
+title.size &lt;- 20
+ani.options(ani.width = aspect.w,
+            ani.height = aspect.w / aspect.r,
+            units = &quot;px&quot;)
+
+saveGIF({
+  for (i in unique(mth.wm$Year)) {
+    g.loop &lt;- ggplot(data = mth.wm, aes(x = month_n, y = n)) +
+      geom_boxplot(aes(group = month_n)) +
+      stat_summary(
+        data = subset(mth.wm, Year == i),
+        fun.y = median,
+        geom = &quot;line&quot;,
+        aes(group = 1),
+        color = &quot;#222FC8&quot;,
+        alpha = 0.6,
+        size = 2
+      ) +
+      labs(
+        title = paste0(&quot;Seasonality of Watermain Breaks in Toronto (&quot;, i, &quot;)&quot;),
+        x = &quot;Month&quot;,
+        y = &quot;Number of Breaks per Month&quot;
+      ) +
+      theme(plot.title = element_text(size = title.size, face = &quot;bold&quot;))
+    print(g.loop)
+  }
+}, movie.name = &quot;wm_wm.gif&quot;, interval = 0.9, nmax = 30, 2)</code></pre>
+<div class="figure">
+<img src="/post/wm-breaks/wm_wm2.gif" style="width:95.0%" />
+
+</div>
+</div>
+<div id="basic-time-series-decomposition" class="section level2">
+<h2>Basic Time Series Decomposition</h2>
+<p>Since I aggregated the counts of watermain breaks by month, we have a set of data points in discrete intervals over time. In a basic sense, this is a time series and many other types of data exist in this format (stock market data, weather data, digital signal data, etc.) and there is a wealth of science and methods that deal with this type of data. That deserves a post in itself to talk about. Back to watermains… to get a better idea of the periodic pattern we observed in the first line plot and if there is a general trend over the 27 year period, we can use some R packages to “decompose” the data, extract the seasonal and trend components of the watermain break time series, and visualize them. By looking at these output plots we can make some preliminary inferences on the watermain breaks happening from 1990 to 2016.</p>
+<p>Since I am a <code>ggplot2</code> junkie, we’ll make sure we have the <code>ggfortify</code> package loaded in our R session and make use of the convenient <code>autoplot()</code> function. First we’re going to create a time series object that contains the counts of watermain breaks per month from 1990 to 2016. The first argument in the <code>ts()</code> function is the vector containing the counts of watermain breaks per month. We don’t necessarily have to worry about the column containing the date information since the second argument you can specify the start date c(1990,1) or January 1990 and the third argument you can specify the intervals/frequency of each data point; in this case since our time unit is a month we set the frequency to 12.</p>
+<pre class="r"><code>m.ts &lt;- ts(month.wm$n, start=c(1990,1), frequency=12)</code></pre>
+<p>Now that we have our ts object, we can use the convenient <code>autoplot()</code> function to do a lazy plot the data. This is the monthly counts version of the first plot we made earlier in the post (which was counts per week).</p>
+<pre class="r"><code>autoplot(m.ts, main = &quot;Time Series Watermain Breaks per Month in Toronto&quot;)</code></pre>
+<p><img src="/post/wm-breaks/autoplot_wm.gif" style="width:95.0%" /> Then we use the <code>decompose()</code> function to extract the seasonal and trend information from the time series. The output is a list of data frames containing the original time series, the seasonal component, trend component, random component, and some other attribute information. Here I use the option to assume an additive time series model since the seasonal variation looks pretty consistent. This <a href="https://anomaly.io/seasonal-trend-decomposition-in-r/">link</a> has a nice summary of the steps in decomposing a basic time series if you want to read further on this. The equation that this additive model is based on is below:</p>
+<blockquote>
+<p>Y[t] = T[t] + S[t] + e[t]</p>
+</blockquote>
+<p>Where Y is the data point per time unit (month) is equal to the sum of the three components: T – trend, S – seasonality, and e – a random component. In short, the random component is the the remainder of the trend and seasonal components and can be suggestive of outliers in the data while considering the trend and seasonality.</p>
+<pre class="r"><code>autoplot(decompose(m.ts, type = &quot;additive&quot;))</code></pre>
+<div class="figure">
+<img src="/post/wm-breaks/decomp_wm.png" style="width:95.0%" />
+
+</div>
+<p>From this plot we see the original time series at the top with the facet label ‘data’ (we seen this twice now so it’s nothing new). The second plot show the seasonal component and since there is a definite repeating pattern with the peaks coinciding with the peaks of watermain breaks and we can conclude there is seasonality or periodicity with the data (and confirms what we saw with the monthly box plots). The third plot displays the trend while disregarding the seasonal component and we can see that over the time period there is a general decreasing trend of watermain breaks in Toronto. The final and fourth plot shows the remainder or random component and it describes any variation or deviation in the data that is not considered in the seasonal or trend data. We can see in the original data the high spike in 1994 has a spike in the remainder plot as well. We can make a general conclusion that there this is an extraordinary number of watermain breaks in that small window. A more systematic approach would be to predetermine an threshold in which a remainder value would be significant, since we see some deviations occurring the recent years.</p>
+</div>
+<div id="spatial-data" class="section level2">
+<h2>Spatial Data</h2>
+<p>The dataset contains spatial information contained in the columns labelled <code>X_coord</code> and <code>Y_coord</code>. It seems like the City of Toronto uses the Modified Transverse Mercator (MTM), North American Datum 1927 (NAD27) with a truncated northing (-4,000,000) geographic coordinate system. I’m not very familiar with doing coordinate system conversions in R but I would appreciate any feedback on how to do this! Regardless of this, I decided to visualize the spatial information and get a general idea of where these breaks were happening and when. The code below takes the coordinate data and plots them using <code>ggplot2</code>.</p>
+<pre class="r"><code>ggplot(data = wm.df, aes(x = X_coord, y = Y_coord, color = year)) +
+  geom_point(size = 1.5, alpha = 0.4) +
+  scale_color_viridis(option = &quot;B&quot;) +
+  labs(
+    title = paste0(&quot;Map of Watermain Breaks&quot;),
+    subtitle = paste0(&quot;City of Toronto (1990-2016)&quot;)
+  ) +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    panel.background = element_rect(fill = &quot;grey95&quot;, colour = &quot;grey5&quot;),
+    legend.background = element_rect(fill = &quot;grey95&quot;),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(),
+    plot.title = element_text(size = title.size, face = &quot;bold&quot;),
+    plot.subtitle = element_text(size = title.size * 0.6, face = &quot;plain&quot;),
+    plot.background = element_rect(fill = &quot;grey95&quot;)
+  )</code></pre>
+<div class="figure">
+<img src="/post/wm-breaks/wm_point_al.png" style="width:95.0%" />
+
+</div>
+<p>I am also a <code>viridis</code> <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">package</a> junkie if you haven’t noticed from my other posts. So as the legend says, the brighter yellow indicates a more recent watermain break, darker ones are further back in time. This plot isn’t too information since it shows all the watermain breaks over the entire 27 year period and we don’t have any reference for exact locations within the city of Toronto.</p>
+</div>
+<div id="so-what-does-this-mean" class="section level2">
+<h2>So what does this mean…</h2>
+<p>At first glance, you might be concerned after doing some quick mental math (35,461 breaks over 27 years… ~1300 breaks per year) and conclude that tap water provided these pipes is not safe and the residents of Toronto should only drink bottled water for the rest of their lives. This is NOT the point of this post and nor does it suggest people should be overly paranoid with seeing this. The city of Toronto is well-resourced and have the capacity to response to these watermain breaks, isolate them, fix them in a timely manner, and resume service of safe drinking water. The health risk from these breaks shouldn’t concern the average Torontonian and since waterborne diseases are extremely rare in developed countries and Toronto makes sure that their four water treatment plants are fully functioning to make sure all the water is safe. If you want to more about watermain breaks in Toronto you can check out their <a href="https://www.toronto.ca/services-payments/building-construction/infrastructure-city-construction/understanding-city-construction/water-sewer-mains/">website</a> and read on how they are working hard behind the scene to ensure that you (if you live in Toronto) have access to safe drinking water.</p>
+<p>Everything in the post are my own views and as always feedback, comments, suggestions are always welcome. I am constantly learning new things about using R and love to learn. Feel free to reach out to me!</p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/wm-breaks/&amp;text=Watermain%20Breaks%20in%20the%20City%20of%20Toronto" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/wm-breaks/&amp;t=Watermain%20Breaks%20in%20the%20City%20of%20Toronto" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Watermain%20Breaks%20in%20the%20City%20of%20Toronto&amp;body=/post/wm-breaks/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/wm-breaks/&amp;title=Watermain%20Breaks%20in%20the%20City%20of%20Toronto" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Watermain%20Breaks%20in%20the%20City%20of%20Toronto%20/post/wm-breaks/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/wm-breaks/&amp;title=Watermain%20Breaks%20in%20the%20City%20of%20Toronto" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hue7de8e7c44bf6b76bf08753b36f8bfaf_993967_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Eugene Joh</a></h5>
+      <h6 class="card-subtitle">Epidemiologist</h6>
+      <p class="card-text">☕ + 📊</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0001-9348-630X" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/eugejoh" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/eugejoh/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<div class="article-widget">
+  
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/post/laminar-flow/" rel="next">Laminar flow with ggplot2 and gganimate</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/ed-visits-regex-treemaps/" rel="prev">Regular Expression &amp; Treemaps to Visualize Emergency Department Visits</a>
+  </div>
+  
+</div>
+
+</div>
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    © Eugene Joh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
