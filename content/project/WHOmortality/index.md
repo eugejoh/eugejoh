@@ -32,11 +32,11 @@ url_video: ""
 slides: ""
 ---
 
-# Send Telegram Notifications with R
+# WHO Mortality Database
 The `WHOmortality` R package provides tools to easily download, extract, and import the raw data files found in the World Health Organization's (WHO) Mortality Database. 
 
 Currently this package only imports the two mortality tables containing the [International Classification of Disease, 10th Revision (ICD-10)](https://icd.who.int/browse10/2016/en) codes.
 
 More information can be found in the GitHub repository [README](https://github.com/eugejoh/WHOmortality/blob/master/README.md).
 
-![](/project/WHOmortality/malaria.gif){width=40%}
+![](/project/WHOmortality/malaria.gif)

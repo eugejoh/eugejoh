@@ -17,7 +17,7 @@
       <link>/project/whomortality/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       <guid>/project/whomortality/</guid>
-      <description>&lt;h1 id=&#34;send-telegram-notifications-with-r&#34;&gt;Send Telegram Notifications with R&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;who-mortality-database&#34;&gt;WHO Mortality Database&lt;/h1&gt;
 &lt;p&gt;The &lt;code&gt;WHOmortality&lt;/code&gt; R package provides tools to easily download, extract, and import the raw data files found in the World Health Organization&amp;rsquo;s (WHO) Mortality Database.&lt;/p&gt;
 &lt;p&gt;Currently this package only imports the two mortality tables containing the 
 &lt;a href=&#34;https://icd.who.int/browse10/2016/en&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;International Classification of Disease, 10th Revision (ICD-10)&lt;/a&gt;
@@ -25,7 +25,7 @@
 &lt;p&gt;More information can be found in the GitHub repository 
 &lt;a href=&#34;https://github.com/eugejoh/WHOmortality/blob/master/README.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;README&lt;/a&gt;
 .&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/project/WHOmortality/malaria.gif&#34; alt=&#34;&#34;&gt;{width=40%}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/project/WHOmortality/malaria.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 </description>
     </item>
     
