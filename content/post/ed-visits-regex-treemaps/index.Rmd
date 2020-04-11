@@ -9,7 +9,6 @@ categories:
 tags: []
 subtitle: ''
 summary: ''
-authors: []
 lastmod: '2017-05-25'
 featured: false
 image:
