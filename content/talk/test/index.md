@@ -14,7 +14,7 @@ featured: false
 image:
   caption: ""
   focal_point: ""
-  preview_only: true
+  preview_only: false
 
 links:
 - icon: clone
