@@ -163,6 +163,7 @@
       <description>
 
 
+&lt;p&gt;Original post date: April 05 2018&lt;/p&gt;
 &lt;p&gt;This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.&lt;/p&gt;
 &lt;div id=&#34;laminar-flow&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Laminar Flow&lt;/h2&gt;
@@ -268,6 +269,7 @@ interval=0.2, ani.width = 900, ani.height = 350)&lt;/code&gt;&lt;/pre&gt;
       <description>
 
 
+&lt;p&gt;Original post date: December 09 2017&lt;/p&gt;
 &lt;p&gt;This post goes into using open data provided by the City of Toronto and all the code is found on &lt;a href=&#34;https://github.com/eugejoh/TO_Watermain&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
 &lt;div id=&#34;drinking-water&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Drinking Water&lt;/h2&gt;
@@ -278,7 +280,14 @@ interval=0.2, ani.width = 900, ani.height = 350)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Watermain Breaks&lt;/h2&gt;
 &lt;p&gt;Within these drinking water systems, the large pipes that carry most of the water through the system from the treatment plant through the distribution system are called &lt;strong&gt;watermains&lt;/strong&gt; (or water mains). In the event of a watermain failing, either by a crack, some leaking or a catastrophic break, this can have potential effects on the flow of water to users. There can be loss of pressure in the distribution system, potentially allowing contaminants (chemical or microbiological) to enter the drinking water system due to the loss of pressure. No one wants to have E. coli or some industrial chemical in their tap water.&lt;/p&gt;
 &lt;p&gt;There are many factors behind a watermain failure. Most of the time there multiple concurrent factors that cause the pipe to crack or break. A non-exhaustive list of factors include type of pipe material, age of pipe, surrounding soil conditions, corrosion, pressure fluctuations, direct damage, extreme temperatures, extreme weather events, and poor system design.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wm-breaks/watermain-break.jpg&#34; style=&#34;width:95.0%&#34; /&gt; ## Toronto Watermain Break Data The City of Toronto has an &lt;a href=&#34;https://www1.toronto.ca/wps/portal/contentonly?vgnextoid=1a66e03bb8d1e310VgnVCM10000071d60f89RCRD&#34;&gt;Open Data Catalogue&lt;/a&gt; containing various types of datasets on a number of topics like environment, public safety, development, and government. You can follow them on &lt;a href=&#34;http://www.twitter.com/open_to&#34;&gt;Twitter&lt;/a&gt; to know when they update/refresh their data. I downloaded the Excel flat-file containing the date and geographic location of watermain breaks from 1990 to 2016 within the city of Toronto boundaries. For this post I will be focusing on the temporal nature of the data, aka what do the trends of watermain breaks look like over time in Toronto.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/wm-breaks/watermain-break.jpg&#34; style=&#34;width:75.0%&#34; /&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;toronto-watermain-break-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Toronto Watermain Break Data&lt;/h2&gt;
+&lt;p&gt;The City of Toronto has an &lt;a href=&#34;https://www1.toronto.ca/wps/portal/contentonly?vgnextoid=1a66e03bb8d1e310VgnVCM10000071d60f89RCRD&#34;&gt;Open Data Catalogue&lt;/a&gt; containing various types of datasets on a number of topics like environment, public safety, development, and government. You can follow them on &lt;a href=&#34;http://www.twitter.com/open_to&#34;&gt;Twitter&lt;/a&gt; to know when they update/refresh their data. I downloaded the Excel flat-file containing the date and geographic location of watermain breaks from 1990 to 2016 within the city of Toronto boundaries. For this post I will be focusing on the temporal nature of the data, aka what do the trends of watermain breaks look like over time in Toronto.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;data-import-exploration-processing&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Data Import, Exploration, Processing&lt;/h2&gt;
@@ -451,6 +460,7 @@ saveGIF({
       <description>
 
 
+&lt;p&gt;Original post date: May 25 2017&lt;/p&gt;
 &lt;p&gt;I had the opportunity to attend the &lt;a href=&#34;https://www.odsc.com/boston&#34;&gt;Open Data Science Conference&lt;/a&gt; (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.&lt;/p&gt;
 &lt;p&gt;One of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis. This gave me the thought of applying some text analytics to visualize some data I was working on last summer. In this post I’m going to walk through how I used regular expression to label classification codes in a large dataset (&lt;a href=&#34;https://www.cdc.gov/nchs/ahcd/about_ahcd.htm&#34;&gt;NHAMCS&lt;/a&gt;) representing emergency department visits in the United States and eventually visualize the data.&lt;/p&gt;
 &lt;div id=&#34;the-nhamcs-and-icd-9-codes&#34; class=&#34;section level2&#34;&gt;
@@ -653,6 +663,7 @@ for (k in paste0(&amp;quot;^&amp;quot;,diag.c[,2])){ #codes
       <description>
 
 
+&lt;p&gt;Original post date: March 03 2017&lt;/p&gt;
 &lt;p&gt;For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.&lt;/p&gt;
 &lt;p align=&#34;center&#34;&gt;
 &lt;img src=&#34;/post/who-tb-data-ggplot2/mycobacterium20tuberculosis20030.jpg&#34; alt=&#34;Electron micrograph of Mycobacterium tuberculosis&#34; /&gt;
@@ -872,6 +883,7 @@ iAFR &amp;lt;- ggplot(AFR_whoregion,aes(y=fct_rev(country),x= e_inc_100k)) + # M
       <description>
 
 
+&lt;p&gt;Original post date: February 02 2017&lt;/p&gt;
 &lt;p&gt;The new United States presidential administration formulated an &lt;a href=&#34;https://www.nytimes.com/interactive/2017/01/25/us/politics/document-Trump-EO-Draft-on-Refugees.html&#34;&gt;executive order&lt;/a&gt; the end of last week, if issued, will suspend visas of internationals in the United States (either for school or work) from select countries, prevent the the entrance of Syrian refugees indefinitely and a “readjustment” of the the Refugee and Immigration Programs. Because of this disruptive change in immigration – especially for the most vulnerable populations that include refugees, asylum seekers and displaced people, all fleeing from conflict, instability or persecution – I wanted create a post on this topic.&lt;/p&gt;
 &lt;div id=&#34;wheres-the-data&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Where’s the Data?&lt;/h1&gt;
@@ -1107,6 +1119,7 @@ ggsave(plot=gg2,filename=&amp;quot;UNHCR_Totals_Yr.png&amp;quot;, width=9.5, hei
       <description>
 
 
+&lt;p&gt;Original post date: January 24 2017&lt;/p&gt;
 &lt;p&gt;During one of my summers, I had the opportunity to conduct some research on the prevalence of methicillin-resistant Staphylococcus aureus (MRSA) in vulnerable populations and examining US emergency department data and I thought this would be a pretty interesting topic to expand on for my thesis in light of the increasing concerns of antimicrobial resistance, both at the &lt;a href=&#34;https://www.cdc.gov/drugresistance/&#34;&gt;domestic&lt;/a&gt; and &lt;a href=&#34;http://www.who.int/antimicrobial-resistance/en/&#34;&gt;international&lt;/a&gt; level. This resulted in an systematic review of the recent literature of MRSA in the major Far East countries (China, Hong Kong, Japan, South Korea and Taiwan) which has a wide variety of genotypes and strains. If you’re interested in understanding &lt;em&gt;S. aureus&lt;/em&gt; in Asia, a good starting point is this &lt;a href=&#34;https://dx.doi.org/10.1111/1469-0691.12705&#34;&gt;article&lt;/a&gt;. An extensive and great &lt;a href=&#34;https://dx.doi.org/10.1128%2FCMR.00081-09&#34;&gt;review&lt;/a&gt; on community-associated MRSA written by two researchers from Chicago if you really want to dig deep into this topic.&lt;/p&gt;
 &lt;div id=&#34;what-is-mrsa&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;What is MRSA?&lt;/h2&gt;
@@ -1263,6 +1276,7 @@ ggsave(plot=pie1,filename=&amp;quot;North_America_STs_MLSTdatabase.png&amp;quot;
       <description>
 
 
+&lt;p&gt;Original post date: January 04 2017&lt;/p&gt;
 &lt;p&gt;In my infectious disease epidemiology course back in 2016, I first learned about a basic &lt;strong&gt;compartmental disease transmission model&lt;/strong&gt;. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.&lt;/p&gt;
 &lt;p&gt;The basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the &lt;strong&gt;susceptible&lt;/strong&gt;, &lt;strong&gt;infected&lt;/strong&gt;, and &lt;strong&gt;recovered&lt;/strong&gt; – hence the &lt;strong&gt;SIR model&lt;/strong&gt;. The relationship of these three groups is described by a set of differential equations first derived by &lt;a href=&#34;https://dx.doi.org/10.1098%2Frspa.1927.0118&#34;&gt;Kermack and McKendrick&lt;/a&gt;. The SIR model details the transmission of infection through the contact of susceptible individuals with an infected host. If you are interested in learning more on this model, there is an &lt;a href=&#34;http://www.maa.org/press/periodicals/loci/joma/the-sir-model-for-spread-of-disease-the-differential-equation-model&#34;&gt;online module&lt;/a&gt;.&lt;/p&gt;
 &lt;div id=&#34;the-sir-model&#34; class=&#34;section level1&#34;&gt;

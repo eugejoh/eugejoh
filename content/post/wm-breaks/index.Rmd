@@ -1,7 +1,7 @@
 ---
 title: Watermain Breaks in the City of Toronto
 author: Eugene
-date: '2017-12-09'
+date: 2017-12-09
 slug: wm-breaks
 categories:
   - R
@@ -9,7 +9,7 @@ categories:
 tags: []
 subtitle: ''
 summary: ''
-lastmod: '2017-12-09'
+lastmod: 2017-12-09
 projects: []
 featured: false
 image:
@@ -20,6 +20,7 @@ image:
 ```{r include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
+Original post date: `r format(as.Date('2017-12-09'), "%B %d %Y")`
 
 This post goes into using open data provided by the City of Toronto and all the code is found on [Github](https://github.com/eugejoh/TO_Watermain).
 
@@ -33,8 +34,10 @@ Within these drinking water systems, the large pipes that carry most of the wate
 
 There are many factors behind a watermain failure. Most of the time there multiple concurrent factors that cause the pipe to crack or break. A non-exhaustive list of factors include type of pipe material, age of pipe, surrounding soil conditions, corrosion, pressure fluctuations, direct damage, extreme temperatures, extreme weather events, and poor system design.
 
-![](/post/wm-breaks/watermain-break.jpg){width=95%}
+![](/post/wm-breaks/watermain-break.jpg){width=75%}
+
 ## Toronto Watermain Break Data
+
 The City of Toronto has an [Open Data Catalogue](https://www1.toronto.ca/wps/portal/contentonly?vgnextoid=1a66e03bb8d1e310VgnVCM10000071d60f89RCRD) containing various types of datasets on a number of topics like environment, public safety, development, and government. You can follow them on [Twitter](http://www.twitter.com/open_to) to know when they update/refresh their data. I downloaded the Excel flat-file containing the date and geographic location of watermain breaks from 1990 to 2016 within the city of Toronto boundaries. For this post I will be focusing on the temporal nature of the data, aka what do the trends of watermain breaks look like over time in Toronto. 
 
 ## Data Import, Exploration, Processing

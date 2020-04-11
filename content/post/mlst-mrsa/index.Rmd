@@ -22,6 +22,8 @@ projects: []
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+Original post date: `r format(as.Date('2017-01-24'), "%B %d %Y")`
+
 During one of my summers, I had the opportunity to conduct some research on the prevalence of methicillin-resistant Staphylococcus aureus (MRSA) in vulnerable populations and examining US emergency department data and I thought this would be a pretty interesting topic to expand on for my thesis in light of the increasing concerns of antimicrobial resistance, both at the [domestic](https://www.cdc.gov/drugresistance/) and [international](http://www.who.int/antimicrobial-resistance/en/) level. This resulted in an systematic review of the recent literature of MRSA in the major Far East countries (China, Hong Kong, Japan, South Korea and Taiwan) which has a wide variety of genotypes and strains. If you’re interested in understanding *S. aureus* in Asia, a good starting point is this [article](https://dx.doi.org/10.1111/1469-0691.12705). An extensive and great [review](https://dx.doi.org/10.1128%2FCMR.00081-09) on community-associated MRSA written by two researchers from Chicago if you really want to dig deep into this topic.
 
 

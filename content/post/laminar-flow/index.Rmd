@@ -20,6 +20,8 @@ image:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+Original post date: `r format(as.Date('2018-04-05'), "%B %d %Y")`
+
 This post isn't public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.
 
 ## Laminar Flow

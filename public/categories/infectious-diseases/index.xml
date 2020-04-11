@@ -20,6 +20,7 @@
       <description>
 
 
+&lt;p&gt;Original post date: January 04 2017&lt;/p&gt;
 &lt;p&gt;In my infectious disease epidemiology course back in 2016, I first learned about a basic &lt;strong&gt;compartmental disease transmission model&lt;/strong&gt;. I thought it was pretty awesome to predict and model how an infectious agent could affect a population. Purely out of interest I wanted to develop some working code in R to make a function that would plot the model based on specified parameters.&lt;/p&gt;
 &lt;p&gt;The basic deterministic model is composed of three compartments that represent different categories of individuals within a population; the &lt;strong&gt;susceptible&lt;/strong&gt;, &lt;strong&gt;infected&lt;/strong&gt;, and &lt;strong&gt;recovered&lt;/strong&gt; – hence the &lt;strong&gt;SIR model&lt;/strong&gt;. The relationship of these three groups is described by a set of differential equations first derived by &lt;a href=&#34;https://dx.doi.org/10.1098%2Frspa.1927.0118&#34;&gt;Kermack and McKendrick&lt;/a&gt;. The SIR model details the transmission of infection through the contact of susceptible individuals with an infected host. If you are interested in learning more on this model, there is an &lt;a href=&#34;http://www.maa.org/press/periodicals/loci/joma/the-sir-model-for-spread-of-disease-the-differential-equation-model&#34;&gt;online module&lt;/a&gt;.&lt;/p&gt;
 &lt;div id=&#34;the-sir-model&#34; class=&#34;section level1&#34;&gt;

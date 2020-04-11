@@ -28,7 +28,8 @@
   
     
   
-  <meta name="description" content="This post goes into using open data provided by the City of Toronto and all the code is found on Github.
+  <meta name="description" content="Original post date: December 09 2017
+This post goes into using open data provided by the City of Toronto and all the code is found on Github.
 Drinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030.">
 
   
@@ -268,14 +269,15 @@ Drinking Water Water is a basic physiological need for humans. We can go days wi
   <meta property="og:site_name" content="Eugene J">
   <meta property="og:url" content="/post/wm-breaks/">
   <meta property="og:title" content="Watermain Breaks in the City of Toronto | Eugene J">
-  <meta property="og:description" content="This post goes into using open data provided by the City of Toronto and all the code is found on Github.
+  <meta property="og:description" content="Original post date: December 09 2017
+This post goes into using open data provided by the City of Toronto and all the code is found on Github.
 Drinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030."><meta property="og:image" content="/post/wm-breaks/featured.png">
   <meta property="twitter:image" content="/post/wm-breaks/featured.png"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2017-12-09T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2017-12-09T00:00:00&#43;00:00">
+    <meta property="article:modified_time" content="2020-04-01T21:25:20-04:00">
   
 
   
@@ -310,7 +312,7 @@ Drinking Water Water is a basic physiological need for humans. We can go days wi
   ],
   
   "datePublished": "2017-12-09T00:00:00Z",
-  "dateModified": "2017-12-09T00:00:00Z",
+  "dateModified": "2020-04-01T21:25:20-04:00",
   
   "author": {
     "@type": "Person",
@@ -325,7 +327,7 @@ Drinking Water Water is a basic physiological need for humans. We can go days wi
       "url": "img//"
     }
   },
-  "description": "This post goes into using open data provided by the City of Toronto and all the code is found on Github.\nDrinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030."
+  "description": "Original post date: December 09 2017\nThis post goes into using open data provided by the City of Toronto and all the code is found on Github.\nDrinking Water Water is a basic physiological need for humans. We can go days without food and be okay, but without water… that’s another story. Drinking water or potable water is something in the developed world we take for granted. Much of the world does not have great access to clean water and by United Nations had made their 6th Sustainable Development Goal to “ensure access to water and sanitation for all” and that all people would have universal access to safe and affordable water by 2030."
 }
 </script>
 
@@ -598,8 +600,10 @@ Drinking Water Water is a basic physiological need for humans. We can go days wi
     
     
       
+          Last updated on
+      
     
-    Dec 9, 2017
+    Apr 1, 2020
   </span>
   
 
@@ -651,6 +655,7 @@ Drinking Water Water is a basic physiological need for humans. We can go days wi
       
 
 
+<p>Original post date: December 09 2017</p>
 <p>This post goes into using open data provided by the City of Toronto and all the code is found on <a href="https://github.com/eugejoh/TO_Watermain">Github</a>.</p>
 <div id="drinking-water" class="section level2">
 <h2>Drinking Water</h2>
@@ -661,7 +666,14 @@ Drinking Water Water is a basic physiological need for humans. We can go days wi
 <h2>Watermain Breaks</h2>
 <p>Within these drinking water systems, the large pipes that carry most of the water through the system from the treatment plant through the distribution system are called <strong>watermains</strong> (or water mains). In the event of a watermain failing, either by a crack, some leaking or a catastrophic break, this can have potential effects on the flow of water to users. There can be loss of pressure in the distribution system, potentially allowing contaminants (chemical or microbiological) to enter the drinking water system due to the loss of pressure. No one wants to have E. coli or some industrial chemical in their tap water.</p>
 <p>There are many factors behind a watermain failure. Most of the time there multiple concurrent factors that cause the pipe to crack or break. A non-exhaustive list of factors include type of pipe material, age of pipe, surrounding soil conditions, corrosion, pressure fluctuations, direct damage, extreme temperatures, extreme weather events, and poor system design.</p>
-<p><img src="/post/wm-breaks/watermain-break.jpg" style="width:95.0%" /> ## Toronto Watermain Break Data The City of Toronto has an <a href="https://www1.toronto.ca/wps/portal/contentonly?vgnextoid=1a66e03bb8d1e310VgnVCM10000071d60f89RCRD">Open Data Catalogue</a> containing various types of datasets on a number of topics like environment, public safety, development, and government. You can follow them on <a href="http://www.twitter.com/open_to">Twitter</a> to know when they update/refresh their data. I downloaded the Excel flat-file containing the date and geographic location of watermain breaks from 1990 to 2016 within the city of Toronto boundaries. For this post I will be focusing on the temporal nature of the data, aka what do the trends of watermain breaks look like over time in Toronto.</p>
+<div class="figure">
+<img src="/post/wm-breaks/watermain-break.jpg" style="width:75.0%" />
+
+</div>
+</div>
+<div id="toronto-watermain-break-data" class="section level2">
+<h2>Toronto Watermain Break Data</h2>
+<p>The City of Toronto has an <a href="https://www1.toronto.ca/wps/portal/contentonly?vgnextoid=1a66e03bb8d1e310VgnVCM10000071d60f89RCRD">Open Data Catalogue</a> containing various types of datasets on a number of topics like environment, public safety, development, and government. You can follow them on <a href="http://www.twitter.com/open_to">Twitter</a> to know when they update/refresh their data. I downloaded the Excel flat-file containing the date and geographic location of watermain breaks from 1990 to 2016 within the city of Toronto boundaries. For this post I will be focusing on the temporal nature of the data, aka what do the trends of watermain breaks look like over time in Toronto.</p>
 </div>
 <div id="data-import-exploration-processing" class="section level2">
 <h2>Data Import, Exploration, Processing</h2>

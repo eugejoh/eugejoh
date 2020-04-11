@@ -22,6 +22,8 @@ projects: []
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+Original post date: `r format(as.Date('2017-03-03'), "%B %d %Y")`
+
 For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.
 
 <p align="center">

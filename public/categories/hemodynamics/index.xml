@@ -20,6 +20,7 @@
       <description>
 
 
+&lt;p&gt;Original post date: April 05 2018&lt;/p&gt;
 &lt;p&gt;This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.&lt;/p&gt;
 &lt;div id=&#34;laminar-flow&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Laminar Flow&lt;/h2&gt;

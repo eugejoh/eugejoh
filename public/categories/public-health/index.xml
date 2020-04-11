@@ -20,6 +20,7 @@
       <description>
 
 
+&lt;p&gt;Original post date: May 25 2017&lt;/p&gt;
 &lt;p&gt;I had the opportunity to attend the &lt;a href=&#34;https://www.odsc.com/boston&#34;&gt;Open Data Science Conference&lt;/a&gt; (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.&lt;/p&gt;
 &lt;p&gt;One of the workshops at ODSC was text analytics, which includes basic text processing, dendrograms, natural language processing and sentiment analysis. This gave me the thought of applying some text analytics to visualize some data I was working on last summer. In this post I’m going to walk through how I used regular expression to label classification codes in a large dataset (&lt;a href=&#34;https://www.cdc.gov/nchs/ahcd/about_ahcd.htm&#34;&gt;NHAMCS&lt;/a&gt;) representing emergency department visits in the United States and eventually visualize the data.&lt;/p&gt;
 &lt;div id=&#34;the-nhamcs-and-icd-9-codes&#34; class=&#34;section level2&#34;&gt;
@@ -222,6 +223,7 @@ for (k in paste0(&amp;quot;^&amp;quot;,diag.c[,2])){ #codes
       <description>
 
 
+&lt;p&gt;Original post date: March 03 2017&lt;/p&gt;
 &lt;p&gt;For this post, as similar to previous ones, I give a guide through the process I took to organize the data, a nifty function I created to search the documentation and a visualization of the data using ggplot2.&lt;/p&gt;
 &lt;p align=&#34;center&#34;&gt;
 &lt;img src=&#34;/post/who-tb-data-ggplot2/mycobacterium20tuberculosis20030.jpg&#34; alt=&#34;Electron micrograph of Mycobacterium tuberculosis&#34; /&gt;
@@ -441,6 +443,7 @@ iAFR &amp;lt;- ggplot(AFR_whoregion,aes(y=fct_rev(country),x= e_inc_100k)) + # M
       <description>
 
 
+&lt;p&gt;Original post date: January 24 2017&lt;/p&gt;
 &lt;p&gt;During one of my summers, I had the opportunity to conduct some research on the prevalence of methicillin-resistant Staphylococcus aureus (MRSA) in vulnerable populations and examining US emergency department data and I thought this would be a pretty interesting topic to expand on for my thesis in light of the increasing concerns of antimicrobial resistance, both at the &lt;a href=&#34;https://www.cdc.gov/drugresistance/&#34;&gt;domestic&lt;/a&gt; and &lt;a href=&#34;http://www.who.int/antimicrobial-resistance/en/&#34;&gt;international&lt;/a&gt; level. This resulted in an systematic review of the recent literature of MRSA in the major Far East countries (China, Hong Kong, Japan, South Korea and Taiwan) which has a wide variety of genotypes and strains. If you’re interested in understanding &lt;em&gt;S. aureus&lt;/em&gt; in Asia, a good starting point is this &lt;a href=&#34;https://dx.doi.org/10.1111/1469-0691.12705&#34;&gt;article&lt;/a&gt;. An extensive and great &lt;a href=&#34;https://dx.doi.org/10.1128%2FCMR.00081-09&#34;&gt;review&lt;/a&gt; on community-associated MRSA written by two researchers from Chicago if you really want to dig deep into this topic.&lt;/p&gt;
 &lt;div id=&#34;what-is-mrsa&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;What is MRSA?&lt;/h2&gt;

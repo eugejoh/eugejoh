@@ -22,6 +22,8 @@ projects: []
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+Original post date: `r format(as.Date('2017-02-02'), "%B %d %Y")`
+
 The new United States presidential administration formulated an [executive order](https://www.nytimes.com/interactive/2017/01/25/us/politics/document-Trump-EO-Draft-on-Refugees.html) the end of last week, if issued, will suspend visas of internationals in the United States (either for school or work) from select countries, prevent the the entrance of Syrian refugees indefinitely and a “readjustment” of the the Refugee and Immigration Programs. Because of this disruptive change in immigration – especially for the most vulnerable populations that include refugees, asylum seekers and displaced people, all fleeing from conflict, instability or persecution – I wanted create a post on this topic.
 
 # Where's the Data?

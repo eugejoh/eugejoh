@@ -19,7 +19,7 @@ projects: []
 ```{r include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
-
+Original post date: `r format(as.Date('2017-05-25'), "%B %d %Y")`
 
 I had the opportunity to attend the [Open Data Science Conference](https://www.odsc.com/boston) (ODSC) East held in Boston, MA. Over a two day period I had the opportunity to listen to a number of leaders in various industries and fields. It was inspiring to learn about the wide variety of data science applications ranging from finance and marketing to genomics and even the refugee crisis.
 
