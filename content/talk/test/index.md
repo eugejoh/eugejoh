@@ -27,6 +27,5 @@ links:
   url: "https://github.com/eugejoh/datacleaning-brownbag"
   
 summary: Cleaning messy text to join data in a global health application
-abstract: 
 ---
 
