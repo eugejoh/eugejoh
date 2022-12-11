@@ -2,7 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-blogdown
+/blogdown
 .DS_Store # if a windows user, Thumbs.db instead
-public/ # if using Netlify
+/public/ # if using Netlify
+/resources/
 R/
+Thumbs.db
+.hugo_build.lock
