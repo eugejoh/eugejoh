@@ -1,225 +1,131 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>/courses/example/example1/</loc>
+    <loc>https://eugejoh.netlify.com/courses/example/example1/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/courses/example/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/courses/example/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/courses/example/example2/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/courses/example/example2/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/talk/test/</loc>
-    <lastmod>2020-03-25T15:24:41-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/talk/test/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/</loc>
+    <lastmod>2022-12-11T20:07:06-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/tags/databases/</loc>
     <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/databases/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/project/</loc>
     <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/tags/public-health/</loc>
     <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/public-health/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/tags/r/</loc>
     <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/r/</loc>
-    <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/sendtg/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/project/sendtg/</loc>
     <lastmod>2020-02-09T19:26:23-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/tags/</loc>
     <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/whomortality/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/project/whomortality/</loc>
     <lastmod>2020-04-11T13:17:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/pgtools/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/project/pgtools/</loc>
     <lastmod>2020-02-09T19:08:41-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/authors/admin/</loc>
-    <lastmod>2020-03-25T15:23:35-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication_types/3/</loc>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication_types/3/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication/preprint/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/authors/</loc>
+    <lastmod>2022-12-11T20:07:06-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication_types/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/tags/source-themes/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/hemodynamics/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/laminar-flow/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/r/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/water-quality/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/wm-breaks/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/public-health/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/ed-visits-regex-treemaps/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/who-tb-data-ggplot2/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/refugees/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/unhcr-viz/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/mlst-mrsa/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/categories/infectious-diseases/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/sir-model/</loc>
+    <lastmod>2022-12-11T16:47:57-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication_types/2/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication/journal-article/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/authors/robert-ford/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication_types/1/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication/conference-paper/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/authors/admin/</loc>
+    <lastmod>2022-12-11T20:07:06-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/courses/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/post/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/publication/</loc>
+    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
+  </url><url>
+    <loc>https://eugejoh.netlify.com/talk/</loc>
     <lastmod>2020-02-02T18:57:32-05:00</lastmod>
   </url>
-  
-  <url>
-    <loc>/publication/preprint/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/authors/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication_types/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/source-themes/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/privacy/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/terms/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/hemodynamics/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/laminar-flow/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/water-quality/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/wm-breaks/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/public-health/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/ed-visits-regex-treemaps/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/who-tb-data-ggplot2/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/refugees/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/unhcr-viz/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/mlst-mrsa/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/infectious-diseases/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/sir-model/</loc>
-    <lastmod>2020-04-11T13:15:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication_types/2/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication/journal-article/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/authors/robert-ford/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication_types/1/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication/conference-paper/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/courses/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/publication/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/talk/</loc>
-    <lastmod>2020-02-02T18:57:32-05:00</lastmod>
-  </url>
-  
 </urlset>

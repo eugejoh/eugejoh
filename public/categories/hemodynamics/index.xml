@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hemodynamics | Eugene J</title>
-    <link>/categories/hemodynamics/</link>
-      <atom:link href="/categories/hemodynamics/index.xml" rel="self" type="application/rss+xml" />
+    <title>Hemodynamics | Eugene</title>
+    <link>https://eugejoh.netlify.com/categories/hemodynamics/</link>
+      <atom:link href="https://eugejoh.netlify.com/categories/hemodynamics/index.xml" rel="self" type="application/rss+xml" />
     <description>Hemodynamics</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Thu, 05 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020--2022</copyright><lastBuildDate>Thu, 05 Apr 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/avatar.jpg</url>
+      <url>https://eugejoh.netlify.com/img/avatar.jpg</url>
       <title>Hemodynamics</title>
-      <link>/categories/hemodynamics/</link>
+      <link>https://eugejoh.netlify.com/categories/hemodynamics/</link>
     </image>
     
     <item>
       <title>Laminar flow with ggplot2 and gganimate</title>
-      <link>/post/laminar-flow/</link>
+      <link>https://eugejoh.netlify.com/post/laminar-flow/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
-      <guid>/post/laminar-flow/</guid>
-      <description>
-
-
-&lt;p&gt;Original post date: April 05 2018&lt;/p&gt;
-&lt;p&gt;This post isn’t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.&lt;/p&gt;
-&lt;div id=&#34;laminar-flow&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Laminar Flow&lt;/h2&gt;
-&lt;p&gt;A simple definition of &lt;a href=&#34;https://en.wikipedia.org/wiki/Laminar_flow&#34;&gt;laminar flow&lt;/a&gt; is when a fluid flows through a pipe in parallel layers with no disruptions between these layers. Turbulent flow occurs when there is mixing or any disruption between these layers. Laminar flow is a simple analysis of fluid dynamics that considers the viscosity (“thickness/gooeyness”) of a liquid. This model is based on a number of assumptions where the fluid flows through a straight cylindrical pipe of fixed diameter, there is no acceleration (only a balance between pressure and viscous/shear forces) and gravitational forces are ignored. The walls of the pipe exhibit the maximum &lt;a href=&#34;https://en.wikipedia.org/wiki/Shear_force&#34;&gt;shearing force&lt;/a&gt; and the axial centre of the pipe has zero shear. This results in a parabolic &lt;a href=&#34;http://hyperphysics.phy-astr.gsu.edu/hbase/pfric2.html&#34;&gt;velocity profile&lt;/a&gt; where the velocity is at it’s maximum at centre of the pipe.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;matlab-to-r&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;MATLAB to R?&lt;/h2&gt;
-&lt;p&gt;First you might wonder, why is this post randomly on laminar flow? A short trip down memory lane while organizing some undergraduate course folders resulted in my rediscovery of some lecture notes and code related to medical biophysics and hemodynamics. Not having used MATLAB in over 4 years, &lt;strong&gt;I was curious whether I could translate some of the MATLAB code into something similar into R&lt;/strong&gt;. Some points on the &lt;a href=&#34;https://www.mathworks.com/discovery/matlab-vs-r.html&#34;&gt;differences&lt;/a&gt;, MATLAB is a proprietary numerical computing programming software based on matrix algorithms while R is a open-source programming language centered on statistical analyses. There are some StackOverflow &lt;a href=&#34;https://stackoverflow.com/questions/1738087/what-can-matlab-do-that-r-cannot-do&#34;&gt;discussions&lt;/a&gt; on these comparisons if you want to explore this further. I also discovered the &lt;code&gt;pracma&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/pracma/index.html&#34;&gt;package&lt;/a&gt; for numerical analysis that uses some MATLAB function names (#tbt). Now to the actual R code!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;initial-conditions&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Initial Conditions&lt;/h2&gt;
-&lt;p&gt;First we’ll load the relevant packages. I’ve commented in the code lines on some basic descriptions on each package. Just a small note that some of these packages need to be downloaded from GitHub repositories using the &lt;code&gt;devtools&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/devtools/index.html&#34;&gt;package&lt;/a&gt;.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Packages ####
+      <guid>https://eugejoh.netlify.com/post/laminar-flow/</guid>
+      <description>&lt;p&gt;Original post date: April 05 2018&lt;/p&gt;
+&lt;p&gt;This post isn&amp;rsquo;t public health related (like this one) but they will be more of a personal exploration and application of different tools and packages in R. This post will be exploring the animation and gganimate package to create some (hopefully) cool animated visualizations.&lt;/p&gt;
+&lt;h2 id=&#34;laminar-flow&#34;&gt;Laminar Flow&lt;/h2&gt;
+&lt;p&gt;A simple definition of 
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Laminar_flow&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;laminar flow&lt;/a&gt;
+ is when a fluid flows through a pipe in parallel layers with no disruptions between these layers. Turbulent flow occurs when there is mixing or any disruption between these layers.  Laminar flow is a simple analysis of fluid dynamics that considers the viscosity (“thickness/gooeyness”) of a liquid. This model is based on a number of assumptions where the fluid flows through a straight cylindrical pipe of fixed diameter, there is no acceleration (only a balance between pressure and viscous/shear forces) and gravitational forces are ignored. The walls of the pipe exhibit the maximum 
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Shear_force&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;shearing force&lt;/a&gt;
+ and the axial centre of the pipe has zero shear. This results in a parabolic 
+&lt;a href=&#34;http://hyperphysics.phy-astr.gsu.edu/hbase/pfric2.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;velocity profile&lt;/a&gt;
+ where the velocity is at it’s maximum at centre of the pipe.&lt;/p&gt;
+&lt;h2 id=&#34;matlab-to-r&#34;&gt;MATLAB to R?&lt;/h2&gt;
+&lt;p&gt;First you might wonder, why is this post randomly on laminar flow? A short trip down memory lane while organizing some undergraduate course folders resulted in my rediscovery of some lecture notes and code related to medical biophysics and hemodynamics. Not having used MATLAB in over 4 years, &lt;strong&gt;I was curious whether I could translate some of the MATLAB code into something similar into R&lt;/strong&gt;. Some points on the 
+&lt;a href=&#34;https://www.mathworks.com/discovery/matlab-vs-r.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;differences&lt;/a&gt;
+, MATLAB is a proprietary numerical computing programming software based on matrix algorithms while R is a open-source programming language centered on statistical analyses. There are some StackOverflow 
+&lt;a href=&#34;https://stackoverflow.com/questions/1738087/what-can-matlab-do-that-r-cannot-do&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;discussions&lt;/a&gt;
+ on these comparisons if you want to explore this further. I also discovered the &lt;code&gt;pracma&lt;/code&gt; 
+&lt;a href=&#34;https://cran.r-project.org/web/packages/pracma/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;package&lt;/a&gt;
+ for numerical analysis that uses some MATLAB function names (#tbt). Now to the actual R code!&lt;/p&gt;
+&lt;h2 id=&#34;initial-conditions&#34;&gt;Initial Conditions&lt;/h2&gt;
+&lt;p&gt;First we’ll load the relevant packages. I’ve commented in the code lines on some basic descriptions on each package. Just a small note that some of these packages need to be downloaded from GitHub repositories using the &lt;code&gt;devtools&lt;/code&gt; 
+&lt;a href=&#34;https://cran.r-project.org/web/packages/devtools/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;package&lt;/a&gt;
+.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# Packages ####
 library(pracma) #load practical math package
 library(ggplot2) #data viz
 library(scales) #plot scales
 library(dplyr) #data wrangling
 library(viridis) #data viz palette
 library(animation) #animation
-library(gganimate) #ggplot animation&lt;/code&gt;&lt;/pre&gt;
+library(gganimate) #ggplot animation
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Next, for any type of model you need to first set the &lt;strong&gt;initial conditions&lt;/strong&gt; or parameters. In this case, we’ll specify the conditions for the pressure difference at the beginning at the end of the pipe, the viscous force, the dimensions of the pipe (radius and length).&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## Initial Conditions ####
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;## Initial Conditions ####
 # Pressure difference (delta P)
 Pi &amp;lt;- 10 #initial pressure [Pa]
 Pf &amp;lt;- 50 #final pressure [Pa]
@@ -55,22 +62,28 @@ l &amp;lt;- 4 #length of pipe [m]
  
 N &amp;lt;- 100 #radial resolution
 r &amp;lt;- seq(-R,R,length.out=N) #diameter of pipe
-S &amp;lt;- pi*(R^2) #cross-sectional area of pipe&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Since we’re also playing with the &lt;code&gt;animation&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/animation/index.html&#34;&gt;package&lt;/a&gt;, we’ll also input a vector of time units to loop and animate the visualization.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# time dependent
+S &amp;lt;- pi*(R^2) #cross-sectional area of pipe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Since we&amp;rsquo;re also playing with the &lt;code&gt;animation&lt;/code&gt; 
+&lt;a href=&#34;https://cran.r-project.org/web/packages/animation/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;package&lt;/a&gt;
+, we’ll also input a vector of time units to loop and animate the visualization.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# time dependent
 time &amp;lt;- seq(0,19) #length 20
 Pit &amp;lt;- 0.2*time*Pi
 Pft &amp;lt;- 0.2*time*Pf
-Pdiff &amp;lt;- abs(Pft-Pit) #pressure difference over time&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;data-setup&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Data Setup&lt;/h2&gt;
-&lt;p&gt;Now what we’ll do is run a loop over the time sequence we’ve specified (20 arbitrary units of time, seconds for example) to create the output data. The pressure difference will be increased as a function of time, simulating increased flow of the fluid (water in this case) over time. The equation in the code below is the flow velocity as a function of the pipe radius derived from &lt;a href=&#34;https://en.wikipedia.org/wiki/Hagen%E2%80%93Poiseuille_equation&#34;&gt;Hagen-Poiseuille’s Law&lt;/a&gt; specified below. So after running &lt;code&gt;lapply()&lt;/code&gt; over the pressure differences, we then massage the list output into a data frame – first by “unlisting” the list elements, creating a matrix object where each column represents a different time point, and coercing the matrix into a data frame (and as always &lt;a href=&#34;https://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/&#34;&gt;remembering&lt;/a&gt; to use &lt;code&gt;stringsAsFactors = FALSE&lt;/code&gt;).&lt;/p&gt;
+Pdiff &amp;lt;- abs(Pft-Pit) #pressure difference over time
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;data-setup&#34;&gt;Data Setup&lt;/h2&gt;
+&lt;p&gt;Now what we’ll do is run a loop over the time sequence we’ve specified (20 arbitrary units of time, seconds for example) to create the output data. The pressure difference will be increased as a function of time, simulating increased flow of the fluid (water in this case) over time. The equation in the code below is the flow velocity as a function of the pipe radius derived from 
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Hagen%E2%80%93Poiseuille_equation&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hagen-Poiseuille’s Law&lt;/a&gt;
+ specified below. So after running &lt;code&gt;lapply()&lt;/code&gt; over the pressure differences, we then massage the list output into a data frame – first by “unlisting” the list elements, creating a matrix object where each column represents a different time point, and coercing the matrix into a data frame (and as always 
+&lt;a href=&#34;https://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;remembering&lt;/a&gt;
+ to use &lt;code&gt;stringsAsFactors = FALSE&lt;/code&gt;).&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Hagen-Poiseuille’s Law&lt;br /&gt;
+&lt;p&gt;Hagen-Poiseuille’s Law&lt;br&gt;
 Q = πR4Δp / 8μl&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Create Data Viz ####
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# Create Data Viz ####
 # plot shows V (average speed) and r (pipe radius)
 # ((Pdiff)*(R^2)/(4*mu*l))*(1-(r^2)/R^2) #eqn for V
 out1 &amp;lt;- lapply(seq_along(Pdiff), function(x) {
@@ -82,39 +95,42 @@ out1_df &amp;lt;-data.frame(
   stringsAsFactors = FALSE
   )
 
-names(out1_df) &amp;lt;- seq_along(names(out1_df))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now we have a data frame with each column containing the velocity of the fluid as a function of the radius. There are twenty time periods and 100 rows representing the resolution of the x-axis (e.g. 100 ticks). The problem now is that this data frame is not in a &lt;code&gt;ggplot2&lt;/code&gt; friendly format. We’ll have to use the &lt;code&gt;tidyr&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/tidyr/index.html&#34;&gt;package&lt;/a&gt; to manipulate the data. The code below &lt;a href=&#34;http://garrettgman.github.io/tidying/&#34;&gt;“gathers”&lt;/a&gt; the columns so they become grouped elements in one column and then we use the &lt;code&gt;dplyr&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/dplyr/index.html&#34;&gt;package&lt;/a&gt; to add the radius values as new column, coerce the “time” column into an integer type, and add the flowrate (a function of the velocity profile and pipe cross-sectional area) as another column. A note here that when the &lt;code&gt;rbind()&lt;/code&gt; function is used, if the length/# of rows of the object’s (&lt;code&gt;r&lt;/code&gt;) being “binded”&amp;quot; is a multiple of the other object’s (&lt;code&gt;df_t&lt;/code&gt;) length/# of rows, it will repeat based on the multiple. Since we looped based on the the radial resolution (100) specified before, &lt;code&gt;rbind()&lt;/code&gt; will fill the column with 20 multiples (20*100) of the radius ticks.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_t &amp;lt;- tidyr::gather(out1_df,key=&amp;quot;time&amp;quot;,value=&amp;quot;V&amp;quot;)
+names(out1_df) &amp;lt;- seq_along(names(out1_df))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have a data frame with each column containing the velocity of the fluid as a function of the radius. There are twenty time periods and 100 rows representing the resolution of the x-axis (e.g. 100 ticks). The problem now is that this data frame is not in a &lt;code&gt;ggplot2&lt;/code&gt; friendly format. We’ll have to use the &lt;code&gt;tidyr&lt;/code&gt; 
+&lt;a href=&#34;https://cran.r-project.org/web/packages/tidyr/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;package&lt;/a&gt;
+ to manipulate the data. The code below 
+&lt;a href=&#34;http://garrettgman.github.io/tidying/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&amp;ldquo;gathers&amp;rdquo;&lt;/a&gt;
+ the columns so they become grouped elements in one column and then we use the &lt;code&gt;dplyr&lt;/code&gt; 
+&lt;a href=&#34;https://cran.r-project.org/web/packages/dplyr/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;package&lt;/a&gt;
+ to add the radius values as new column, coerce the &amp;ldquo;time&amp;rdquo; column into an integer type, and add the flowrate (a function of the velocity profile and pipe cross-sectional area) as another column. A note here that when the &lt;code&gt;rbind()&lt;/code&gt; function is used, if the length/# of rows of the object’s (&lt;code&gt;r&lt;/code&gt;) being &amp;ldquo;binded&amp;rdquo;&amp;quot; is a multiple of the other object’s (&lt;code&gt;df_t&lt;/code&gt;) length/# of rows, it will repeat based on the multiple. Since we looped based on the the radial resolution (100) specified before, &lt;code&gt;rbind()&lt;/code&gt; will fill the column with 20 multiples (20*100) of the radius ticks.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;df_t &amp;lt;- tidyr::gather(out1_df,key=&amp;quot;time&amp;quot;,value=&amp;quot;V&amp;quot;)
  
 df_t2 &amp;lt;- df_t %&amp;gt;% #previous object
 mutate(time = as.integer(time)) %&amp;gt;% #change to integer type
-  mutate(Qv = V/(1-(r^2)/R^2)) #add volumetric flowrate (Qv)&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;data-visualization&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Data Visualization&lt;/h2&gt;
-&lt;p&gt;Now we have our data in a nice format to visualize and loop over to create our GIF. We specify the data frame we want to use, map the aesthetics and specifically the &lt;code&gt;frame&lt;/code&gt; and &lt;code&gt;cumulative&lt;/code&gt; arguments. The &lt;code&gt;frame&lt;/code&gt; aesthetic tells the &lt;code&gt;gganimate&lt;/code&gt; &lt;a href=&#34;https://github.com/dgrtwo/gganimate&#34;&gt;package&lt;/a&gt; to loop over the values defined in &lt;code&gt;frame&lt;/code&gt; or time in our case. We’ll use the amazing &lt;code&gt;viridis&lt;/code&gt; package to add some time colours, use the built-in &lt;code&gt;ggplot2&lt;/code&gt; &lt;code&gt;theme_dark&lt;/code&gt;, tinker with the text sizes, and provide a good title and axis labels (yay for plotting best practices). The legend here displays the flow rate through the pipe going from purple (low flowrate) to yellow (high flowrate).&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- ggplot(data=df_t2, aes(y=r,x=V,col=Qv,frame=time,cumulative=TRUE)) +
+  mutate(Qv = V/(1-(r^2)/R^2)) #add volumetric flowrate (Qv)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;data-visualization&#34;&gt;Data Visualization&lt;/h2&gt;
+&lt;p&gt;Now we have our data in a nice format to visualize and loop over to create our GIF. We specify the data frame we want to use, map the aesthetics and specifically the &lt;code&gt;frame&lt;/code&gt; and &lt;code&gt;cumulative&lt;/code&gt; arguments. The &lt;code&gt;frame&lt;/code&gt; aesthetic tells the &lt;code&gt;gganimate&lt;/code&gt; 
+&lt;a href=&#34;https://github.com/dgrtwo/gganimate&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;package&lt;/a&gt;
+ to loop over the values defined in &lt;code&gt;frame&lt;/code&gt; or time in our case. We’ll use the amazing &lt;code&gt;viridis&lt;/code&gt; package to add some time colours, use the built-in &lt;code&gt;ggplot2&lt;/code&gt; &lt;code&gt;theme_dark&lt;/code&gt;, tinker with the text sizes, and provide a good title and axis labels (yay for plotting best practices). The legend here displays the flow rate through the pipe going from purple (low flowrate) to yellow (high flowrate).&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p1 &amp;lt;- ggplot(data=df_t2, aes(y=r,x=V,col=Qv,frame=time,cumulative=TRUE)) +
 geom_path() + geom_point(alpha=0.05) +
 scale_colour_viridis(option = &amp;quot;C&amp;quot;, discrete = FALSE) +
 theme_dark() +
-labs(title = &amp;quot;Hagen-Poiseuille&amp;#39;s Law: Velocity Profile t =&amp;quot;,
+labs(title = &amp;quot;Hagen-Poiseuille&#39;s Law: Velocity Profile t =&amp;quot;,
 y = &amp;quot;Pipe Radius (m)&amp;quot;, x = &amp;quot;Velocity (m/s)&amp;quot;)
  
-ggsave(p1,filename = &amp;quot;Vprofile1.png&amp;quot;,width = 250, height=100,units = &amp;quot;mm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/post/laminar-flow/vprofile1.png&#34; style=&#34;width:99.0%&#34; /&gt;
-
-&lt;/div&gt;
-&lt;p&gt;The title might look strange but the empty “t =”&amp;quot; will be useful to indicate which time point each frame describes when we create the .gif (look at the &lt;code&gt;title_frame&lt;/code&gt; argument in the &lt;code&gt;gganimate()&lt;/code&gt; function below. This will add the value provided to the frame aesthetic and include it into the plot title. We also specify the intervals for each frame (0.2 seconds) and the dimensions of the output.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gganimate(p1,filename = &amp;quot;Vprofile1.gif&amp;quot;, title_frame = TRUE,
-interval=0.2, ani.width = 900, ani.height = 350)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/post/laminar-flow/vprofile11.gif&#34; style=&#34;width:105.0%&#34; /&gt;
-
-&lt;/div&gt;
-&lt;p&gt;Now we have this nice animation visualizing the laminar flow velocity profile of a pipe at different time points where the pressure difference increases, in turn increasing the maximum velocity of the fluid. Another way to see it, is that at time 0, there is no pressure difference, therefore no flow. But once the pressure difference increases (decreased lower pressure at the end of pipe e.g. increased flow of fluid out of the end of the pipe) the velocity profile or flow increases.&lt;/p&gt;
+ggsave(p1,filename = &amp;quot;Vprofile1.png&amp;quot;,width = 250, height=100,units = &amp;quot;mm&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://eugejoh.netlify.com/post/laminar-flow/vprofile1.png&#34; alt=&#34;&#34;&gt;{width=99%}&lt;/p&gt;
+&lt;p&gt;The title might look strange but the empty &amp;ldquo;t = &amp;quot;&amp;rdquo; will be useful to indicate which time point each frame describes when we create the .gif (look at the &lt;code&gt;title_frame&lt;/code&gt; argument in the &lt;code&gt;gganimate()&lt;/code&gt; function below. This will add the value provided to the frame aesthetic and include it into the plot title. We also specify the intervals for each frame (0.2 seconds) and the dimensions of the output.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;gganimate(p1,filename = &amp;quot;Vprofile1.gif&amp;quot;, title_frame = TRUE,
+interval=0.2, ani.width = 900, ani.height = 350)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://eugejoh.netlify.com/post/laminar-flow/vprofile11.gif&#34; alt=&#34;&#34;&gt;{width=105%}&lt;/p&gt;
+&lt;p&gt;Now we have this nice animation visualizing the laminar flow velocity profile of a pipe at different time points where the pressure difference increases, in turn increasing the maximum velocity of the fluid. Another way to see it, is that at time 0, there is no pressure difference, therefore no flow. But once the pressure difference increases (decreased lower pressure at the end of pipe e.g. increased flow of fluid out of the end of the pipe) the velocity profile or flow increases.&lt;/p&gt;
 &lt;p&gt;The entire script containing the code is found in my GitHub repo if you would want to fork it or tinker with it yourself.&lt;/p&gt;
-&lt;/div&gt;
 </description>
     </item>
     

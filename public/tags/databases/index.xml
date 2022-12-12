@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Databases | Eugene J</title>
-    <link>/tags/databases/</link>
-      <atom:link href="/tags/databases/index.xml" rel="self" type="application/rss+xml" />
+    <title>Databases | Eugene</title>
+    <link>https://eugejoh.netlify.com/tags/databases/</link>
+      <atom:link href="https://eugejoh.netlify.com/tags/databases/index.xml" rel="self" type="application/rss+xml" />
     <description>Databases</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020--2022</copyright><lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/avatar.jpg</url>
+      <url>https://eugejoh.netlify.com/img/avatar.jpg</url>
       <title>Databases</title>
-      <link>/tags/databases/</link>
+      <link>https://eugejoh.netlify.com/tags/databases/</link>
     </image>
     
     <item>
       <title>Send Telegram messages from R</title>
-      <link>/project/sendtg/</link>
+      <link>https://eugejoh.netlify.com/project/sendtg/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
-      <guid>/project/sendtg/</guid>
+      <guid>https://eugejoh.netlify.com/project/sendtg/</guid>
       <description>&lt;h1 id=&#34;send-telegram-notifications-with-r&#34;&gt;Send Telegram Notifications with R&lt;/h1&gt;
 &lt;p&gt;The 
 &lt;a href=&#34;https://github.com/eugejoh/sendtg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;sendtg&lt;/code&gt;&lt;/a&gt;
@@ -31,9 +31,9 @@
     
     <item>
       <title>WHO Mortality Database</title>
-      <link>/project/whomortality/</link>
+      <link>https://eugejoh.netlify.com/project/whomortality/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
-      <guid>/project/whomortality/</guid>
+      <guid>https://eugejoh.netlify.com/project/whomortality/</guid>
       <description>&lt;h1 id=&#34;who-mortality-database&#34;&gt;WHO Mortality Database&lt;/h1&gt;
 &lt;p&gt;The &lt;code&gt;WHOmortality&lt;/code&gt; R package provides tools to easily download, extract, and import the raw data files found in the World Health Organization&amp;rsquo;s (WHO) Mortality Database.&lt;/p&gt;
 &lt;p&gt;Currently this package only imports the two mortality tables containing the 
@@ -42,15 +42,15 @@
 &lt;p&gt;More information can be found in the GitHub repository 
 &lt;a href=&#34;https://github.com/eugejoh/WHOmortality/blob/master/README.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;README&lt;/a&gt;
 .&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/project/WHOmortality/malaria.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://eugejoh.netlify.com/project/WHOmortality/malaria.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Writing tables from R to PostgreSQL</title>
-      <link>/project/pgtools/</link>
+      <link>https://eugejoh.netlify.com/project/pgtools/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
-      <guid>/project/pgtools/</guid>
+      <guid>https://eugejoh.netlify.com/project/pgtools/</guid>
       <description>&lt;h1 id=&#34;tables-from-r-to-postgresql&#34;&gt;Tables from R to PostgreSQL&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;pgtools&lt;/code&gt; Is an R package that contains functions to provide a consistent workflow for writing a &lt;code&gt;data.frame&lt;/code&gt; in R as a PostgreSQL database table. The tools are built around the &lt;code&gt;DBI&lt;/code&gt; and &lt;code&gt;RPostgres&lt;/code&gt; packages.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;What this package provides?&lt;/strong&gt;&lt;/p&gt;

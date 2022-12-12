@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Authors | Eugene J</title>
-    <link>/authors/</link>
-      <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    <title>Authors | Eugene</title>
+    <link>https://eugejoh.netlify.com/authors/</link>
+      <atom:link href="https://eugejoh.netlify.com/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020--2022</copyright><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/avatar.jpg</url>
+      <url>https://eugejoh.netlify.com/img/avatar.jpg</url>
       <title>Authors</title>
-      <link>/authors/</link>
+      <link>https://eugejoh.netlify.com/authors/</link>
     </image>
-    
-    <item>
-      <title></title>
-      <link>/authors/admin/</link>
-      <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
-      <guid>/authors/admin/</guid>
-      <description>&lt;p&gt;Eugene is an epidemiologist with an interdisciplinary background and a strong interest in leveraging disparate data sources to solve public health problems.&lt;/p&gt;
-&lt;p&gt;My main area of work is centered around infectious disease epidemiology, but I have parallel interests in reproducible workflows, open source tools, and the intersection of data science with public health research.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Robert Ford</title>
-      <link>/authors/robert-ford/</link>
-      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
-      <guid>/authors/robert-ford/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>

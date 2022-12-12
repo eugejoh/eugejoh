@@ -1,64 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories | Eugene J</title>
-    <link>/categories/</link>
-      <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <title>Categories | Eugene</title>
+    <link>https://eugejoh.netlify.com/categories/</link>
+      <atom:link href="https://eugejoh.netlify.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <description>Categories</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020</copyright><lastBuildDate>Thu, 05 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Eugene Joh 2020--2022</copyright><lastBuildDate>Thu, 05 Apr 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/avatar.jpg</url>
+      <url>https://eugejoh.netlify.com/img/avatar.jpg</url>
       <title>Categories</title>
-      <link>/categories/</link>
+      <link>https://eugejoh.netlify.com/categories/</link>
     </image>
-    
-    <item>
-      <title>Hemodynamics</title>
-      <link>/categories/hemodynamics/</link>
-      <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
-      <guid>/categories/hemodynamics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>/categories/r/</link>
-      <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
-      <guid>/categories/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Water Quality</title>
-      <link>/categories/water-quality/</link>
-      <pubDate>Sat, 09 Dec 2017 00:00:00 +0000</pubDate>
-      <guid>/categories/water-quality/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Public Health</title>
-      <link>/categories/public-health/</link>
-      <pubDate>Thu, 25 May 2017 00:00:00 +0000</pubDate>
-      <guid>/categories/public-health/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Refugees</title>
-      <link>/categories/refugees/</link>
-      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
-      <guid>/categories/refugees/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Infectious Diseases</title>
-      <link>/categories/infectious-diseases/</link>
-      <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>/categories/infectious-diseases/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>
