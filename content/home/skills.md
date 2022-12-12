@@ -31,6 +31,6 @@ subtitle = ""
   icon = "file-alt"
   icon_pack = "fas"
   name = "Reproducible Reporting"
-  description = "Summarising insights and into reports and data visualizations"
+  description = "Summarising insights into reports and data visualizations"
 
 +++

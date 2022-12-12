@@ -75,5 +75,5 @@ social:
 
 Hi, I'm Eugene, an epidemiologist whose interests lie at the intersection of data and public health.  My main area of work is focused on data management and analysis in the areas of infectious disease epidemiology and disease surveillance.  
 
-Most of my professional experience has been working in public health in the non-profit and public sectors. My go-to data tools are centered around SQL and R (tidyverse, ggplot2, R Markdown). I am also is passionate about reproducible analyses, open source tools, and effective data visualization.
+Most of my professional experience has been working in public health in the non-profit and public sectors. My go-to data tools are centered around SQL and R (tidyverse, ggplot2, R Markdown). I am also passionate about reproducible analyses, open source tools, and effective data visualization.
 
