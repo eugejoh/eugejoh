@@ -13,43 +13,24 @@ subtitle = ""
 # 
 # Add/remove as many `[[feature]]` blocks below as you like.
 # 
-# For available icons, see: https://sourcethemes.com/academic/docs/widgets/#icons
+# For available icons, see: https://fontawesome.com/icons free only
 
-[[feature]]
-  icon = "users"
-  icon_pack = "fas"
-  name = "Population Health"
-  description = "Epidemiology, outbreak surveillance, and public health research"
-
-[[feature]]
-  icon = "r-project"
-  icon_pack = "fab"
-  name = "R"
-  description = "Primary tool for cleaning, processing, and analyzing data"
-
-[[feature]]
-  icon = "file-alt"
-  icon_pack = "fas"
-  name = "Reproducible Workflows"
-  description = "Reproducible reporting and research using R Markdown and Git"
-  
 [[feature]]
   icon = "database"
   icon_pack = "fas"
-  name = "Data Management"
-  description = "Integration and management of health data with PostgreSQL and MySQL"
+  name = "Data and Information Management"
+  description = "Integration, cleaning, and linkage of health information systems"
 
 [[feature]]
   icon = "chart-line"
   icon_pack = "fas"
-  name = "Data Analysis"
-  description = "Exploratory data analysis, statistical modeling, and spatial analysis"
+  name = "Epidemiological Analyses"
+  description = "Health surveys, statistical analysis, disease patterns and trends"
   
 [[feature]]
-  icon = "poll"
+  icon = "file-alt"
   icon_pack = "fas"
-  name = "Data Visualization"
-  description = "Static and interactive visualizations using R and R Shiny"
-
+  name = "Reproducible Reporting"
+  description = "Summarising insights and into reports and data visualizations"
 
 +++
